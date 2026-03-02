@@ -754,7 +754,16 @@
       <button class="modal-close" type="button" data-close>×</button>
     </div>
     <div class="modal-body">
-      <form onsubmit="return fakeReserve(event)">
+      <form name="reservation"
+      method="POST"
+      data-netlify="true"
+      data-netlify-honeypot="bot-field"
+      enctype="multipart/form-data"
+      onsubmit="return fakeReserve(event)">
+  <input type="hidden" name="form-name" value="reservation">
+  <p style="display:none;">
+    <label>Ne pas remplir: <input name="bot-field" /></label>
+  </p>
         <input class="input" id="mr_vehicle" value="" readonly>
         <div style="height:10px"></div>
 
@@ -765,6 +774,23 @@
           <input class="input" type="email" placeholder="Email" />
           <input class="input" required placeholder="Année de Permis" />
           <input class="input" required placeholder="Adresse complète" />
+          <div style="grid-column: 1 / -1;">
+  <div class="meta" style="margin-bottom:10px;">
+    📎 Documents obligatoires (formats: JPG/PNG/PDF). Merci de garder des fichiers légers (max ~8MB au total).
+  </div>
+  <label class="meta">Carte d'identité (RECTO)</label>
+  <input class="input" type="file" name="cni_recto" accept="image/*,application/pdf" required>
+  <div style="height:10px"></div>
+  <label class="meta">Carte d'identité (VERSO)</label>
+  <input class="input" type="file" name="cni_verso" accept="image/*,application/pdf" required>
+  <div style="height:10px"></div>
+  <label class="meta">PERMIS (RECTO)</label>
+  <input class="input" type="file" name="permis_recto" accept="image/*,application/pdf" required>
+  <label class="meta">PERMIS (VERSO)</label>
+  <input class="input" type="file" name="permis_verso" accept="image/*,application/pdf" required>
+  <label class="meta">Justificatif de domicile</label>
+  <input class="input" type="file" name="justif_domicile" accept="image/*,application/pdf" required>
+</div>
           <select class="input" required>
             <option value="" selected>Lieu de retrait</option>
             <option>Agence / dépôt</option>
