@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>MH LOCATION — Véhicules disponibles</title>
+<title>MH LOCATION — Véhicules de sport en location</title>
 
 <style>
   :root{
@@ -35,13 +35,12 @@
       radial-gradient(circle at 50% 90%, rgba(47,109,255,.06), transparent 55%),
       var(--bg);
   }
-  /* watermark logo */
   .bg::before{
     content:"";
     position:absolute; inset:0;
     background: url("logo-mh.png") center / 520px auto no-repeat;
-    opacity: 2.08; /* visibilité du logo */
-    filter: blur(4.2px);
+    opacity: 0.10;                 /* watermark (10%) */
+    filter: blur(2.2px);
   }
   .bg::after{
     content:"";
@@ -68,11 +67,12 @@
   }
 
   .brand{
-    height: 90px;        /* taille fixe du cadre */
+    height: 90px;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;     /* évite que ça déborde */
+    overflow: hidden;
+    gap: 12px;
   }
 
   .brand img{
@@ -426,12 +426,9 @@
   }
 
   .modal-actions{ display:flex; gap:10px; margin-top:12px; }
-
   body.modal-open{ overflow:hidden; height:100vh; }
 
-  /* =========================
-     GALERIE PHOTOS (MODAL)
-  ========================== */
+  /* GALERIE PHOTOS (MODAL) */
   .gallery{ margin-bottom: 14px; }
   .gallery-main{
     position:relative;
@@ -568,7 +565,7 @@
 <header>
   <div class="container topbar">
     <div class="brand">
-      <img src="logo-mh.png" alt="Logo location auto" onerror="this.style.display='none'">
+      <img src="logo-mh.png" alt="Logo MH Location" onerror="this.style.display='none'">
       <div class="name">
         <b>MH LOCATION</b>
         <span>L'Agence de location qu'il vous faut • Véhicules disponibles</span>
@@ -576,10 +573,10 @@
     </div>
 
     <div class="nav">
-      <a href="#home">Acceuil</a>
+      <a href="#home">Accueil</a>
       <a href="#cars">Véhicules</a>
       <a href="#faq">FAQ</a>
-      <a class="primary" href="#cars">Réserver</a>
+      <a class="primary" href="#cars">Réserver !</a>
     </div>
   </div>
 </header>
@@ -589,16 +586,16 @@
   <section class="hero">
     <div class="stats">
       <div class="stat">
-        <div class="num">🚗 Véhicules vérifiés et entretenue</div>
-        <div class="label">Photos & infos</div>
+        <div class="num">🚗 Véhicules vérifiés et entretenus</div>
+        <div class="label">Photos - Infos & Prix</div>
       </div>
       <div class="stat">
         <div class="num">⚡ Réponse rapide</div>
-        <div class="label">WhatsApp / Telegram</div>
+        <div class="label">WhatsApp / Email</div>
       </div>
       <div class="stat">
         <div class="num">🔒 Conditions claires</div>
-        <div class="label">Caution / documents</div>
+        <div class="label">Caution / Documents</div>
       </div>
     </div>
 
@@ -636,24 +633,24 @@
 
     <div class="faq-item">
       <button class="faq-question">📄 Quels documents faut-il ?</button>
-      <div class="faq-answer">Permis en cours de Validité + Pièce d’identité + Justificatif de Domicile</div>
+      <div class="faq-answer">Permis en cours de validité + Pièce d’identité + Justificatif de domicile</div>
     </div>
 
     <div class="faq-item">
       <button class="faq-question">💳 Paiement / caution ?</button>
-      <div class="faq-answer">Carte Bancaire / Espèces / Emepreinte Bancaire</div>
+      <div class="faq-answer">Carte Bancaire / Espèces / Empreinte bancaire (selon véhicule)</div>
     </div>
 
     <div class="faq-item">
       <button class="faq-question">⏱ Durée minimum / maximum ?</button>
-      <div class="faq-answer">Variable selon le véhicule. Priorisez minimum 48h en week-end</div>
+      <div class="faq-answer">Variable selon le véhicule. Priorisez minimum 48h en week-end.</div>
     </div>
   </section>
 
   <!-- CONTACT (Snap + Whatsapp) -->
   <section class="section" id="contact">
     <h2>Contact</h2>
-    <div class="meta">Veuillez nous contactez via Snapchat ou Whatsapp. Nous vous répondrons dans les meilleurs délais.</div>
+    <div class="meta">Veuillez nous contacter via Snapchat ou WhatsApp. Nous vous répondrons dans les meilleurs délais.</div>
 
     <div class="contact-grid">
       <!-- SNAP -->
@@ -671,7 +668,7 @@
         </div>
         <div class="contact-actions">
           <a class="btn primary" href="https://www.snapchat.com/add/mhloca7575" target="_blank" rel="noopener">Ouvrir Snapchat</a>
-          <button class="btn" type="button" onclick="copyText('@mhloca7575')">Copier</button>
+          <button class="btn" type="button" onclick="copyText('@mohaloca7575')">Copier</button>
         </div>
       </div>
 
@@ -684,7 +681,7 @@
             </svg>
           </div>
           <div style="min-width:0">
-            <b>Whatsapp</b>
+            <b>WhatsApp</b>
             <span>+33 6 29 54 96 39</span>
           </div>
         </div>
@@ -713,7 +710,7 @@
   <div class="modal-panel">
     <div class="modal-header">
       <div>
-        <div class="modal-title" id="mi_title">Infos —</div>
+        <div class="modal-title" id="mi_title">Infos & Prix —</div>
         <div class="modal-sub" id="mi_sub">Détails du véhicule</div>
       </div>
       <button class="modal-close" type="button" data-close>×</button>
@@ -749,7 +746,7 @@
     <div class="modal-header">
       <div>
         <div class="modal-title" id="mr_title">Réserver —</div>
-        <div class="modal-sub">Remplis, puis tu branches WhatsApp/Telegram derrière (si besoin).</div>
+        <div class="modal-sub">Remplis le formulaire, envoie les documents et paye ta réservation</div>
       </div>
       <button class="modal-close" type="button" data-close>×</button>
     </div>
@@ -764,51 +761,66 @@
   <p style="display:none;">
     <label>Ne pas remplir: <input name="bot-field" /></label>
   </p>
-        <input class="input" id="mr_vehicle" value="" readonly>
-        <div style="height:10px"></div>
 
-        <div class="modal-grid">
-          <input class="input" required placeholder="NOM" />
-          <input class="input" required placeholder="Prénom" />
-          <input class="input" required placeholder="Téléphone" />
-          <input class="input" type="email" placeholder="Email" />
-          <input class="input" required placeholder="Année de Permis" />
-          <input class="input" required placeholder="Adresse complète" />
-          <div style="grid-column: 1 / -1;">
-  <div class="meta" style="margin-bottom:10px;">
-    📎 Documents obligatoires (formats: JPG/PNG/PDF). Merci de garder des fichiers légers (max ~8MB au total).
+  <input class="input" id="mr_vehicle" name="vehicule" value="" readonly>
+  <div style="height:10px"></div>
+
+  <div class="modal-grid">
+    <input class="input" name="nom" required placeholder="NOM" />
+    <input class="input" name="prenom" required placeholder="Prénom" />
+    <input class="input" name="telephone" required placeholder="Téléphone" />
+    <input class="input" name="email" type="email" placeholder="Email" />
+    <input class="input" name="annee_permis" required placeholder="Année de Permis" />
+    <input class="input" name="adresse_complete" required placeholder="Adresse complète" />
+
+    <select class="input" name="lieu_retrait" required>
+      <option value="" selected>Lieu de retrait</option>
+      <option>Agence / dépôt</option>
+      <option>Aéroport</option>
+      <option>Gare</option>
+      <option>Livraison (si dispo)</option>
+    </select>
+
+    <input class="input" name="date_debut" required placeholder="Date de début (JJ/MM/AAAA)" />
+    <input class="input" name="date_fin" required placeholder="Date de fin (JJ/MM/AAAA)" />
+
+    <!-- MESSAGE (plein largeur) -->
+    <div style="grid-column: 1 / -1;">
+      <textarea class="input" name="message" required
+        placeholder="Message (kilométrage, options, boîte auto, assurance…)"></textarea>
+    </div>
+
+    <!-- DOCS (plein largeur) -->
+    <div style="grid-column: 1 / -1;">
+      <div class="meta" style="margin:10px 0;">
+        📎 Documents obligatoires (JPG/PNG/PDF). Évite des fichiers trop lourds.
+      </div>
+
+      <label class="meta">Carte d'identité (RECTO)</label>
+      <input class="input" type="file" name="cni_recto" accept="image/*,application/pdf" required>
+
+      <div style="height:10px"></div>
+      <label class="meta">Carte d'identité (VERSO)</label>
+      <input class="input" type="file" name="cni_verso" accept="image/*,application/pdf" required>
+
+      <div style="height:10px"></div>
+      <label class="meta">Permis (RECTO)</label>
+      <input class="input" type="file" name="permis_recto" accept="image/*,application/pdf" required>
+
+      <div style="height:10px"></div>
+      <label class="meta">Permis (VERSO)</label>
+      <input class="input" type="file" name="permis_verso" accept="image/*,application/pdf" required>
+
+      <div style="height:10px"></div>
+      <label class="meta">Justificatif de domicile</label>
+      <input class="input" type="file" name="justif_domicile" accept="image/*,application/pdf" required>
+    </div>
   </div>
-  <label class="meta">Carte d'identité (RECTO)</label>
-  <input class="input" type="file" name="cni_recto" accept="image/*,application/pdf" required>
-  <div style="height:10px"></div>
-  <label class="meta">Carte d'identité (VERSO)</label>
-  <input class="input" type="file" name="cni_verso" accept="image/*,application/pdf" required>
-  <div style="height:10px"></div>
-  <label class="meta">PERMIS (RECTO)</label>
-  <input class="input" type="file" name="permis_recto" accept="image/*,application/pdf" required>
-  <label class="meta">PERMIS (VERSO)</label>
-  <input class="input" type="file" name="permis_verso" accept="image/*,application/pdf" required>
-  <label class="meta">Justificatif de domicile</label>
-  <input class="input" type="file" name="justif_domicile" accept="image/*,application/pdf" required>
-</div>
-          <select class="input" required>
-            <option value="" selected>Lieu de retrait</option>
-            <option>Agence / dépôt</option>
-            <option>Aéroport</option>
-            <option>Gare</option>
-            <option>Livraison (si dispo)</option>
-          </select>
-          <input class="input" required placeholder="Date de début (JJ/MM/AAAA)" />
-          <input class="input" required placeholder="Date de fin (JJ/MM/AAAA)" />
-        </div>
 
-        <div style="height:10px"></div>
-        <textarea class="input" required placeholder="Message (kilométrage, options, boîte auto, assurance…)"></textarea>
-
-        <div style="height:12px"></div>
-        <button class="btn primary" type="submit">Envoyer</button>
-        <div class="meta" id="mr_status" style="margin-top:10px;"></div>
-      </form>
+  <div style="height:12px"></div>
+  <button class="btn primary" type="submit">Envoyer</button>
+  <div class="meta" id="mr_status" style="margin-top:10px;"></div>
+</form>
     </div>
   </div>
 </div>
@@ -890,18 +902,20 @@
   });
 
   // ====== DATA: véhicules ======
+  // Ajouts: pricePerDay + cautionAmount (affichés dans Infos & Prix)
   const cars = [
     {
       id: "merecesa45s",
       name: "Mercedes A45s 2025",
       type: "sportive",
-      price: "à partir de 349€/jour",
+      pricePerDay: "349€ / jour",
+      cautionAmount: "Caution : 5 000€",
       dispo: "dispo",
       gearbox: "Automatique",
       fuel: "Essence",
       seats: "5 places",
       doors: "5 portes",
-      deposit: "Caution Bancaire / Dépôt d'espèce",
+      deposit: "Permis valide / CNI / CB",
       km: "Kilométrage : selon offre",
       images: [
         "cars/a45s/merco1.png",
@@ -917,13 +931,15 @@
       id: "audirs3sedan",
       name: "Audi RS3 SEDAN 2025",
       type: "sportive",
-      price: "à partir de 399€/jour",
+      price: "à partir de 349€/jour",
+      pricePerDay: "349€ / jour",
+      cautionAmount: "Caution : 5 000€",
       dispo: "dispo",
       gearbox: "Automatique",
       fuel: "Essence",
       seats: "5 places",
       doors: "5 portes",
-      deposit: "Caution carte",
+      deposit: "Permis valide / CNI / CB",
       km: "Km : selon offres",
       images: [
         "cars/rs3sedan/audi1.png",
@@ -940,13 +956,14 @@
       id: "rs3hulk",
       name: "Audi RS3 Hulk 8y 2023 Pack Akra",
       type: "sportive",
-      price: "à partir de 399€/jour",
+      pricePerDay: "249€ / jour",
+      cautionAmount: "Caution : 4 500€",
       dispo: "dispo",
       gearbox: "Automatique",
       fuel: "Essence",
       seats: "5 places",
       doors: "5 portes",
-      deposit: "Caution Carte",
+      deposit: "Permis valide / CNI / CB",
       km: "Km : selon offre",
       images: [
         "cars/rs3hulk/audi1.png",
@@ -964,13 +981,14 @@
       id: "golfgtics",
       name: "Golf 8 GTI CS",
       type: "sportive",
-      price: "à partir de 199€/jour",
+      pricePerDay: "149€ / jour",
+      cautionAmount: "Caution : 3 500€",
       dispo: "dispo",
       gearbox: "Automatique",
       fuel: "Essence",
       seats: "5 places",
       doors: "5 portes",
-      deposit: "Caution carte",
+      deposit: "Permis valide / CNI / CB",
       km: "Km : selon offre",
       images: [
         "cars/golfgti/golf1.png",
@@ -987,13 +1005,14 @@
       id: "golf8rline",
       name: "Golf 8 R LINE 2025",
       type: "citadine",
-      price: "à partir de 99€/jour",
+      pricePerDay: "129€ / jour",
+      cautionAmount: "Caution : 1 500€",
       dispo: "dispo",
       gearbox: "Automatique",
       fuel: "Essence",
       seats: "5 places",
       doors: "5 portes",
-      deposit: "Caution carte",
+      deposit: "Permis valide / CNI / CB",
       km: "Km : selon offre",
       images: [
         "cars/rlinenoir/rline1.png",
@@ -1011,13 +1030,14 @@
       id: "clio5alpine",
       name: "Clio 5 Alpine 2025",
       type: "citadine",
-      price: "à partir de 69€/jour",
+      pricePerDay: "79€ / jour",
+      cautionAmount: "Caution : 1 500€",
       dispo: "dispo",
       gearbox: "Automatique",
       fuel: "Essence",
       seats: "5 places",
       doors: "5 portes",
-      deposit: "Caution carte",
+      deposit: "Permis valide / CNI / CB",
       km: "Km : selon offre",
       images: [
         "cars/clio5noir/clio5-1.png",
@@ -1035,13 +1055,14 @@
       id: "clio5alpinegrise",
       name: "Clio 5 Alpine Gris Nardo 2025",
       type: "citadine",
-      price: "à partir de 69€/jour",
+      pricePerDay: "79€ / jour",
+      cautionAmount: "Caution : 1 500€",
       dispo: "dispo",
       gearbox: "Automatique",
       fuel: "Essence",
       seats: "5 places",
       doors: "5 portes",
-      deposit: "Caution carte",
+      deposit: "Permis valide / CNI / CB",
       km: "Km : selon offre",
       images: [
         "cars/clio5gris/cliogris1.png",
@@ -1059,13 +1080,14 @@
       id: "clio5intense",
       name: "Clio 5 Intense Boîte Manuel",
       type: "citadine",
-      price: "à partir de 49€/jour",
+      pricePerDay: "49€ / jour",
+      cautionAmount: "Caution : 1 000€",
       dispo: "dispo",
       gearbox: "Manuel",
       fuel: "Essence",
       seats: "5 places",
       doors: "5 portes",
-      deposit: "Caution carte",
+      deposit: "Permis valide / CNI / CB",
       km: "Km : selon offre",
       images: [
         "cars/cliointense/cliointense1.png",
@@ -1081,7 +1103,7 @@
     }
   ];
 
-  // ====== UI helpers ======
+  // UI helpers
   function dispoBadge(dispo){
     if(dispo === "dispo") return `<div class="badge badge--ok">Dispo</div>`;
     if(dispo === "bientot") return `<div class="badge badge--warn">Bientôt</div>`;
@@ -1105,7 +1127,7 @@
       <div class="card2"
            data-id="${car.id}"
            data-name="${[
-             car.name, car.type, car.gearbox, car.fuel, car.seats, ...(car.tags||[])
+             car.name, car.type, car.gearbox, car.fuel, car.seats, car.pricePerDay, car.cautionAmount, ...(car.tags||[])
            ].join(" ").toLowerCase()}"
            data-type="${car.type}"
            data-dispo="${car.dispo}">
@@ -1119,12 +1141,14 @@
           <div class="card-top">
             <div>
               <div class="title">${car.name}</div>
-              <div class="sub">${typeLabel(car.type)} • ${car.price}</div>
+              <div class="sub">${typeLabel(car.type)} • ${car.pricePerDay}</div>
             </div>
             ${dispoBadge(car.dispo)}
           </div>
 
           <div class="kv">
+            <div class="chip">💰 ${car.pricePerDay}</div>
+            <div class="chip">🔒 ${car.cautionAmount}</div>
             <div class="chip">⛽ ${car.fuel}</div>
             <div class="chip">⚙️ ${car.gearbox}</div>
             <div class="chip">👥 ${car.seats}</div>
@@ -1132,7 +1156,7 @@
 
           <div class="card-actions">
             <button class="btn primary" type="button" data-reserve="${car.id}">Réserver</button>
-            <button class="btn" type="button" data-infos="${car.id}">Infos</button>
+            <button class="btn" type="button" data-infos="${car.id}">Infos & Prix</button>
           </div>
         </div>
       </div>
@@ -1151,7 +1175,7 @@
     });
   }
 
-  // ====== Modals content ======
+  // Modals content
   const miTitle = document.getElementById("mi_title");
   const miSub = document.getElementById("mi_sub");
   const miGrid = document.getElementById("mi_grid");
@@ -1160,7 +1184,7 @@
   const mrTitle = document.getElementById("mr_title");
   const mrVehicle = document.getElementById("mr_vehicle");
 
-  // ====== Gallery state ======
+  // Gallery state
   let currentImages = [];
   let currentIndex = 0;
 
@@ -1205,8 +1229,9 @@
     const car = cars.find(c=>c.id===id);
     if(!car) return;
 
-    miTitle.textContent = `Infos — ${car.name}`;
-    miSub.textContent = `${typeLabel(car.type)} • ${car.price} • ${car.dispo === "dispo" ? "Disponible" : (car.dispo==="bientot" ? "Bientôt dispo" : "Indisponible")}`;
+    miTitle.textContent = `Infos & Prix — ${car.name}`;
+    miSub.textContent =
+      `${typeLabel(car.type)} • ${car.pricePerDay} • ${car.dispo === "dispo" ? "Disponible" : (car.dispo==="bientot" ? "Bientôt dispo" : "Indisponible")}`;
 
     galleryMainBox.classList.remove("show-full");
     setFitButtonLabel();
@@ -1230,11 +1255,14 @@
     setImg(0);
 
     miGrid.innerHTML = `
+      <div class="mini-card"><b>💰 Prix par jour</b><span>${car.pricePerDay}</span></div>
+      <div class="mini-card"><b>🔒 Caution</b><span>${car.cautionAmount}</span></div>
+
       <div class="mini-card"><b>Boîte</b><span>${car.gearbox}</span></div>
       <div class="mini-card"><b>Carburant</b><span>${car.fuel}</span></div>
       <div class="mini-card"><b>Places</b><span>${car.seats}</span></div>
       <div class="mini-card"><b>Portes</b><span>${car.doors}</span></div>
-      <div class="mini-card"><b>Caution</b><span>${car.deposit}</span></div>
+      <div class="mini-card"><b>Conditions</b><span>${car.deposit}</span></div>
       <div class="mini-card"><b>Kilométrage</b><span>${car.km}</span></div>
     `;
 
@@ -1252,13 +1280,15 @@
   }
 
   function fakeReserve(e){
-    e.preventDefault();
+    // Netlify Forms enverra le formulaire.
+    // Ici on laisse l'envoi se faire normalement (pas de preventDefault),
+    // mais on affiche un message "ok" si tu veux une page de succès plus tard.
     document.getElementById("mr_status").textContent =
-      "✅ Demande envoyée (simulation). Tu peux brancher WhatsApp/Telegram côté backend ensuite.";
-    return false;
+      "✅ Envoi en cours… Si tout est OK, Netlify enregistrera la demande.";
+    return true; // IMPORTANT: laisser le submit partir vers Netlify
   }
 
-  // ====== Filters ======
+  // Filters
   const q = document.getElementById("q");
   const type = document.getElementById("type");
   const dispo = document.getElementById("dispo");
@@ -1270,7 +1300,8 @@
 
     const filtered = cars.filter(c=>{
       const hay = [
-        c.name, c.type, c.gearbox, c.fuel, c.seats, c.doors, c.price,
+        c.name, c.type, c.gearbox, c.fuel, c.seats, c.doors,
+        c.pricePerDay, c.cautionAmount, c.km,
         ...(c.tags||[])
       ].join(" ").toLowerCase();
 
@@ -1294,5 +1325,3 @@
 
 </body>
 </html>
-
-
