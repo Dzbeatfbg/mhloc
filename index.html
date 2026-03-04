@@ -1272,11 +1272,11 @@
   }
 
   function openReserve(id){
-    const car = cars.find(c=>c.id===id);
-    if(!car) return;
+  const car = cars.find(c=>c.id===id);
+  if(!car) return;
 
-    mrTitle.textContent = `Réserver — ${car.name}`;
-    mrVehicle.value = car.name;
+   mrTitle.textContent = `Réserver — ${car.name}`;
+   mrVehicle.value = car.name;
 
     // acompte automatique selon type
     const acompte = (car.type === "sportive") ? 150 : 100;
@@ -1284,10 +1284,10 @@
     document.getElementById("mr_acompte").value = acompte;
 
     // sauvegarde pour merci.html (afficher véhicule + acompte + image)
-    localStorage.setItem("mh_last_vehicle", car.name);
-    localStorage.setItem("mh_last_type", car.type);
-    localStorage.setItem("mh_last_acompte", String(acompte));
-    localStorage.setItem("mh_last_image", firstImage(car));
+     localStorage.setItem("mh_last_vehicle", car.name);
+  localStorage.setItem("mh_last_type", car.type);
+  localStorage.setItem("mh_last_acompte", car.type === "sportive" ? "150" : "100");
+  localStorage.setItem("mh_last_image", car.images[0]);
     const form = document.querySelector('form[name="reservation"]');
 if(form){
   form.addEventListener("submit", ()=>{
