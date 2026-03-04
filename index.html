@@ -107,10 +107,12 @@
     color:#fff;
   }
 
-  @media (max-width: 720px){
-    .nav a{ display:none; }
-    .nav a.primary{ display:inline-flex; }
-  }
+ @media (max-width: 720px){
+  .nav a{ display:none; }
+  .nav a.primary,
+  .nav a.contact{ display:inline-flex; }
+  .nav{ gap:8px; }
+}
 
   /* hero */
   .hero{ padding: 18px 0 10px; }
@@ -578,8 +580,8 @@
     <div class="nav">
   <a href="#home">Accueil</a>
   <a href="#cars">Véhicules</a>
-  <a href="#" onclick="contactWhatsApp()">Contact</a>
-  <a class="primary" href="#cars">Réserver !</a>
+  <a class="contact" id="btnContact" href="#">Contact</a>
+<a class="primary" href="#cars">Réserver !</a>
 </div>
   </div>
 </header>
@@ -1369,6 +1371,23 @@ if(form){
 
   window.open(url, "_blank");
 }
+  }
+</script>
+<script>
+  const WHATSAPP_NUMBER = "33629549639"; // sans +, sans espaces
+
+  function buildWhatsappLink(){
+    const vehicule = localStorage.getItem("mh_last_vehicle") || "—";
+    const msg = `Bonjour, je vous contacte concernant ma location du véhicule : ${vehicule}`;
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+  }
+
+  const btn = document.getElementById("btnContact");
+  if(btn){
+    btn.addEventListener("click", (e)=>{
+      e.preventDefault();
+      window.open(buildWhatsappLink(), "_blank");
+    });
   }
 </script>
 
