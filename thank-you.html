@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MH LOCATION — Paiement acompte</title>
+
+<style>
+  :root{
+    --bg:#06070b;
+    --card: rgba(255,255,255,.04);
+    --line: rgba(255,255,255,.10);
+    --text:#ffffff;
+    --muted: rgba(255,255,255,.70);
+    --blue:#2f6dff;
+    --shadow: 0 18px 40px rgba(0,0,0,.40);
+    --r: 16px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 18px;
+  }
+
+  .card{
+    width: min(560px, 100%);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    box-shadow: var(--shadow);
+    padding: 18px;
+    text-align:center;
+  }
+
+  .logo{
+    width: 86px;
+    height: 86px;
+    border-radius: 18px;
+    display:grid;
+    place-items:center;
+    margin: 0 auto 10px;
+    border: 1px solid rgba(255,255,255,.10);
+    background: rgba(255,255,255,.03);
+    overflow:hidden;
+  }
+  .logo img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+  }
+
+  h1{ font-size:18px; font-weight:950; margin-bottom:10px; }
+  p{ color: var(--muted); line-height:1.6; font-size:14px; }
+
+  .vehicle{
+    margin-top: 10px;
+    font-weight: 950;
+    font-size: 14px;
+  }
+
+  .pill{
+    display:inline-flex;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.10);
+    background: rgba(255,255,255,.03);
+    font-weight: 950;
+    font-size: 13px;
+  }
+
+  .btn{
+    margin-top: 14px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    padding: 13px 12px;
+    border-radius: 14px;
+    font-weight: 950;
+    font-size: 13px;
+    text-decoration:none;
+    border: 1px solid rgba(255,255,255,.10);
+    background: rgba(255,255,255,.03);
+    color: var(--text);
+    cursor:pointer;
+    transition: .18s ease;
+  }
+  .btn.primary{
+    background: var(--blue);
+    border-color: transparent;
+    color:#fff;
+  }
+
+  .small{
+    margin-top: 10px;
+    font-size: 12px;
+    color: rgba(255,255,255,.55);
+  }
+
+  .warn{
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(241, 196, 15, .35);
+    background: rgba(241, 196, 15, .10);
+    color: rgba(255,245,200,.95);
+    text-align:left;
+    font-size: 13px;
+    line-height: 1.5;
+    display:none;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <div class="logo">
+    <img src="logo-mh.png" alt="MH Location" onerror="this.style.display='none'">
+  </div>
+
+  <h1>✅ Demande envoyée</h1>
+
+  <p>
+    Nous avons bien reçu vos informations.<br>
+    Pour valider votre réservation, vous allez maintenant payer l’acompte.
+  </p>
+
+  <div class="vehicle" id="vehiculeText">Véhicule : —</div>
+  <div class="pill" id="acompteText">Acompte : —</div>
+
+  <a class="btn primary" id="payBtn" href="#" target="_blank" rel="noopener">
+    Payer l’acompte maintenant
+  </a>
+
+  <div class="small" id="autoText">Redirection automatique dans 5 secondes…</div>
+
+  <div class="warn" id="warnBox">
+    ⚠️ Impossible de détecter le type du véhicule (citadine/sportive).<br>
+    Retourne sur la page, clique “Réserver” sur un véhicule, puis renvoie le formulaire.
+  </div>
+</div>
+
+<script>
+  // ✅ TES LIENS STRIPE
+  const STRIPE_CITADINE_URL = "https://buy.stripe.com/dRm8wO914fdO7yZft8bV600";
+  const STRIPE_SPORTIVE_URL = "https://buy.stripe.com/cNi14mgtw2r2cTja8ObV601";
+
+  // 🔎 On récupère ce qu'on a sauvegardé dans index.html
+  const vehicule = localStorage.getItem("mh_last_vehicle") || "—";
+  const type = (localStorage.getItem("mh_last_type") || "").toLowerCase(); // "citadine" ou "sportive"
+  const acompte = localStorage.getItem("mh_last_acompte") || "";
+
+  document.getElementById("vehiculeText").textContent = "Véhicule : " + vehicule;
+  document.getElementById("acompteText").textContent = acompte ? ("Acompte : " + acompte + "€") : "Acompte : —";
+
+  // ✅ Choix automatique du lien Stripe
+  let payUrl = "";
+  if(type === "sportive") payUrl = STRIPE_SPORTIVE_URL;
+  if(type === "citadine") payUrl = STRIPE_CITADINE_URL;
+
+  const payBtn = document.getElementById("payBtn");
+  const warnBox = document.getElementById("warnBox");
+  const autoText = document.getElementById("autoText");
+
+  if(!payUrl){
+    payBtn.href = "#";
+    payBtn.classList.remove("primary");
+    payBtn.textContent = "Retour au site";
+    payBtn.onclick = (e)=>{ e.preventDefault(); window.location.href = "/"; };
+    autoText.textContent = "";
+    warnBox.style.display = "block";
+  } else {
+    payBtn.href = payUrl;
+
+    // 🚀 Redirection auto
+    setTimeout(()=>{
+      window.location.href = payUrl;
+    }, 5000);
+  }
+</script>
+
+</body>
+</html>
