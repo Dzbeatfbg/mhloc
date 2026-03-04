@@ -1288,6 +1288,7 @@
   localStorage.setItem("mh_last_type", car.type);
   localStorage.setItem("mh_last_acompte", car.type === "sportive" ? "150" : "100");
   localStorage.setItem("mh_last_image", car.images[0]);
+  localStorage.setItem("mh_last_caution", car.cautionAmount);
     const form = document.querySelector('form[name="reservation"]');
 if(form){
   form.addEventListener("submit", ()=>{
