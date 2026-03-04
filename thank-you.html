@@ -1,192 +1,278 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MH LOCATION — Paiement acompte</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MH LOCATION — Confirmation</title>
 
-<style>
-  :root{
-    --bg:#06070b;
-    --card: rgba(255,255,255,.04);
-    --line: rgba(255,255,255,.10);
-    --text:#ffffff;
-    --muted: rgba(255,255,255,.70);
-    --blue:#2f6dff;
-    --shadow: 0 18px 40px rgba(0,0,0,.40);
-    --r: 16px;
-  }
+  <style>
+    :root{
+      --bg:#06070b;
+      --card: rgba(255,255,255,.03);
+      --line: rgba(255,255,255,.09);
+      --text:#ffffff;
+      --muted: rgba(255,255,255,.68);
+      --blue:#2f6dff;
+      --shadow: 0 18px 40px rgba(0,0,0,.40);
+      --r: 16px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x:hidden;
+    }
 
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding: 18px;
-  }
+    /* background soft + logo watermark */
+    .bg{
+      position: fixed; inset:0; z-index:-5; pointer-events:none;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(47,109,255,.14), transparent 45%),
+        radial-gradient(circle at 80% 0%, rgba(47,109,255,.08), transparent 50%),
+        radial-gradient(circle at 50% 90%, rgba(47,109,255,.06), transparent 55%),
+        var(--bg);
+    }
+    .bg::before{
+      content:"";
+      position:absolute; inset:0;
+      background: url("logo-mh.png") center / 520px auto no-repeat;
+      opacity: 0.10;
+      filter: blur(2.2px);
+    }
+    .bg::after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 64px 64px;
+      opacity:.55;
+    }
 
-  .card{
-    width: min(560px, 100%);
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--r);
-    box-shadow: var(--shadow);
-    padding: 18px;
-    text-align:center;
-  }
+    .container{ max-width: 980px; margin:0 auto; padding: 0 16px; }
 
-  .logo{
-    width: 86px;
-    height: 86px;
-    border-radius: 18px;
-    display:grid;
-    place-items:center;
-    margin: 0 auto 10px;
-    border: 1px solid rgba(255,255,255,.10);
-    background: rgba(255,255,255,.03);
-    overflow:hidden;
-  }
-  .logo img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-  }
+    header{
+      position: sticky; top:0; z-index:50;
+      background: rgba(6,7,11,.78);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding: 14px 0;
+    }
+    .brand{
+      height: 90px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      overflow:hidden;
+    }
+    .brand img{
+      height: 160px;
+      width:auto;
+      object-fit:contain;
+      display:block;
+    }
+    .brand .name{ display:flex; flex-direction:column; line-height:1; min-width:0; }
+    .brand .name b{ font-size:14px; letter-spacing:.9px; opacity:.95; }
+    .brand .name span{
+      font-size:12px; color: var(--muted); margin-top:6px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
 
-  h1{ font-size:18px; font-weight:950; margin-bottom:10px; }
-  p{ color: var(--muted); line-height:1.6; font-size:14px; }
+    .card{
+      margin: 26px auto 0;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+    h1{
+      font-size: 18px;
+      font-weight: 950;
+      margin-bottom: 10px;
+    }
+    .muted{
+      color: var(--muted);
+      line-height:1.6;
+      font-size:14px;
+    }
 
-  .vehicle{
-    margin-top: 10px;
-    font-weight: 950;
-    font-size: 14px;
-  }
+    .car-img{
+      width:100%;
+      max-width: 560px;
+      height: 280px;
+      border-radius: 14px;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.25);
+      margin: 14px auto 6px;
+    }
+    .car-img img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+    }
 
-  .pill{
-    display:inline-flex;
-    margin-top: 10px;
-    padding: 10px 12px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,.10);
-    background: rgba(255,255,255,.03);
-    font-weight: 950;
-    font-size: 13px;
-  }
+    .info-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    @media(max-width:720px){ .info-grid{ grid-template-columns: 1fr; } }
 
-  .btn{
-    margin-top: 14px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    width:100%;
-    padding: 13px 12px;
-    border-radius: 14px;
-    font-weight: 950;
-    font-size: 13px;
-    text-decoration:none;
-    border: 1px solid rgba(255,255,255,.10);
-    background: rgba(255,255,255,.03);
-    color: var(--text);
-    cursor:pointer;
-    transition: .18s ease;
-  }
-  .btn.primary{
-    background: var(--blue);
-    border-color: transparent;
-    color:#fff;
-  }
+    .mini{
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      padding: 12px;
+    }
+    .mini b{ display:block; font-size: 13px; }
+    .mini span{ display:block; margin-top: 6px; color: var(--muted); font-size: 13px; line-height: 1.55; }
 
-  .small{
-    margin-top: 10px;
-    font-size: 12px;
-    color: rgba(255,255,255,.55);
-  }
+    .pill{
+      display:inline-flex;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      font-weight: 950;
+      margin-top: 10px;
+    }
 
-  .warn{
-    margin-top: 12px;
-    padding: 12px;
-    border-radius: 14px;
-    border: 1px solid rgba(241, 196, 15, .35);
-    background: rgba(241, 196, 15, .10);
-    color: rgba(255,245,200,.95);
-    text-align:left;
-    font-size: 13px;
-    line-height: 1.5;
-    display:none;
-  }
-</style>
+    .btn{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      font-weight: 950;
+      font-size: 13px;
+      text-decoration:none;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      cursor:pointer;
+      transition: .18s ease;
+      margin-top: 14px;
+    }
+    .btn.primary{
+      background: var(--blue);
+      border-color: transparent;
+      color:#fff;
+    }
+
+    .small{
+      font-size:12px;
+      color: var(--muted);
+      margin-top:10px;
+      text-align:center;
+    }
+
+    footer{
+      border-top: 1px solid rgba(255,255,255,.06);
+      padding: 26px 0 34px;
+      color: rgba(255,255,255,.55);
+      font-size: 12px;
+      text-align:center;
+      margin-top: 28px;
+    }
+  </style>
 </head>
 
 <body>
+  <div class="bg"></div>
 
-<div class="card">
-  <div class="logo">
-    <img src="logo-mh.png" alt="MH Location" onerror="this.style.display='none'">
-  </div>
+  <header>
+    <div class="container topbar">
+      <div class="brand">
+        <img src="logo-mh.png" alt="Logo MH Location" onerror="this.style.display='none'">
+        <div class="name">
+          <b>MH LOCATION</b>
+          <span>Confirmation & paiement de l’acompte</span>
+        </div>
+      </div>
+    </div>
+  </header>
 
-  <h1>✅ Demande envoyée</h1>
+  <main class="container">
+    <div class="card">
+      <h1>✅ Demande envoyée</h1>
 
-  <p>
-    Nous avons bien reçu vos informations.<br>
-    Pour valider votre réservation, vous allez maintenant payer l’acompte.
-  </p>
+      <div class="muted">
+        Merci, nous avons bien reçu vos informations.
+        <br/>
+        Pour valider votre réservation, vous allez être redirigé vers le paiement de l’acompte.
+      </div>
 
-  <div class="vehicle" id="vehiculeText">Véhicule : —</div>
-  <div class="pill" id="acompteText">Acompte : —</div>
+      <div class="car-img">
+        <img id="carImg" alt="Véhicule réservé">
+      </div>
 
-  <a class="btn primary" id="payBtn" href="#" target="_blank" rel="noopener">
-    Payer l’acompte maintenant
-  </a>
+      <div class="pill" id="countdownPill">Redirection dans <span id="sec">7</span>s…</div>
 
-  <div class="small" id="autoText">Redirection automatique dans 5 secondes…</div>
+      <div class="info-grid">
+        <div class="mini"><b>🚗 Véhicule</b><span id="vehiculeText">—</span></div>
+        <div class="mini"><b>💶 Acompte</b><span id="acompteText">—</span></div>
+        <div class="mini"><b>🏷️ Type</b><span id="typeText">—</span></div>
+        <div class="mini"><b>🔒 Caution</b><span id="cautionText">—</span></div>
+      </div>
 
-  <div class="warn" id="warnBox">
-    ⚠️ Impossible de détecter le type du véhicule (citadine/sportive).<br>
-    Retourne sur la page, clique “Réserver” sur un véhicule, puis renvoie le formulaire.
-  </div>
-</div>
+      <a class="btn primary" id="payBtn" href="#" rel="noopener">Payer l’acompte maintenant</a>
+      <div class="small" id="hint">Si la redirection ne se fait pas, cliquez sur le bouton.</div>
+    </div>
 
-<script>
-  // ✅ TES LIENS STRIPE
-  const STRIPE_CITADINE_URL = "https://buy.stripe.com/dRm8wO914fdO7yZft8bV600";
-  const STRIPE_SPORTIVE_URL = "https://buy.stripe.com/cNi14mgtw2r2cTja8ObV601";
+    <footer>© <span id="year"></span> — MH LOCATION</footer>
+  </main>
 
-  // 🔎 On récupère ce qu'on a sauvegardé dans index.html
-  const vehicule = localStorage.getItem("mh_last_vehicle") || "—";
-  const type = (localStorage.getItem("mh_last_type") || "").toLowerCase(); // "citadine" ou "sportive"
-  const acompte = localStorage.getItem("mh_last_acompte") || "";
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    const STRIPE_CITADINE_URL = "https://buy.stripe.com/dRm8wO914fdO7yZft8bV600";
+    const STRIPE_SPORTIVE_URL = "https://buy.stripe.com/cNi14mgtw2r2cTja8ObV601";
+    const vehicule = localStorage.getItem("mh_last_vehicle") || "—";
+    const type = localStorage.getItem("mh_last_type") || "";
+    const acompte = localStorage.getItem("mh_last_acompte") || "";
+    const image = localStorage.getItem("mh_last_image") || "";
+    const caution = localStorage.getItem("mh_last_caution") || ""; 
+    document.getElementById("vehiculeText").textContent = vehicule;
+    document.getElementById("typeText").textContent = type ? (type === "sportive" ? "Sportive" : "Citadine") : "—";
+    document.getElementById("acompteText").textContent = acompte ? (acompte + "€") : "—";
 
-  document.getElementById("vehiculeText").textContent = "Véhicule : " + vehicule;
-  document.getElementById("acompteText").textContent = acompte ? ("Acompte : " + acompte + "€") : "Acompte : —";
+    // Caution : si tu ne l'as pas sauvegardée, on met une valeur par défaut
+    const cautionTxt = caution || (type === "sportive" ? "Caution selon dossier (sportive)" : "Caution selon dossier (citadine)");
+    document.getElementById("cautionText").textContent = cautionTxt;
 
-  // ✅ Choix automatique du lien Stripe
-  let payUrl = "";
-  if(type === "sportive") payUrl = STRIPE_SPORTIVE_URL;
-  if(type === "citadine") payUrl = STRIPE_CITADINE_URL;
+    // Image
+    const imgEl = document.getElementById("carImg");
+    if(image){
+      imgEl.src = image;
+    } else {
+      imgEl.src = "https://picsum.photos/900/600?random=mh-location";
+    }
 
-  const payBtn = document.getElementById("payBtn");
-  const warnBox = document.getElementById("warnBox");
-  const autoText = document.getElementById("autoText");
-
-  if(!payUrl){
-    payBtn.href = "#";
-    payBtn.classList.remove("primary");
-    payBtn.textContent = "Retour au site";
-    payBtn.onclick = (e)=>{ e.preventDefault(); window.location.href = "/"; };
-    autoText.textContent = "";
-    warnBox.style.display = "block";
-  } else {
+    // Lien paiement auto selon type
+    const payUrl = (type === "sportive") ? STRIPE_SPORTIVE_URL : STRIPE_CITADINE_URL;
+    const payBtn = document.getElementById("payBtn");
     payBtn.href = payUrl;
 
-    // 🚀 Redirection auto
-    setTimeout(()=>{
-      window.location.href = payUrl;
-    }, 5000);
-  }
-</script>
+    // Redirection auto + countdown
+    let seconds = 7;
+    const secEl = document.getElementById("sec");
 
+    const timer = setInterval(() => {
+      seconds--;
+      secEl.textContent = String(seconds);
+      if(seconds <= 0){
+        clearInterval(timer);
+        window.location.href = payUrl;
+      }
+    }, 1000);
+  </script>
 </body>
 </html>
