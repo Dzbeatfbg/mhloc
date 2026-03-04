@@ -576,11 +576,11 @@
     </div>
 
     <div class="nav">
-      <a href="#home">Accueil</a>
-      <a href="#cars">Véhicules</a>
-      <a href="#faq">FAQ</a>
-      <a class="primary" href="#cars">Réserver !</a>
-    </div>
+  <a href="#home">Accueil</a>
+  <a href="#cars">Véhicules</a>
+  <a href="#" onclick="contactWhatsApp()">Contact</a>
+  <a class="primary" href="#cars">Réserver !</a>
+</div>
   </div>
 </header>
 
@@ -1352,6 +1352,23 @@ if(form){
         status.textContent = "✅ Envoi en cours…";
       }
     });
+    function contactWhatsApp(){
+
+  const phone = "33629549639"; // ton numéro
+
+  const vehicule = localStorage.getItem("mh_last_vehicle") || "";
+
+  let message = "Bonjour, je vous contacte concernant ma location";
+
+  if(vehicule){
+    message += " du véhicule : " + vehicule;
+  }
+
+  const url =
+  "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
+
+  window.open(url, "_blank");
+}
   }
 </script>
 
