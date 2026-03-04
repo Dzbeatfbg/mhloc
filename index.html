@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>MH LOCATION — Nos Véhicules</title>
+<title>MH LOCATION — Véhicules disponibles</title>
 
 <style>
   :root{
@@ -756,17 +756,18 @@
 
     <div class="modal-body">
 
-      <form name="reservation"
-            method="POST"
-            data-netlify="true"
-            data-netlify-honeypot="bot-field"
-            enctype="multipart/form-data"
-            action="/merci">
+     <form name="reservation"
+      method="POST"
+      data-netlify="true"
+      data-netlify-honeypot="bot-field"
+      enctype="multipart/form-data"
+      action="/thank-you.html">
 
-        <input type="hidden" name="form-name" value="reservation">
-        <p style="display:none;">
-          <label>Ne pas remplir: <input name="bot-field" /></label>
-        </p>
+<input type="hidden" name="form-name" value="reservation">
+
+<p style="display:none;">
+  <label>Ne pas remplir: <input name="bot-field" /></label>
+</p>
 
         <input class="input" id="mr_vehicle" name="vehicule" value="" readonly>
         <input type="hidden" id="mr_type" name="type_vehicule" value="">
@@ -1287,6 +1288,18 @@
     localStorage.setItem("mh_last_type", car.type);
     localStorage.setItem("mh_last_acompte", String(acompte));
     localStorage.setItem("mh_last_image", firstImage(car));
+    const form = document.querySelector('form[name="reservation"]');
+if(form){
+  form.addEventListener("submit", ()=>{
+    const vehicule = document.getElementById("mr_vehicle")?.value || "";
+    const type = document.getElementById("mr_type")?.value || "";
+    const acompte = document.getElementById("mr_acompte")?.value || "";
+
+    if(vehicule) localStorage.setItem("mh_last_vehicle", vehicule);
+    if(type) localStorage.setItem("mh_last_type", type);
+    if(acompte) localStorage.setItem("mh_last_acompte", String(acompte));
+  });
+}
 
     openModal("modalReserve");
   }
