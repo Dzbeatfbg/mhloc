@@ -1,0 +1,80 @@
+backend:
+  name: git-gateway
+  branch: main
+
+local_backend: true
+
+media_folder: "uploads"
+public_folder: "/uploads"
+
+site_url: "https://mh-location.com"
+display_url: "https://mh-location.com"
+logo_url: "/logo-mh.png"
+
+collections:
+  - name: "cars"
+    label: "Véhicules"
+    label_singular: "Véhicule"
+    file: "data/cars.json"
+    format: "json"
+    editor:
+      preview: false
+    fields:
+      - label: "Liste des véhicules"
+        name: "cars"
+        widget: "list"
+        summary: "{{fields.name}} — {{fields.type}} — {{fields.dispo}}"
+        fields:
+          - { label: "ID", name: "id", widget: "string", hint: "Ex: audirs3sedan" }
+          - { label: "Nom du véhicule", name: "name", widget: "string" }
+
+          - label: "Type"
+            name: "type"
+            widget: "select"
+            options:
+              - { label: "Sportive", value: "sportive" }
+              - { label: "Citadine", value: "citadine" }
+              - { label: "SUV", value: "suv" }
+
+          - label: "Disponibilité"
+            name: "dispo"
+            widget: "select"
+            default: "dispo"
+            options:
+              - { label: "Disponible", value: "dispo" }
+              - { label: "Indisponible", value: "indispo" }
+
+          - label: "Date de retour"
+            name: "returnDate"
+            widget: "string"
+            required: false
+            hint: "Uniquement si le véhicule est indisponible. Exemple : 18/03/2026"
+
+          - { label: "Prix par jour", name: "pricePerDay", widget: "string", hint: "Ex: 349€ / jour" }
+          - { label: "Caution", name: "cautionAmount", widget: "string", hint: "Ex: Caution : 5 000€" }
+
+          - { label: "Boîte", name: "gearbox", widget: "string", hint: "Ex: Automatique" }
+          - { label: "Carburant", name: "fuel", widget: "string", hint: "Ex: Essence" }
+          - { label: "Places", name: "seats", widget: "string", hint: "Ex: 5 places" }
+          - { label: "Portes", name: "doors", widget: "string", hint: "Ex: 5 portes" }
+          - { label: "Conditions", name: "deposit", widget: "string", hint: "Ex: Permis valide / CNI / CB" }
+          - { label: "Kilométrage", name: "km", widget: "string", hint: "Ex: Km : selon offre" }
+
+          - label: "Images"
+            name: "images"
+            widget: "list"
+            summary: "{{fields.image}}"
+            field:
+              label: "Image"
+              name: "image"
+              widget: "string"
+              hint: "Ex: cars/a45s/merco1.png ou /uploads/nom-image.jpg"
+
+          - label: "Tags"
+            name: "tags"
+            widget: "list"
+            required: false
+            field:
+              label: "Tag"
+              name: "tag"
+              widget: "string"
