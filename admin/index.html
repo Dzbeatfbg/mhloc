@@ -15,19 +15,17 @@
       --text:#ffffff;
       --muted: rgba(255,255,255,.68);
       --blue:#2f6dff;
-      --green:#2ecc71;
       --shadow: 0 18px 40px rgba(0,0,0,.40);
-      --r: 18px;
+      --r: 16px;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
+    html,body{min-height:100%}
     body{
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
       overflow-x:hidden;
-      min-height:100vh;
     }
 
     .bg{
@@ -56,7 +54,7 @@
     }
 
     .container{
-      max-width: 1180px;
+      max-width: 980px;
       margin: 0 auto;
       padding: 0 16px;
     }
@@ -64,7 +62,7 @@
     header{
       position: sticky;
       top:0;
-      z-index:50;
+      z-index:20;
       background: rgba(6,7,11,.78);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(255,255,255,.06);
@@ -86,7 +84,7 @@
     }
 
     .brand img{
-      height: 82px;
+      height: 76px;
       width: auto;
       object-fit: contain;
       display:block;
@@ -114,18 +112,10 @@
       text-overflow:ellipsis;
     }
 
-    .header-actions{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-
     .btn{
       display:inline-flex;
       justify-content:center;
       align-items:center;
-      gap:8px;
       padding: 12px 14px;
       border-radius: 14px;
       font-weight: 950;
@@ -136,42 +126,23 @@
       color: var(--text);
       cursor:pointer;
       transition: .18s ease;
-      white-space:nowrap;
     }
     .btn.primary{
       background: var(--blue);
       border-color: transparent;
       color:#fff;
     }
-    .btn:hover{
-      transform: translateY(-1px);
-    }
 
     .hero{
-      padding: 28px 0 22px;
+      padding: 34px 0;
     }
 
-    .hero-grid{
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 16px;
-      align-items:stretch;
-    }
-
-    @media(max-width:900px){
-      .hero-grid{ grid-template-columns:1fr; }
-    }
-
-    .panel{
+    .card{
       background: var(--card);
       border: 1px solid var(--line);
-      border-radius: var(--r);
+      border-radius: 20px;
       box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-
-    .panel-body{
-      padding: 18px;
+      padding: 22px;
     }
 
     .eyebrow{
@@ -189,479 +160,229 @@
       background: rgba(255,255,255,.03);
     }
 
-    .hero h1{
-      font-size: 28px;
+    h1{
+      font-size: 30px;
       line-height: 1.05;
       font-weight: 1000;
       margin-top: 14px;
-      max-width: 700px;
+      max-width: 760px;
     }
 
-    .hero p{
+    .lead{
       margin-top: 12px;
       color: var(--muted);
       font-size: 14px;
       line-height: 1.7;
-      max-width: 760px;
+      max-width: 780px;
     }
 
-    .stats{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;
-      margin-top: 18px;
-    }
-
-    @media(max-width:720px){
-      .stats{ grid-template-columns:1fr; }
-    }
-
-    .stat{
-      background: rgba(255,255,255,.02);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 16px;
-      padding: 14px;
-    }
-
-    .stat .num{
-      font-size: 15px;
-      font-weight: 1000;
-    }
-
-    .stat .label{
-      margin-top: 6px;
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 900;
-    }
-
-    .side-card{
-      height:100%;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-    }
-
-    .status-box{
-      padding: 16px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.02);
-    }
-
-    .status-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .status-badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 950;
-      border: 1px solid rgba(231, 76, 60, .35);
-      background: rgba(231, 76, 60, .12);
-      color: rgba(255,210,210,.95);
-    }
-
-    .status-badge.ok{
-      border-color: rgba(46, 204, 113, .35);
-      background: rgba(46, 204, 113, .14);
-      color: rgba(200,255,220,.95);
-    }
-
-    .status-title{
-      font-size: 15px;
-      font-weight: 950;
-      margin-top: 12px;
-    }
-
-    .status-sub{
-      margin-top: 8px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.65;
-    }
-
-    .quick-list{
-      margin-top: 14px;
-      display:grid;
-      gap:10px;
-    }
-
-    .quick-item{
-      padding: 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.02);
-    }
-
-    .quick-item b{
-      display:block;
-      font-size:13px;
-    }
-
-    .quick-item span{
-      display:block;
-      margin-top:6px;
-      font-size:12px;
-      color: var(--muted);
-      line-height:1.55;
-    }
-
-    .content{
-      padding: 0 0 26px;
-    }
-
-    .cards{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 14px;
-    }
-
-    @media(max-width:980px){
-      .cards{ grid-template-columns:1fr; }
-    }
-
-    .feature{
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--r);
-      padding: 16px;
-      box-shadow: var(--shadow);
-    }
-
-    .feature .icon{
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
-      display:grid;
-      place-items:center;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      margin-bottom: 12px;
-      font-size: 20px;
-    }
-
-    .feature h3{
-      font-size:15px;
-      font-weight:950;
-    }
-
-    .feature p{
-      margin-top:8px;
-      color: var(--muted);
-      font-size:13px;
-      line-height:1.65;
-    }
-
-    .steps{
-      margin-top: 18px;
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--r);
-      box-shadow: var(--shadow);
-      padding: 18px;
-    }
-
-    .steps h2{
-      font-size:16px;
-      font-weight:1000;
-      margin-bottom: 10px;
-    }
-
-    .steps-grid{
+    .grid{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 12px;
-      margin-top: 12px;
+      margin-top: 18px;
     }
 
-    @media(max-width:900px){
-      .steps-grid{ grid-template-columns:1fr; }
+    .mini{
+      background: rgba(255,255,255,.02);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      padding: 14px;
     }
 
-    .step{
+    .mini b{
+      display:block;
+      font-size:14px;
+      font-weight:950;
+    }
+
+    .mini span{
+      display:block;
+      margin-top:6px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .status{
+      margin-top: 18px;
+      padding: 14px;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,.08);
       background: rgba(255,255,255,.02);
-      padding: 14px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--muted);
     }
 
-    .step .n{
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      display:grid;
-      place-items:center;
-      font-size: 12px;
-      font-weight: 1000;
-      background: var(--blue);
+    .status b{
       color:#fff;
-      margin-bottom: 10px;
     }
 
-    .step b{
+    .actions{
+      display:flex;
+      gap:10px;
+      margin-top: 18px;
+      flex-wrap:wrap;
+    }
+
+    #cms-root{
+      display:none;
+      min-height:100vh;
+    }
+
+    #login-screen{
       display:block;
-      font-size:14px;
     }
 
-    .step span{
-      display:block;
-      margin-top: 6px;
-      font-size: 13px;
-      line-height: 1.6;
-      color: var(--muted);
-    }
-
-    .admin-tip{
-      margin-top: 16px;
-      padding: 14px;
-      border-radius: 16px;
-      border: 1px solid rgba(47,109,255,.28);
-      background: rgba(47,109,255,.10);
-      color: rgba(230,240,255,.96);
-      font-size: 13px;
-      line-height:1.7;
-    }
-
-    code{
-      background: rgba(255,255,255,.06);
-      padding: 3px 7px;
-      border-radius: 8px;
-      font-size: 12px;
-    }
-
-    .cms-mount-note{
-      margin-top: 14px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height:1.6;
+    @media(max-width:900px){
+      .grid{ grid-template-columns:1fr; }
+      h1{ font-size:24px; }
     }
 
     @media (max-width: 720px){
-      .brand{ height:72px; gap:10px; }
-      .brand img{ height: 100px; }
+      .brand img{ height: 64px; }
       .brand .name span{ display:none; }
-      .brand .name b{ font-size: 13px; }
-      .header-actions{ width:100%; justify-content:flex-end; }
-      .hero h1{ font-size: 22px; }
+      .brand .name b{ font-size:13px; }
+      .topbar{ align-items:flex-start; }
     }
   </style>
 </head>
-<script>
-  if (window.location.hash.includes("invite_token=") ||
-      window.location.hash.includes("recovery_token=") ||
-      window.location.hash.includes("confirmation_token=") ||
-      window.location.hash.includes("email_change_token=")) {
-    // on reste bien sur /admin avec le token
-    window.history.replaceState({}, document.title, "/admin/" + window.location.hash);
-  }
-</script>
 <body>
   <div class="bg"></div>
 
-  <header>
-    <div class="container topbar">
-      <div class="brand">
-        <img src="/logo-mh.png" alt="Logo MH Location" onerror="this.style.display='none'">
-        <div class="name">
-          <b>MH LOCATION</b>
-          <span>Espace administration • Gestion du parc automobile</span>
+  <div id="login-screen">
+    <header>
+      <div class="container topbar">
+        <div class="brand">
+          <img src="/logo-mh.png" alt="Logo MH Location" onerror="this.style.display='none'">
+          <div class="name">
+            <b>MH LOCATION</b>
+            <span>Espace administration • Gestion du parc automobile</span>
+          </div>
         </div>
-      </div>
 
-      <div class="header-actions">
         <button class="btn primary" id="loginBtn" type="button">Se connecter</button>
-        <button class="btn" id="logoutBtn" type="button" style="display:none;">Se déconnecter</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <main class="container">
-    <section class="hero">
-      <div class="hero-grid">
-        <div class="panel">
-          <div class="panel-body">
-            <div class="eyebrow">🔐 Accès sécurisé loueur</div>
-            <h1>Gérez vos véhicules, vos indisponibilités et vos retours dans un espace simple et premium.</h1>
-            <p>
-              Cet espace vous permet de modifier rapidement les disponibilités de votre flotte.
-              Lorsqu’un véhicule est marqué indisponible, sa date de retour peut être affichée automatiquement sur le site client.
-              Le design reste cohérent avec l’identité visuelle MH Location.
-            </p>
+    <main class="container">
+      <section class="hero">
+        <div class="card">
+          <div class="eyebrow">🔐 Accès sécurisé loueur</div>
+          <h1>Gérez vos véhicules, vos indisponibilités et vos dates de retour.</h1>
+          <p class="lead">
+            Connectez-vous pour modifier vos véhicules, indiquer s’ils sont disponibles ou non,
+            et afficher automatiquement la date de retour sur le site public.
+          </p>
 
-            <div class="stats">
-              <div class="stat">
-                <div class="num">🚗 Gestion véhicule</div>
-                <div class="label">Ajout / modification / suppression</div>
-              </div>
-              <div class="stat">
-                <div class="num">📅 Retour affiché</div>
-                <div class="label">Date visible si indisponible</div>
-              </div>
-              <div class="stat">
-                <div class="num">⚡ Mise à jour rapide</div>
-                <div class="label">Synchronisée avec le site</div>
-              </div>
+          <div class="grid">
+            <div class="mini">
+              <b>🚗 Gestion des véhicules</b>
+              <span>Ajout, modification, suppression, prix, caution, photos.</span>
             </div>
-
-            <div class="admin-tip">
-              <b>Conseil :</b> utilisez cet espace uniquement après connexion.  
-              Une fois authentifié, vous pourrez éditer le fichier de gestion des véhicules et définir :
-              <code>dispo</code>, <code>indispo</code> et la <code>date de retour</code>.
+            <div class="mini">
+              <b>📅 Retour affiché</b>
+              <span>Si un véhicule est indisponible, la date de retour peut être renseignée.</span>
+            </div>
+            <div class="mini">
+              <b>⚡ Mise à jour rapide</b>
+              <span>Une fois enregistré, le site se met à jour automatiquement.</span>
             </div>
           </div>
-        </div>
 
-        <div class="panel side-card">
-          <div class="panel-body">
-            <div class="status-box">
-              <div class="status-top">
-                <div class="eyebrow">📡 Statut session</div>
-                <div class="status-badge" id="statusBadge">Non connecté</div>
-              </div>
+          <div class="status">
+            <b>Statut :</b> <span id="authStatus">non connecté</span><br>
+            <b>Utilisateur :</b> <span id="authUser">—</span>
+          </div>
 
-              <div class="status-title" id="statusTitle">Connexion requise</div>
-              <div class="status-sub" id="statusSub">
-                Connectez-vous avec votre compte autorisé pour accéder à l’édition du contenu administrateur.
-              </div>
-
-              <div class="quick-list">
-                <div class="quick-item">
-                  <b>1. Connexion</b>
-                  <span>Identifiez-vous via Netlify Identity avec votre email et votre mot de passe.</span>
-                </div>
-                <div class="quick-item">
-                  <b>2. Gestion</b>
-                  <span>Modifiez les véhicules, indiquez s’ils sont disponibles ou indisponibles, puis ajoutez la date de retour.</span>
-                </div>
-                <div class="quick-item">
-                  <b>3. Mise à jour</b>
-                  <span>Le site MH Location affichera automatiquement les changements après enregistrement.</span>
-                </div>
-              </div>
-
-              <div class="cms-mount-note">
-                Utilisateur actuel : <code id="whoami">non connecté</code>
-              </div>
-            </div>
+          <div class="actions">
+            <button class="btn primary" id="loginBtn2" type="button">Connexion administrateur</button>
+            <a class="btn" href="/">Retour au site</a>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
+  </div>
 
-    <section class="content">
-      <div class="cards">
-        <div class="feature">
-          <div class="icon">🚘</div>
-          <h3>Ajout des véhicules</h3>
-          <p>
-            Ajoutez les prochains véhicules de la flotte avec leur nom, type, visuels,
-            prix journalier et informations principales, tout en gardant une présentation uniforme.
-          </p>
-        </div>
-
-        <div class="feature">
-          <div class="icon">⛔</div>
-          <h3>Indisponibilité</h3>
-          <p>
-            Si une voiture n’est pas disponible, marquez-la comme indisponible et indiquez la date exacte de retour.
-            Le client verra immédiatement l’information sur le site public.
-          </p>
-        </div>
-
-        <div class="feature">
-          <div class="icon">🎯</div>
-          <h3>Même style visuel</h3>
-          <p>
-            L’espace d’administration reprend l’esprit premium MH Location :
-            fond sombre, logo en fond, cartes élégantes et structure claire sur mobile comme sur ordinateur.
-          </p>
-        </div>
-      </div>
-
-      <div class="steps">
-        <h2>Fonctionnement</h2>
-        <div class="steps-grid">
-          <div class="step">
-            <div class="n">1</div>
-            <b>Connexion</b>
-            <span>Cliquez sur <code>Se connecter</code> avec votre compte admin autorisé.</span>
-          </div>
-          <div class="step">
-            <div class="n">2</div>
-            <b>Modification</b>
-            <span>Éditez les véhicules et indiquez leur statut de disponibilité ainsi que la date de retour si besoin.</span>
-          </div>
-          <div class="step">
-            <div class="n">3</div>
-            <b>Publication</b>
-            <span>Enregistrez. Les informations seront ensuite prises en compte sur le site client.</span>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+  <div id="cms-root"></div>
 
   <script>
+    // Si Netlify Identity renvoie un token sur la home, on le force sur /admin
+    (function () {
+      const hash = window.location.hash || "";
+      if (
+        hash.includes("invite_token=") ||
+        hash.includes("recovery_token=") ||
+        hash.includes("confirmation_token=") ||
+        hash.includes("email_change_token=")
+      ) {
+        if (!window.location.pathname.startsWith("/admin")) {
+          window.location.replace("/admin/" + hash);
+        }
+      }
+    })();
+  </script>
+
+  <script>
+    const loginScreen = document.getElementById("login-screen");
+    const cmsRoot = document.getElementById("cms-root");
+    const authStatus = document.getElementById("authStatus");
+    const authUser = document.getElementById("authUser");
     const loginBtn = document.getElementById("loginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const whoami = document.getElementById("whoami");
-    const statusBadge = document.getElementById("statusBadge");
-    const statusTitle = document.getElementById("statusTitle");
-    const statusSub = document.getElementById("statusSub");
+    const loginBtn2 = document.getElementById("loginBtn2");
 
-    function refreshUI(){
-      const user = window.netlifyIdentity && window.netlifyIdentity.currentUser();
+    function showCMS() {
+      loginScreen.style.display = "none";
+      cmsRoot.style.display = "block";
+    }
 
-      if(user){
-        whoami.textContent = user.email || "connecté";
-        loginBtn.style.display = "none";
-        logoutBtn.style.display = "inline-flex";
+    function showLogin(user = null) {
+      loginScreen.style.display = "block";
+      cmsRoot.style.display = "none";
 
-        statusBadge.textContent = "Connecté";
-        statusBadge.classList.add("ok");
-        statusTitle.textContent = "Accès administrateur actif";
-        statusSub.textContent = "Vous êtes connecté. Vous pouvez maintenant gérer les véhicules, les indisponibilités et les dates de retour.";
+      if (user) {
+        authStatus.textContent = "connecté";
+        authUser.textContent = user.email || "connecté";
       } else {
-        whoami.textContent = "non connecté";
-        loginBtn.style.display = "inline-flex";
-        logoutBtn.style.display = "none";
-
-        statusBadge.textContent = "Non connecté";
-        statusBadge.classList.remove("ok");
-        statusTitle.textContent = "Connexion requise";
-        statusSub.textContent = "Connectez-vous avec votre compte autorisé pour accéder à l’édition du contenu administrateur.";
+        authStatus.textContent = "non connecté";
+        authUser.textContent = "—";
       }
     }
 
-    loginBtn.addEventListener("click", () => {
-      if(window.netlifyIdentity) window.netlifyIdentity.open();
-    });
+    function openLogin() {
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.open("login");
+      }
+    }
 
-    logoutBtn.addEventListener("click", () => {
-      if(window.netlifyIdentity) window.netlifyIdentity.logout();
-    });
+    loginBtn.addEventListener("click", openLogin);
+    loginBtn2.addEventListener("click", openLogin);
 
-    if(window.netlifyIdentity){
-      window.netlifyIdentity.on("init", refreshUI);
-      window.netlifyIdentity.on("login", () => {
-        refreshUI();
-        window.netlifyIdentity.close();
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (user) {
+          showCMS();
+        } else {
+          showLogin();
+        }
       });
-      window.netlifyIdentity.on("logout", refreshUI);
+
+      window.netlifyIdentity.on("login", user => {
+        window.netlifyIdentity.close();
+        showCMS();
+        setTimeout(() => window.location.reload(), 300);
+      });
+
+      window.netlifyIdentity.on("logout", () => {
+        showLogin();
+        window.location.reload();
+      });
+
       window.netlifyIdentity.init();
     }
   </script>
 
-  <script src="https://unpkg.com/netlify-cms@^2.10.192/dist/netlify-cms.js"></script>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </body>
 </html>
