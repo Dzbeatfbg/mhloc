@@ -2,8 +2,6 @@ backend:
   name: git-gateway
   branch: main
 
-local_backend: true
-
 media_folder: "uploads"
 public_folder: "/uploads"
 
@@ -27,7 +25,7 @@ collections:
             widget: "list"
             summary: "{{fields.name}} — {{fields.type}} — {{fields.dispo}}"
             fields:
-              - { label: "ID", name: "id", widget: "string", hint: "Ex: audirs3sedan" }
+              - { label: "ID", name: "id", widget: "string" }
               - { label: "Nom du véhicule", name: "name", widget: "string" }
 
               - label: "Type"
@@ -50,27 +48,24 @@ collections:
                 name: "returnDate"
                 widget: "string"
                 required: false
-                hint: "Uniquement si le véhicule est indisponible. Exemple : 18/03/2026"
+                hint: "Exemple : 18/03/2026"
 
-              - { label: "Prix par jour", name: "pricePerDay", widget: "string", hint: "Ex: 349€ / jour" }
-              - { label: "Caution", name: "cautionAmount", widget: "string", hint: "Ex: Caution : 5 000€" }
-
-              - { label: "Boîte", name: "gearbox", widget: "string", hint: "Ex: Automatique" }
-              - { label: "Carburant", name: "fuel", widget: "string", hint: "Ex: Essence" }
-              - { label: "Places", name: "seats", widget: "string", hint: "Ex: 5 places" }
-              - { label: "Portes", name: "doors", widget: "string", hint: "Ex: 5 portes" }
-              - { label: "Conditions", name: "deposit", widget: "string", hint: "Ex: Permis valide / CNI / CB" }
-              - { label: "Kilométrage", name: "km", widget: "string", hint: "Ex: Km : selon offre" }
+              - { label: "Prix par jour", name: "pricePerDay", widget: "string" }
+              - { label: "Caution", name: "cautionAmount", widget: "string" }
+              - { label: "Boîte", name: "gearbox", widget: "string" }
+              - { label: "Carburant", name: "fuel", widget: "string" }
+              - { label: "Places", name: "seats", widget: "string" }
+              - { label: "Portes", name: "doors", widget: "string" }
+              - { label: "Conditions", name: "deposit", widget: "string" }
+              - { label: "Kilométrage", name: "km", widget: "string" }
 
               - label: "Images"
                 name: "images"
                 widget: "list"
-                summary: "{{fields.image}}"
                 field:
                   label: "Image"
                   name: "image"
                   widget: "string"
-                  hint: "Ex: cars/a45s/merco1.png ou /uploads/nom-image.jpg"
 
               - label: "Tags"
                 name: "tags"
