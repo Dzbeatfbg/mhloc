@@ -16,11 +16,12 @@
       --muted: rgba(255,255,255,.68);
       --blue:#2f6dff;
       --shadow: 0 18px 40px rgba(0,0,0,.40);
-      --r: 16px;
+      --r: 18px;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{min-height:100%}
+
     body{
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       background: var(--bg);
@@ -54,7 +55,7 @@
     }
 
     .container{
-      max-width: 980px;
+      max-width: 1080px;
       margin: 0 auto;
       padding: 0 16px;
     }
@@ -84,7 +85,7 @@
     }
 
     .brand img{
-      height: 76px;
+      height: 80px;
       width: auto;
       object-fit: contain;
       display:block;
@@ -116,6 +117,7 @@
       display:inline-flex;
       justify-content:center;
       align-items:center;
+      gap:8px;
       padding: 12px 14px;
       border-radius: 14px;
       font-weight: 950;
@@ -126,7 +128,9 @@
       color: var(--text);
       cursor:pointer;
       transition: .18s ease;
+      white-space:nowrap;
     }
+
     .btn.primary{
       background: var(--blue);
       border-color: transparent;
@@ -134,7 +138,7 @@
     }
 
     .hero{
-      padding: 34px 0;
+      padding: 34px 0 28px;
     }
 
     .card{
@@ -229,6 +233,7 @@
     #cms-root{
       display:none;
       min-height:100vh;
+      background: #fff;
     }
 
     #login-screen{
@@ -272,22 +277,22 @@
           <div class="eyebrow">🔐 Accès sécurisé loueur</div>
           <h1>Gérez vos véhicules, vos indisponibilités et vos dates de retour.</h1>
           <p class="lead">
-            Connectez-vous pour modifier vos véhicules, indiquer s’ils sont disponibles ou non,
-            et afficher automatiquement la date de retour sur le site public.
+            Connectez-vous pour modifier vos véhicules, leurs photos, leurs prix, la caution,
+            indiquer s’ils sont disponibles ou non, et afficher automatiquement la date de retour sur le site public.
           </p>
 
           <div class="grid">
             <div class="mini">
               <b>🚗 Gestion des véhicules</b>
-              <span>Ajout, modification, suppression, prix, caution, photos.</span>
+              <span>Ajout, modification, suppression, photos, prix, caution et détails du véhicule.</span>
             </div>
             <div class="mini">
               <b>📅 Retour affiché</b>
-              <span>Si un véhicule est indisponible, la date de retour peut être renseignée.</span>
+              <span>Quand une voiture est indisponible, la date de retour est visible sur le site client.</span>
             </div>
             <div class="mini">
               <b>⚡ Mise à jour rapide</b>
-              <span>Une fois enregistré, le site se met à jour automatiquement.</span>
+              <span>Après enregistrement, les infos sont publiées automatiquement sur MH Location.</span>
             </div>
           </div>
 
@@ -306,23 +311,6 @@
   </div>
 
   <div id="cms-root"></div>
-
-  <script>
-    // Si Netlify Identity renvoie un token sur la home, on le force sur /admin
-    (function () {
-      const hash = window.location.hash || "";
-      if (
-        hash.includes("invite_token=") ||
-        hash.includes("recovery_token=") ||
-        hash.includes("confirmation_token=") ||
-        hash.includes("email_change_token=")
-      ) {
-        if (!window.location.pathname.startsWith("/admin")) {
-          window.location.replace("/admin/" + hash);
-        }
-      }
-    })();
-  </script>
 
   <script>
     const loginScreen = document.getElementById("login-screen");
@@ -352,7 +340,7 @@
 
     function openLogin() {
       if (window.netlifyIdentity) {
-        window.netlifyIdentity.open("login");
+        window.netlifyIdentity.open();
       }
     }
 
@@ -366,17 +354,24 @@
         } else {
           showLogin();
         }
+
+        const hash = window.location.hash || "";
+        if (
+          hash.includes("invite_token=") ||
+          hash.includes("recovery_token=") ||
+          hash.includes("confirmation_token=") ||
+          hash.includes("email_change_token=")
+        ) {
+          window.netlifyIdentity.open();
+        }
       });
 
       window.netlifyIdentity.on("login", user => {
-        window.netlifyIdentity.close();
         showCMS();
-        setTimeout(() => window.location.reload(), 300);
       });
 
       window.netlifyIdentity.on("logout", () => {
         showLogin();
-        window.location.reload();
       });
 
       window.netlifyIdentity.init();
