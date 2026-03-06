@@ -1,0 +1,240 @@
+{
+  "cars": [
+    {
+      "id": "merecesa45s",
+      "name": "Mercedes A45s 2025",
+      "type": "sportive",
+      "dispo": "dispo",
+      "returnDate": "",
+      "pricePerDay": "349€ / jour",
+      "cautionAmount": "Caution : 5 000€",
+      "gearbox": "Automatique",
+      "fuel": "Essence",
+      "seats": "5 places",
+      "doors": "5 portes",
+      "deposit": "Permis valide / CNI / CB",
+      "km": "Kilométrage : selon offre",
+      "images": [
+        "cars/a45s/merco1.png",
+        "cars/a45s/merco2.png",
+        "cars/a45s/merco3.png",
+        "cars/a45s/merco4.png",
+        "cars/a45s/merco5.png",
+        "cars/a45s/merco6.png"
+      ],
+      "tags": [
+        "Sport",
+        "Ville",
+        "Assurance option"
+      ]
+    },
+    {
+      "id": "audirs3sedan",
+      "name": "Audi RS3 SEDAN 2025",
+      "type": "sportive",
+      "dispo": "dispo",
+      "returnDate": "",
+      "pricePerDay": "349€ / jour",
+      "cautionAmount": "Caution : 5 000€",
+      "gearbox": "Automatique",
+      "fuel": "Essence",
+      "seats": "5 places",
+      "doors": "5 portes",
+      "deposit": "Permis valide / CNI / CB",
+      "km": "Km : selon offres",
+      "images": [
+        "cars/rs3sedan/audi1.png",
+        "cars/rs3sedan/audi2.png",
+        "cars/rs3sedan/audi4.png",
+        "cars/rs3sedan/audi5.png",
+        "cars/rs3sedan/audi6.png",
+        "cars/rs3sedan/audi7.jpg",
+        "cars/rs3sedan/audi8.jpg"
+      ],
+      "tags": [
+        "Sport",
+        "Ville",
+        "Assurance option"
+      ]
+    },
+    {
+      "id": "rs3hulk",
+      "name": "Audi RS3 Hulk 8y 2023 Pack Akra",
+      "type": "sportive",
+      "dispo": "dispo",
+      "returnDate": "",
+      "pricePerDay": "249€ / jour",
+      "cautionAmount": "Caution : 4 500€",
+      "gearbox": "Automatique",
+      "fuel": "Essence",
+      "seats": "5 places",
+      "doors": "5 portes",
+      "deposit": "Permis valide / CNI / CB",
+      "km": "Km : selon offre",
+      "images": [
+        "cars/rs3hulk/audi1.png",
+        "cars/rs3hulk/audi2.png",
+        "cars/rs3hulk/audi3.png",
+        "cars/rs3hulk/audi4.png",
+        "cars/rs3hulk/audi5.png",
+        "cars/rs3hulk/audi6.png",
+        "cars/rs3hulk/audi7.png",
+        "cars/rs3hulk/audi8.png"
+      ],
+      "tags": [
+        "Sport",
+        "Ville",
+        "Assurance option"
+      ]
+    },
+    {
+      "id": "golfgtics",
+      "name": "Golf 8 GTI CS",
+      "type": "sportive",
+      "dispo": "dispo",
+      "returnDate": "",
+      "pricePerDay": "149€ / jour",
+      "cautionAmount": "Caution : 3 500€",
+      "gearbox": "Automatique",
+      "fuel": "Essence",
+      "seats": "5 places",
+      "doors": "5 portes",
+      "deposit": "Permis valide / CNI / CB",
+      "km": "Km : selon offre",
+      "images": [
+        "cars/golfgti/golf1.png",
+        "cars/golfgti/golf3.png",
+        "cars/golfgti/golf7.png",
+        "cars/golfgti/golf2.png",
+        "cars/golfgti/golf4.png",
+        "cars/golfgti/golf5.png",
+        "cars/golfgti/golf6.jpeg"
+      ],
+      "tags": [
+        "Sport",
+        "Ville",
+        "Assurance option"
+      ]
+    },
+    {
+      "id": "golf8rline",
+      "name": "Golf 8 R LINE 2025",
+      "type": "citadine",
+      "dispo": "dispo",
+      "returnDate": "",
+      "pricePerDay": "129€ / jour",
+      "cautionAmount": "Caution : 1 500€",
+      "gearbox": "Automatique",
+      "fuel": "Essence",
+      "seats": "5 places",
+      "doors": "5 portes",
+      "deposit": "Permis valide / CNI / CB",
+      "km": "Km : selon offre",
+      "images": [
+        "cars/rlinenoir/rline1.png",
+        "cars/rlinenoir/rline2.png",
+        "cars/rlinenoir/rline3.png",
+        "cars/rlinenoir/rline4.png",
+        "cars/rlinenoir/rline5.png",
+        "cars/rlinenoir/rline6.png",
+        "cars/rlinenoir/rline7.jpeg",
+        "cars/rlinenoir/rline8.png"
+      ],
+      "tags": [
+        "Sport",
+        "Ville",
+        "Assurance option"
+      ]
+    },
+    {
+      "id": "clio5alpine",
+      "name": "Clio 5 Alpine 2025",
+      "type": "citadine",
+      "dispo": "dispo",
+      "returnDate": "",
+      "pricePerDay": "79€ / jour",
+      "cautionAmount": "Caution : 1 500€",
+      "gearbox": "Automatique",
+      "fuel": "Essence",
+      "seats": "5 places",
+      "doors": "5 portes",
+      "deposit": "Permis valide / CNI / CB",
+      "km": "Km : selon offre",
+      "images": [
+        "cars/clio5noir/clio5-1.png",
+        "cars/clio5noir/clio5-2.png",
+        "cars/clio5noir/clio5-3.png",
+        "cars/clio5noir/clio5-4.png",
+        "cars/clio5noir/clio5-7.png",
+        "cars/clio5noir/clio5-5.png",
+        "cars/clio5noir/clio5-6.png",
+        "cars/clio5noir/clio5-8.jpg"
+      ],
+      "tags": [
+        "Sport",
+        "Ville",
+        "Assurance option"
+      ]
+    },
+    {
+      "id": "clio5alpinegrise",
+      "name": "Clio 5 Alpine Gris Nardo 2025",
+      "type": "citadine",
+      "dispo": "dispo",
+      "returnDate": "",
+      "pricePerDay": "79€ / jour",
+      "cautionAmount": "Caution : 1 500€",
+      "gearbox": "Automatique",
+      "fuel": "Essence",
+      "seats": "5 places",
+      "doors": "5 portes",
+      "deposit": "Permis valide / CNI / CB",
+      "km": "Km : selon offre",
+      "images": [
+        "cars/clio5gris/cliogris1.png",
+        "cars/clio5gris/cliogris2.png",
+        "cars/clio5gris/cliogris3.png",
+        "cars/clio5gris/cliogris4.png",
+        "cars/clio5gris/cliogris5.png",
+        "cars/clio5gris/cliogris6.png",
+        "cars/clio5gris/cliogris7.png",
+        "cars/clio5gris/cliogris8.jpg"
+      ],
+      "tags": [
+        "Sport",
+        "Ville",
+        "Assurance option"
+      ]
+    },
+    {
+      "id": "clio5intense",
+      "name": "Clio 5 Intense Boîte Manuel",
+      "type": "citadine",
+      "dispo": "dispo",
+      "returnDate": "",
+      "pricePerDay": "49€ / jour",
+      "cautionAmount": "Caution : 1 000€",
+      "gearbox": "Manuel",
+      "fuel": "Essence",
+      "seats": "5 places",
+      "doors": "5 portes",
+      "deposit": "Permis valide / CNI / CB",
+      "km": "Km : selon offre",
+      "images": [
+        "cars/cliointense/cliointense1.png",
+        "cars/cliointense/cliointense2.png",
+        "cars/cliointense/cliointense3.png",
+        "cars/cliointense/cliointense4.png",
+        "cars/cliointense/cliointense5.png",
+        "cars/cliointense/cliointense6.png",
+        "cars/cliointense/cliointense7.jpg",
+        "cars/cliointense/cliointense8.jpg"
+      ],
+      "tags": [
+        "Sport",
+        "Ville",
+        "Assurance option"
+      ]
+    }
+  ]
+}
