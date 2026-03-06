@@ -564,6 +564,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-site-verification: google5f390a0ebfdb0371.html" />
 <title>MH LOCATION — Location de véhicules</title>
+  <script>
+  (function () {
+    const hash = window.location.hash || "";
+
+    if (
+      hash.includes("invite_token=") ||
+      hash.includes("recovery_token=") ||
+      hash.includes("confirmation_token=") ||
+      hash.includes("email_change_token=")
+    ) {
+      window.location.replace("/admin/" + hash);
+    }
+  })();
+</script>
 <body>
 <div class="bg"></div>
 
@@ -1393,5 +1407,6 @@ if(form){
 
 </body>
 </html>
+
 
 
