@@ -456,7 +456,15 @@
     }
   </style>
 </head>
-
+<script>
+  if (window.location.hash.includes("invite_token=") ||
+      window.location.hash.includes("recovery_token=") ||
+      window.location.hash.includes("confirmation_token=") ||
+      window.location.hash.includes("email_change_token=")) {
+    // on reste bien sur /admin avec le token
+    window.history.replaceState({}, document.title, "/admin/" + window.location.hash);
+  }
+</script>
 <body>
   <div class="bg"></div>
 
