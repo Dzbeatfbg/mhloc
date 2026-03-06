@@ -5,73 +5,20 @@ backend:
 media_folder: "uploads"
 public_folder: "/uploads"
 
-site_url: "https://mh-location.com"
-display_url: "https://mh-location.com"
-logo_url: "/logo-mh.png"
-
 collections:
-  - name: "settings"
+  - name: "cars"
     label: "Véhicules"
-    delete: false
-    editor:
-      preview: false
     files:
-      - label: "Liste des véhicules"
+      - label: "Liste véhicules"
         name: "cars"
         file: "data/cars.json"
         fields:
-          - label: "Liste des véhicules"
+          - label: "Cars"
             name: "cars"
             widget: "list"
-            summary: "{{fields.name}} — {{fields.type}} — {{fields.dispo}}"
             fields:
-              - { label: "ID", name: "id", widget: "string" }
-              - { label: "Nom du véhicule", name: "name", widget: "string" }
-
-              - label: "Type"
-                name: "type"
-                widget: "select"
-                options:
-                  - { label: "Sportive", value: "sportive" }
-                  - { label: "Citadine", value: "citadine" }
-                  - { label: "SUV", value: "suv" }
-
-              - label: "Disponibilité"
-                name: "dispo"
-                widget: "select"
-                default: "dispo"
-                options:
-                  - { label: "Disponible", value: "dispo" }
-                  - { label: "Indisponible", value: "indispo" }
-
-              - label: "Date de retour"
-                name: "returnDate"
-                widget: "string"
-                required: false
-                hint: "Exemple : 18/03/2026"
-
-              - { label: "Prix par jour", name: "pricePerDay", widget: "string" }
-              - { label: "Caution", name: "cautionAmount", widget: "string" }
-              - { label: "Boîte", name: "gearbox", widget: "string" }
-              - { label: "Carburant", name: "fuel", widget: "string" }
-              - { label: "Places", name: "seats", widget: "string" }
-              - { label: "Portes", name: "doors", widget: "string" }
-              - { label: "Conditions", name: "deposit", widget: "string" }
-              - { label: "Kilométrage", name: "km", widget: "string" }
-
-              - label: "Images"
-                name: "images"
-                widget: "list"
-                field:
-                  label: "Image"
-                  name: "image"
-                  widget: "string"
-
-              - label: "Tags"
-                name: "tags"
-                widget: "list"
-                required: false
-                field:
-                  label: "Tag"
-                  name: "tag"
-                  widget: "string"
+              - {label: "Nom", name: "name", widget: "string"}
+              - {label: "Type", name: "type", widget: "string"}
+              - {label: "Prix", name: "pricePerDay", widget: "string"}
+              - {label: "Caution", name: "cautionAmount", widget: "string"}
+              - {label: "Disponibilité", name: "dispo", widget: "string"}
