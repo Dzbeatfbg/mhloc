@@ -578,6 +578,19 @@
     }
   })();
 </script>
+  <script>
+  (function () {
+    const hash = window.location.hash || "";
+    if (
+      hash.includes("invite_token=") ||
+      hash.includes("recovery_token=") ||
+      hash.includes("confirmation_token=") ||
+      hash.includes("email_change_token=")
+    ) {
+      window.location.replace("/admin/" + hash);
+    }
+  })();
+</script>
 <body>
 <div class="bg"></div>
 
@@ -1407,6 +1420,7 @@ if(form){
 
 </body>
 </html>
+
 
 
 
