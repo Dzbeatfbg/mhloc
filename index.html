@@ -8,695 +8,258 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
-
 <style>
 :root {
-  --bg: #050608;
-  --surface: #0c0d12;
-  --surface2: #111318;
-  --border: rgba(255,255,255,.07);
-  --border-hover: rgba(255,255,255,.16);
-  --text: #f0f0f2;
-  --muted: rgba(240,240,242,.5);
-  --muted2: rgba(240,240,242,.32);
-  --gold: #c9a84c;
-  --gold2: #e8c97a;
-  --gold-glow: rgba(201,168,76,.18);
-  --gold-dim: rgba(201,168,76,.08);
-  --red: #e04040;
-  --green: #3ecf8e;
-  --r: 18px;
-  --r-sm: 12px;
+  --bg:#050608; --surface:#0c0d12; --surface2:#111318;
+  --border:rgba(255,255,255,.07); --border-hover:rgba(255,255,255,.16);
+  --text:#f0f0f2; --muted:rgba(240,240,242,.5); --muted2:rgba(240,240,242,.32);
+  --gold:#c9a84c; --gold2:#e8c97a; --gold-dim:rgba(201,168,76,.08);
+  --green:#3ecf8e; --r:18px; --r-sm:12px;
 }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+/* ── BG ── */
+.bg-layer{position:fixed;inset:0;z-index:-10;pointer-events:none;overflow:hidden}
+.bg-orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55}
+.bg-orb-1{width:600px;height:600px;top:-200px;left:-150px;background:radial-gradient(circle,rgba(201,168,76,.22),transparent 70%)}
+.bg-orb-2{width:500px;height:500px;top:10%;right:-200px;background:radial-gradient(circle,rgba(201,168,76,.10),transparent 70%)}
+.bg-orb-3{width:700px;height:700px;bottom:-300px;left:30%;background:radial-gradient(circle,rgba(201,168,76,.08),transparent 70%)}
+.bg-logo{position:absolute;inset:0;background:url("logo-mh.png") center/520px auto no-repeat;opacity:.07;filter:blur(3px) grayscale(30%)}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:72px 72px}
+.bg-noise{position:absolute;inset:0;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px 200px}
 
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
+/* ── BANNER ── */
+.avail-banner{background:rgba(62,207,142,.08);border-bottom:1px solid rgba(62,207,142,.15);padding:9px 0;text-align:center;font-size:13px;font-weight:500}
+.avail-banner span{color:var(--green);font-weight:700}
+.avail-pulse{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:8px;animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
 
-/* ───── BACKGROUND ───── */
-.bg-layer {
-  position: fixed; inset: 0; z-index: -10; pointer-events: none;
-  overflow: hidden;
-}
-.bg-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(90px);
-  opacity: .55;
-}
-.bg-orb-1 { width: 600px; height: 600px; top: -200px; left: -150px; background: radial-gradient(circle, rgba(201,168,76,.22), transparent 70%); }
-.bg-orb-2 { width: 500px; height: 500px; top: 10%; right: -200px; background: radial-gradient(circle, rgba(201,168,76,.10), transparent 70%); }
-.bg-orb-3 { width: 700px; height: 700px; bottom: -300px; left: 30%; background: radial-gradient(circle, rgba(201,168,76,.08), transparent 70%); }
-.bg-logo {
-  position: absolute;
-  inset: 0;
-  background: url("logo-mh.png") center / 520px auto no-repeat;
-  opacity: 0.07;
-  filter: blur(3px) grayscale(30%);
-}
-.bg-grid {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-  background-size: 72px 72px;
-}
-.bg-noise {
-  position: absolute; inset: 0;
-  opacity: .04;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
-}
+/* ── LAYOUT ── */
+.container{max-width:1060px;margin:0 auto;padding:0 20px}
 
-/* ───── CONTAINER ───── */
-.container { max-width: 1060px; margin: 0 auto; padding: 0 20px; }
+/* ── HEADER ── */
+header{position:sticky;top:0;z-index:100}
+.header-inner{background:rgba(5,6,8,.82);backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border)}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-logo{height:52px;width:52px;display:grid;place-items:center;overflow:hidden;flex-shrink:0}
+.brand-logo img{height:52px;width:auto;object-fit:contain}
+.brand-logo .logo-fb{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--gold)}
+.brand-text{display:flex;flex-direction:column;gap:2px}
+.brand-name{font-family:'Syne',sans-serif;font-weight:800;font-size:15px;letter-spacing:.04em}
+.brand-tagline{font-size:11px;color:var(--muted)}
+.nav{display:flex;gap:6px;align-items:center}
+.nav a{text-decoration:none;color:var(--muted);font-size:13px;font-weight:500;padding:8px 14px;border-radius:10px;transition:.2s}
+.nav a:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.nav a.nav-cta{background:var(--gold);color:#000;font-weight:700;font-family:'Syne',sans-serif;letter-spacing:.04em}
+.nav a.nav-cta:hover{background:var(--gold2)}
+@media(max-width:720px){.nav a:not(.nav-cta):not(.nav-contact){display:none}}
 
-/* ───── HEADER ───── */
-header {
-  position: sticky; top: 0; z-index: 100;
-  padding: 0;
-}
-.header-inner {
-  background: rgba(5,6,8,.8);
-  backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid var(--border);
-}
-.topbar {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 16px; padding: 12px 0;
-}
-.brand {
-  display: flex; align-items: center; gap: 14px;
-}
-.brand-logo {
-  height: 52px; width: 52px;
-  border-radius: 14px;
-  border: 1px solid rgba(201,168,76,.25);
-  background: rgba(201,168,76,.06);
-  display: grid; place-items: center;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.brand-logo img { height: 44px; width: auto; object-fit: contain; }
-.brand-logo .logo-fallback {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800; font-size: 18px;
-  color: var(--gold);
-  letter-spacing: -0.5px;
-}
-.brand-text { display: flex; flex-direction: column; gap: 2px; }
-.brand-name {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800; font-size: 15px;
-  letter-spacing: .04em;
-  color: var(--text);
-}
-.brand-tagline {
-  font-size: 11px; color: var(--muted);
-  letter-spacing: .02em;
-}
+/* ── HERO ── */
+.hero{padding:52px 0 28px;animation:fadeUp .7s ease both}
+.hero-label{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.hero-label::before{content:'';width:24px;height:1px;background:var(--gold)}
+.hero-title{font-family:'Syne',sans-serif;font-size:clamp(32px,5vw,54px);font-weight:800;line-height:1.08;letter-spacing:-.02em;margin-bottom:14px}
+.hero-title em{font-style:normal;background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 50%,#fff8e0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{color:var(--muted);font-size:16px;max-width:520px;line-height:1.6;margin-bottom:36px}
 
-.nav { display: flex; gap: 6px; align-items: center; }
-.nav a {
-  text-decoration: none;
-  color: var(--muted);
-  font-size: 13px; font-weight: 500;
-  padding: 8px 14px; border-radius: 10px;
-  transition: .2s ease;
-  letter-spacing: .01em;
-}
-.nav a:hover { color: var(--text); background: rgba(255,255,255,.05); }
-.nav a.nav-cta {
-  background: var(--gold);
-  color: #000;
-  font-weight: 700;
-  font-family: 'Syne', sans-serif;
-  letter-spacing: .04em;
-}
-.nav a.nav-cta:hover { background: var(--gold2); }
+/* STATS */
+.stats-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:36px}
+.stat-pill{display:flex;align-items:center;gap:10px;padding:12px 18px;background:var(--surface);border:1px solid var(--border);border-radius:999px;font-size:13px;font-weight:500}
+.stat-pill .ico{font-size:16px}
+.stat-pill b{color:var(--text)}
+.stat-pill s-muted{color:var(--muted);font-size:12px}
+.count-up{font-family:'Syne',sans-serif;font-weight:800;color:var(--gold)}
 
-@media(max-width:720px) {
-  .nav a:not(.nav-cta):not(.nav-contact) { display: none; }
-}
+/* SEARCH */
+.search-bar{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;box-shadow:0 8px 40px rgba(0,0,0,.3),0 0 0 1px rgba(201,168,76,.08) inset;animation:fadeUp .7s .1s ease both}
+.search-bar input,.search-bar select{flex:1;min-width:150px;padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:.2s;appearance:none;-webkit-appearance:none}
+.search-bar select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(240,240,242,.4)' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;cursor:pointer}
+.search-bar select option{background:#111318}
+.search-bar input:focus,.search-bar select:focus{border-color:rgba(201,168,76,.4);box-shadow:0 0 0 3px rgba(201,168,76,.1)}
+.price-range-wrap{width:100%;display:flex;align-items:center;gap:12px;padding:4px 0}
+.price-range-wrap label{font-size:12px;color:var(--muted);white-space:nowrap}
+.price-range-wrap input[type=range]{flex:1;appearance:none;height:4px;background:linear-gradient(90deg,var(--gold) var(--pct,100%),rgba(255,255,255,.12) var(--pct,100%));border-radius:999px;outline:none;cursor:pointer}
+.price-range-wrap input[type=range]::-webkit-slider-thumb{appearance:none;width:18px;height:18px;border-radius:50%;background:var(--gold);border:2px solid #050608;box-shadow:0 2px 8px rgba(201,168,76,.4)}
+.price-val{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--gold);white-space:nowrap;min-width:60px;text-align:right}
+.count-badge{background:var(--gold-dim);border:1px solid rgba(201,168,76,.2);color:var(--gold);font-size:12px;font-weight:700;font-family:'Syne',sans-serif;padding:8px 16px;border-radius:999px;white-space:nowrap}
 
-/* ───── HERO ───── */
-.hero { padding: 52px 0 28px; }
-.hero-label {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 18px;
-}
-.hero-label::before {
-  content: '';
-  width: 24px; height: 1px;
-  background: var(--gold);
-}
-.hero-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(32px, 5vw, 54px);
-  font-weight: 800; line-height: 1.08;
-  letter-spacing: -.02em;
-  margin-bottom: 14px;
-}
-.hero-title em {
-  font-style: normal;
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 50%, #fff8e0 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.hero-sub {
-  color: var(--muted); font-size: 16px; max-width: 520px;
-  line-height: 1.6; margin-bottom: 36px;
-}
+/* ── SECTION ── */
+.section{padding:48px 0}
+.section-header{margin-bottom:28px}
+.section-label{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.section-label::before{content:'';width:20px;height:1px;background:var(--gold)}
+.section-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;letter-spacing:-.02em}
+.section-meta{color:var(--muted);font-size:14px;margin-top:6px}
 
-/* STATS PILLS */
-.stats-row {
-  display: flex; gap: 12px; flex-wrap: wrap;
-  margin-bottom: 36px;
-}
-.stat-pill {
-  display: flex; align-items: center; gap: 10px;
-  padding: 12px 18px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  font-size: 13px; font-weight: 500;
-}
-.stat-pill .icon { font-size: 16px; }
-.stat-pill b { color: var(--text); }
-.stat-pill span { color: var(--muted); font-size: 12px; }
+/* ── HOW IT WORKS ── */
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;position:relative}
+@media(max-width:720px){.steps-grid{grid-template-columns:1fr}}
+.steps-grid::before{content:'';position:absolute;top:36px;left:calc(16.66% + 8px);right:calc(16.66% + 8px);height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.3),transparent);pointer-events:none}
+@media(max-width:720px){.steps-grid::before{display:none}}
+.step-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px;text-align:center;transition:.25s}
+.step-card:hover{border-color:rgba(201,168,76,.3);transform:translateY(-3px)}
+.step-num{width:52px;height:52px;border-radius:50%;background:var(--gold-dim);border:1px solid rgba(201,168,76,.25);display:grid;place-items:center;margin:0 auto 16px;font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--gold)}
+.step-icon{font-size:22px;margin-bottom:10px}
+.step-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:8px}
+.step-desc{font-size:13px;color:var(--muted);line-height:1.6}
+.trust-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px}
+.trust-badge{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:999px;font-size:13px;font-weight:500;transition:.2s}
+.trust-badge:hover{border-color:rgba(201,168,76,.25)}
 
-/* ───── SEARCH BAR ───── */
-.search-bar {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 16px;
-  display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
-  box-shadow: 0 8px 40px rgba(0,0,0,.3), 0 0 0 1px rgba(201,168,76,.08) inset;
-}
-.search-bar input,
-.search-bar select {
-  flex: 1; min-width: 180px;
-  padding: 12px 16px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: var(--r-sm);
-  color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px;
-  outline: none; transition: .2s;
-  appearance: none; -webkit-appearance: none;
-}
-.search-bar select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(240,240,242,.4)' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 38px;
-  cursor: pointer;
-}
-.search-bar select option { background: #111318; }
-.search-bar input:focus, .search-bar select:focus {
-  border-color: rgba(201,168,76,.4);
-  box-shadow: 0 0 0 3px rgba(201,168,76,.1);
-}
-.count-badge {
-  background: var(--gold-dim);
-  border: 1px solid rgba(201,168,76,.2);
-  color: var(--gold);
-  font-size: 12px; font-weight: 700; font-family: 'Syne', sans-serif;
-  padding: 8px 16px; border-radius: 999px; white-space: nowrap;
-}
+/* ── CAR GRID ── */
+.car-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media(max-width:720px){.car-grid{grid-template-columns:1fr}}
+.no-results{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)}
 
-/* ───── SECTION ───── */
-.section { padding: 48px 0; }
-.section-header { margin-bottom: 28px; }
-.section-label {
-  font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
-}
-.section-label::before { content: ''; width: 20px; height: 1px; background: var(--gold); }
-.section-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 28px; font-weight: 800; letter-spacing: -.02em;
-}
-.section-meta { color: var(--muted); font-size: 14px; margin-top: 6px; }
+/* ── CAR CARD ── */
+.car-card{background:var(--surface);border:1px solid var(--border);border-radius:22px;overflow:hidden;transition:.3s cubic-bezier(.2,.8,.2,1);position:relative;animation:fadeUp .5s ease both}
+.car-card::before{content:'';position:absolute;inset:0;border-radius:22px;background:linear-gradient(135deg,rgba(201,168,76,.06),transparent 60%);opacity:0;transition:.3s;pointer-events:none;z-index:1}
+.car-card:hover{transform:translateY(-4px);border-color:rgba(201,168,76,.3);box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 0 1px rgba(201,168,76,.12)}
+.car-card:hover::before{opacity:1}
+.car-image{position:relative;height:240px;overflow:hidden;background:rgba(0,0,0,.3);cursor:pointer}
+.car-image img{width:100%;height:100%;object-fit:cover;object-position:center;transition:.5s cubic-bezier(.2,.8,.2,1);display:block}
+.car-card:hover .car-image img{transform:scale(1.06)}
+.car-image-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,6,8,.8) 0%,transparent 60%);pointer-events:none}
+.car-image-badge{position:absolute;top:14px;right:14px;z-index:2}
+.car-body{padding:18px}
+.car-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}
+.car-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;line-height:1.3}
+.car-type{font-size:12px;color:var(--muted);margin-top:3px}
+.car-price-block{text-align:right;flex-shrink:0}
+.car-price{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--gold)}
+.car-price-label{font-size:11px;color:var(--muted2);margin-top:1px}
+.car-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.chip{font-size:12px;font-weight:500;padding:5px 11px;background:var(--surface2);border:1px solid var(--border);border-radius:999px;color:rgba(240,240,242,.75)}
+.car-actions{display:flex;gap:8px}
 
-/* ───── CAR GRID ───── */
-.car-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-}
-@media(max-width:720px) { .car-grid { grid-template-columns: 1fr; } }
+/* ── BADGES ── */
+.badge{font-size:11px;font-weight:700;font-family:'Syne',sans-serif;padding:5px 12px;border-radius:999px;letter-spacing:.04em}
+.badge-dispo{background:rgba(62,207,142,.12);border:1px solid rgba(62,207,142,.3);color:#3ecf8e}
+.badge-soon{background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);color:var(--gold2)}
+.badge-indispo{background:rgba(224,64,64,.1);border:1px solid rgba(224,64,64,.25);color:#e87070}
 
-/* ───── CAR CARD ───── */
-.car-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 22px;
-  overflow: hidden;
-  transition: .3s cubic-bezier(.2,.8,.2,1);
-  cursor: pointer;
-  position: relative;
-}
-.car-card::before {
-  content: '';
-  position: absolute; inset: 0;
-  border-radius: 22px;
-  background: linear-gradient(135deg, rgba(201,168,76,.06), transparent 60%);
-  opacity: 0;
-  transition: .3s;
-  pointer-events: none;
-  z-index: 1;
-}
-.car-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(201,168,76,.3);
-  box-shadow: 0 24px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(201,168,76,.12);
-}
-.car-card:hover::before { opacity: 1; }
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 18px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;text-decoration:none;cursor:pointer;transition:.2s ease;border:1px solid transparent;white-space:nowrap;flex:1}
+.btn-primary{background:var(--gold);color:#000}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,.3)}
+.btn-ghost{background:var(--surface2);border-color:var(--border);color:var(--text)}
+.btn-ghost:hover{border-color:var(--border-hover);background:rgba(255,255,255,.07)}
+.btn:active{transform:translateY(1px)!important}
+.btn-full{width:100%;flex:none}
 
-.car-image {
-  position: relative;
-  height: 240px;
-  overflow: hidden;
-  background: rgba(0,0,0,.3);
-}
-.car-image img {
-  width: 100%; height: 100%;
-  object-fit: cover; object-position: center;
-  transition: .5s cubic-bezier(.2,.8,.2,1);
-  display: block;
-}
-.car-card:hover .car-image img { transform: scale(1.06); }
-.car-image-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(5,6,8,.8) 0%, transparent 60%);
-  pointer-events: none;
-}
-.car-image-badge {
-  position: absolute; top: 14px; right: 14px;
-  z-index: 2;
-}
+/* ── FAQ ── */
+.faq-list{display:flex;flex-direction:column;gap:8px}
+.faq-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:.2s}
+.faq-item:hover{border-color:rgba(201,168,76,.2)}
+.faq-question{width:100%;text-align:left;padding:18px 20px;background:none;border:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.faq-question::after{content:'+';font-size:22px;font-weight:300;color:var(--gold);flex-shrink:0;transition:.25s}
+.faq-item.open .faq-question::after{transform:rotate(45deg)}
+.faq-answer{padding:0 20px;font-size:14px;color:var(--muted);line-height:1.7;max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s ease}
+.faq-item.open .faq-answer{max-height:300px;padding:0 20px 18px}
 
-.car-body { padding: 18px; }
-.car-top {
-  display: flex; justify-content: space-between; align-items: flex-start;
-  gap: 10px; margin-bottom: 12px;
-}
-.car-name {
-  font-family: 'Syne', sans-serif;
-  font-size: 15px; font-weight: 700; line-height: 1.3;
-}
-.car-type { font-size: 12px; color: var(--muted); margin-top: 3px; }
+/* ── REVIEWS ── */
+.reviews-track-wrap{overflow:hidden;position:relative;mask-image:linear-gradient(90deg,transparent 0%,black 8%,black 92%,transparent 100%);-webkit-mask-image:linear-gradient(90deg,transparent 0%,black 8%,black 92%,transparent 100%)}
+.reviews-track{display:flex;gap:16px;width:max-content;animation:scrollTrack 42s linear infinite}
+.reviews-track:hover{animation-play-state:paused}
+@keyframes scrollTrack{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.review-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px 24px;width:300px;flex-shrink:0;transition:.25s;position:relative}
+.review-card:hover{border-color:rgba(201,168,76,.28);transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.review-stars{display:flex;gap:3px;margin-bottom:12px}
+.review-stars span{font-size:14px;color:var(--gold)}
+.review-text{font-size:14px;line-height:1.65;color:rgba(240,240,242,.78);margin-bottom:16px;font-style:italic}
+.review-text::before{content:'\201C';color:var(--gold);font-size:20px;line-height:0;vertical-align:-4px;margin-right:2px}
+.review-text::after{content:'\201D';color:var(--gold);font-size:20px;line-height:0;vertical-align:-4px;margin-left:2px}
+.review-author{display:flex;align-items:center;gap:10px;border-top:1px solid var(--border);padding-top:14px}
+.review-avatar{width:36px;height:36px;border-radius:50%;background:var(--gold-dim);border:1px solid rgba(201,168,76,.2);display:grid;place-items:center;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--gold);flex-shrink:0}
+.review-name{font-size:13px;font-weight:600}
+.review-vehicle{font-size:11px;color:var(--muted2);margin-top:2px}
+.review-google{position:absolute;top:16px;right:16px;font-size:10px;font-weight:700;color:var(--muted2);display:flex;align-items:center;gap:4px}
 
-.car-price-block { text-align: right; flex-shrink: 0; }
-.car-price {
-  font-family: 'Syne', sans-serif;
-  font-size: 18px; font-weight: 800;
-  color: var(--gold);
-}
-.car-price-label { font-size: 11px; color: var(--muted2); margin-top: 1px; }
+/* ── CONTACT ── */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:720px){.contact-grid{grid-template-columns:1fr}}
+.contact-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px;transition:.25s}
+.contact-card:hover{border-color:rgba(201,168,76,.25)}
+.contact-card-top{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.contact-icon{width:46px;height:46px;border-radius:14px;background:var(--gold-dim);border:1px solid rgba(201,168,76,.2);display:grid;place-items:center;flex-shrink:0}
+.contact-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700}
+.contact-handle{font-size:13px;color:var(--muted);margin-top:3px}
+.contact-actions{display:flex;gap:8px}
 
-.car-chips {
-  display: flex; flex-wrap: wrap; gap: 6px;
-  margin-bottom: 16px;
-}
-.chip {
-  font-size: 12px; font-weight: 500;
-  padding: 5px 11px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  color: rgba(240,240,242,.75);
-}
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:28px 0 90px;text-align:center}
+.footer-brand{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:.06em;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px}
+.footer-copy{font-size:12px;color:var(--muted2)}
 
-.car-actions { display: flex; gap: 8px; }
+/* ── WA FLOAT ── */
+.wa-float{position:fixed;bottom:28px;right:28px;z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.wa-btn{width:58px;height:58px;border-radius:50%;background:#25D366;box-shadow:0 6px 24px rgba(37,211,102,.45);display:grid;place-items:center;cursor:pointer;border:none;transition:.25s;animation:waPulse 3s ease infinite}
+.wa-btn:hover{transform:scale(1.1);box-shadow:0 10px 32px rgba(37,211,102,.6)}
+@keyframes waPulse{0%,100%{box-shadow:0 6px 24px rgba(37,211,102,.45)}50%{box-shadow:0 6px 32px rgba(37,211,102,.7)}}
+.wa-tooltip{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:500;white-space:nowrap;opacity:0;transform:translateX(10px);transition:.2s;pointer-events:none}
+.wa-float:hover .wa-tooltip{opacity:1;transform:translateX(0)}
 
-/* ───── BADGES ───── */
-.badge {
-  font-size: 11px; font-weight: 700; font-family: 'Syne', sans-serif;
-  padding: 5px 12px; border-radius: 999px; letter-spacing: .04em;
-}
-.badge-dispo {
-  background: rgba(62,207,142,.12);
-  border: 1px solid rgba(62,207,142,.3);
-  color: #3ecf8e;
-}
-.badge-soon {
-  background: rgba(201,168,76,.12);
-  border: 1px solid rgba(201,168,76,.3);
-  color: var(--gold2);
-}
-.badge-indispo {
-  background: rgba(224,64,64,.1);
-  border: 1px solid rgba(224,64,64,.25);
-  color: #e87070;
-}
+/* ── MODAL ── */
+.modal{position:fixed;inset:0;z-index:999;display:none}
+.modal.show{display:block}
+.modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px)}
+.modal-panel{position:relative;width:min(900px,calc(100% - 24px));margin:4vh auto;border-radius:24px;background:rgba(11,12,18,.96);border:1px solid rgba(201,168,76,.15);box-shadow:0 40px 100px rgba(0,0,0,.8);overflow:hidden;max-height:92vh;display:flex;flex-direction:column}
+.modal-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:20px 22px 16px;border-bottom:1px solid var(--border);flex:0 0 auto}
+.modal-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;line-height:1.2}
+.modal-sub{color:var(--muted);font-size:13px;margin-top:5px}
+.modal-close{width:36px;height:36px;border-radius:10px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:20px;cursor:pointer;display:grid;place-items:center;transition:.2s;flex-shrink:0}
+.modal-close:hover{background:rgba(255,255,255,.1)}
+.modal-body{padding:20px 22px;overflow:auto;flex:1}
 
-/* ───── BUTTONS ───── */
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-  padding: 11px 18px; border-radius: 12px;
-  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
-  text-decoration: none; cursor: pointer;
-  transition: .2s ease; border: 1px solid transparent;
-  white-space: nowrap; flex: 1;
-}
-.btn-primary {
-  background: var(--gold);
-  color: #000;
-  border-color: transparent;
-}
-.btn-primary:hover { background: var(--gold2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,168,76,.3); }
-.btn-ghost {
-  background: var(--surface2);
-  border-color: var(--border);
-  color: var(--text);
-}
-.btn-ghost:hover { border-color: var(--border-hover); background: rgba(255,255,255,.07); }
-.btn:active { transform: translateY(1px) !important; }
-.btn-full { width: 100%; }
+/* Gallery */
+.gallery{margin-bottom:18px}
+.gallery-main-wrap{position:relative;height:380px;border-radius:16px;overflow:hidden;border:1px solid var(--border);background:#000}
+@media(max-width:720px){.gallery-main-wrap{height:250px}}
+.gallery-main-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:.3s}
+.gallery-main-wrap.fullfit img{object-fit:contain;background:rgba(0,0,0,.5)}
+.gallery-btn-fit{position:absolute;top:12px;right:12px;z-index:5;padding:7px 12px;background:rgba(0,0,0,.5);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.9);font-size:12px;font-weight:600;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.gallery-nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.5);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:4;user-select:none;transition:.2s}
+.gallery-nav:hover{background:rgba(201,168,76,.25);border-color:rgba(201,168,76,.4)}
+.gallery-nav.left{left:12px}.gallery-nav.right{right:12px}
+.gallery-thumbs{display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin;scrollbar-color:rgba(201,168,76,.3) transparent}
+.gallery-thumbs img{width:76px;height:56px;object-fit:cover;border-radius:10px;cursor:pointer;flex-shrink:0;border:2px solid transparent;opacity:.7;transition:.2s}
+.gallery-thumbs img:hover{opacity:.9}
+.gallery-thumbs img.active{border-color:var(--gold);opacity:1}
 
-/* ───── FAQ ───── */
-.faq-list { display: flex; flex-direction: column; gap: 8px; }
-.faq-item {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  overflow: hidden;
-  transition: .2s;
-}
-.faq-item:hover { border-color: rgba(201,168,76,.2); }
-.faq-question {
-  width: 100%; text-align: left;
-  padding: 18px 20px;
-  background: none; border: none;
-  color: var(--text); font-family: 'DM Sans', sans-serif;
-  font-size: 14px; font-weight: 600;
-  cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px;
-}
-.faq-question::after {
-  content: '+';
-  font-size: 22px; font-weight: 300;
-  color: var(--gold); flex-shrink: 0;
-  transition: .25s;
-}
-.faq-item.open .faq-question::after { transform: rotate(45deg); }
-.faq-answer {
-  padding: 0 20px;
-  font-size: 14px; color: var(--muted); line-height: 1.7;
-  max-height: 0; overflow: hidden;
-  transition: max-height .35s ease, padding .35s ease;
-}
-.faq-item.open .faq-answer { max-height: 300px; padding: 0 20px 18px; }
+/* Info grid */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.info-grid{grid-template-columns:1fr}}
+.info-card{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:14px 16px}
+.info-card b{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted2);font-weight:600;display:block;margin-bottom:5px}
+.info-card span{font-size:14px;font-weight:500;color:var(--text)}
+.modal-actions{display:flex;gap:10px;margin-top:18px}
 
-/* ───── CONTACT ───── */
-.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-@media(max-width:720px) { .contact-grid { grid-template-columns: 1fr; } }
-.contact-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 22px;
-  transition: .25s;
-}
-.contact-card:hover { border-color: rgba(201,168,76,.25); }
-.contact-card-top { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
-.contact-icon {
-  width: 46px; height: 46px;
-  border-radius: 14px;
-  background: var(--gold-dim);
-  border: 1px solid rgba(201,168,76,.2);
-  display: grid; place-items: center; flex-shrink: 0;
-}
-.contact-name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; }
-.contact-handle { font-size: 13px; color: var(--muted); margin-top: 3px; }
-.contact-actions { display: flex; gap: 8px; }
+/* Form */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+.form-grid .full{grid-column:1/-1}
+.form-label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted2);margin-bottom:6px}
+.form-input{width:100%;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:.2s;appearance:none}
+.form-input:focus{border-color:rgba(201,168,76,.5);box-shadow:0 0 0 3px rgba(201,168,76,.1)}
+textarea.form-input{min-height:100px;resize:vertical}
+select.form-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(240,240,242,.4)' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:40px;cursor:pointer}
+select.form-input option{background:#111318}
+.form-file{padding:10px 14px;background:var(--surface2);border:1px dashed rgba(201,168,76,.3);border-radius:var(--r-sm);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:.2s;width:100%}
+.form-file:hover{border-color:rgba(201,168,76,.6);color:var(--text)}
+.form-section-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--gold);margin:20px 0 12px;padding-top:20px;border-top:1px solid var(--border)}
+.price-estimate{background:var(--gold-dim);border:1px solid rgba(201,168,76,.25);border-radius:14px;padding:14px 18px;margin-top:12px;display:none}
+.price-estimate.show{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.price-estimate-label{font-size:13px;color:var(--muted)}
+.price-estimate-total{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--gold)}
+.price-estimate-detail{font-size:12px;color:var(--muted2);margin-top:2px}
+.form-status{font-size:13px;color:var(--green);margin-top:10px}
+body.modal-open{overflow:hidden;height:100vh}
 
-/* ───── FOOTER ───── */
-footer {
-  border-top: 1px solid var(--border);
-  padding: 28px 0 40px;
-  text-align: center;
-}
-.footer-brand {
-  font-family: 'Syne', sans-serif;
-  font-size: 20px; font-weight: 800;
-  letter-spacing: .06em;
-  background: linear-gradient(135deg, var(--gold), var(--gold2));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  margin-bottom: 10px;
-}
-.footer-copy { font-size: 12px; color: var(--muted2); }
-
-/* ───── MODAL ───── */
-.modal { position: fixed; inset: 0; z-index: 999; display: none; }
-.modal.show { display: block; }
-.modal-backdrop {
-  position: absolute; inset: 0;
-  background: rgba(0,0,0,.7);
-  backdrop-filter: blur(8px);
-}
-.modal-panel {
-  position: relative;
-  width: min(900px, calc(100% - 24px));
-  margin: 4vh auto;
-  border-radius: 24px;
-  background: rgba(11,12,18,.96);
-  border: 1px solid rgba(201,168,76,.15);
-  box-shadow: 0 40px 100px rgba(0,0,0,.8), 0 0 0 1px rgba(201,168,76,.05);
-  overflow: hidden;
-  max-height: 92vh;
-  display: flex; flex-direction: column;
-}
-.modal-header {
-  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
-  padding: 20px 22px 16px;
-  border-bottom: 1px solid var(--border);
-  flex: 0 0 auto;
-}
-.modal-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 17px; font-weight: 800; line-height: 1.2;
-}
-.modal-sub { color: var(--muted); font-size: 13px; margin-top: 5px; }
-.modal-close {
-  width: 36px; height: 36px;
-  border-radius: 10px;
-  background: var(--surface2); border: 1px solid var(--border);
-  color: var(--text); font-size: 20px; line-height: 1;
-  cursor: pointer; flex-shrink: 0;
-  display: grid; place-items: center;
-  transition: .2s;
-}
-.modal-close:hover { background: rgba(255,255,255,.1); border-color: var(--border-hover); }
-.modal-body { padding: 20px 22px; overflow: auto; flex: 1; }
-
-/* GALLERY */
-.gallery { margin-bottom: 18px; }
-.gallery-main-wrap {
-  position: relative;
-  height: 380px;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  background: #000;
-}
-@media(max-width:720px) { .gallery-main-wrap { height: 250px; } }
-.gallery-main-wrap img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  display: block; transition: .3s;
-}
-.gallery-main-wrap.fullfit img { object-fit: contain; background: rgba(0,0,0,.5); }
-.gallery-btn-fit {
-  position: absolute; top: 12px; right: 12px; z-index: 5;
-  padding: 7px 12px;
-  background: rgba(0,0,0,.5); backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,.15);
-  color: rgba(255,255,255,.9); font-size: 12px; font-weight: 600;
-  border-radius: 10px; cursor: pointer; font-family: 'DM Sans', sans-serif;
-}
-.gallery-nav {
-  position: absolute; top: 50%; transform: translateY(-50%);
-  width: 40px; height: 40px; border-radius: 50%;
-  background: rgba(0,0,0,.5); backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,.14);
-  color: #fff; font-size: 20px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; z-index: 4; user-select: none;
-  transition: .2s;
-}
-.gallery-nav:hover { background: rgba(201,168,76,.25); border-color: rgba(201,168,76,.4); }
-.gallery-nav.left { left: 12px; }
-.gallery-nav.right { right: 12px; }
-.gallery-thumbs {
-  display: flex; gap: 8px; margin-top: 10px;
-  overflow-x: auto; padding-bottom: 4px;
-  scrollbar-width: thin; scrollbar-color: rgba(201,168,76,.3) transparent;
-}
-.gallery-thumbs img {
-  width: 76px; height: 56px;
-  object-fit: cover; border-radius: 10px;
-  cursor: pointer; flex-shrink: 0;
-  border: 2px solid transparent; opacity: .7;
-  transition: .2s;
-}
-.gallery-thumbs img:hover { opacity: .9; }
-.gallery-thumbs img.active { border-color: var(--gold); opacity: 1; }
-
-/* Modal info grid */
-.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-@media(max-width:600px) { .info-grid { grid-template-columns: 1fr; } }
-.info-card {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 14px 16px;
-}
-.info-card b { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted2); font-weight: 600; display: block; margin-bottom: 5px; }
-.info-card span { font-size: 14px; font-weight: 500; color: var(--text); }
-
-.modal-actions { display: flex; gap: 10px; margin-top: 18px; }
-
-/* Reservation form */
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-@media(max-width:600px) { .form-grid { grid-template-columns: 1fr; } }
-.form-grid .full { grid-column: 1 / -1; }
-.form-label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted2); margin-bottom: 6px; }
-.form-input {
-  width: 100%; padding: 12px 14px;
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: var(--r-sm); color: var(--text);
-  font-family: 'DM Sans', sans-serif; font-size: 14px;
-  outline: none; transition: .2s;
-  appearance: none;
-}
-.form-input:focus {
-  border-color: rgba(201,168,76,.5);
-  box-shadow: 0 0 0 3px rgba(201,168,76,.1);
-}
-textarea.form-input { min-height: 100px; resize: vertical; }
-select.form-input {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(240,240,242,.4)' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 40px; cursor: pointer;
-}
-select.form-input option { background: #111318; }
-.file-upload-label {
-  display: flex; flex-direction: column;
-  gap: 4px;
-}
-.form-file {
-  padding: 10px 14px;
-  background: var(--surface2); border: 1px dashed rgba(201,168,76,.3);
-  border-radius: var(--r-sm); color: var(--muted);
-  font-family: 'DM Sans', sans-serif; font-size: 13px;
-  cursor: pointer; transition: .2s; width: 100%;
-}
-.form-file:hover { border-color: rgba(201,168,76,.6); color: var(--text); }
-.form-section-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 13px; font-weight: 700; letter-spacing: .04em;
-  color: var(--gold); margin: 20px 0 12px;
-  padding-top: 20px; border-top: 1px solid var(--border);
-}
-.form-status { font-size: 13px; color: var(--green); margin-top: 10px; }
-
-body.modal-open { overflow: hidden; height: 100vh; }
-
-/* ───── REVIEWS ───── */
-.reviews-track-wrap {
-  overflow: hidden;
-  position: relative;
-  mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
-}
-.reviews-track {
-  display: flex;
-  gap: 16px;
-  width: max-content;
-  animation: scrollTrack 38s linear infinite;
-}
-.reviews-track:hover { animation-play-state: paused; }
-@keyframes scrollTrack {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-.review-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 22px 24px;
-  width: 300px;
-  flex-shrink: 0;
-  transition: .25s;
-  position: relative;
-}
-.review-card:hover {
-  border-color: rgba(201,168,76,.28);
-  transform: translateY(-3px);
-  box-shadow: 0 16px 48px rgba(0,0,0,.4);
-}
-.review-stars {
-  display: flex; gap: 3px; margin-bottom: 12px;
-}
-.review-stars span {
-  font-size: 14px;
-  color: var(--gold);
-}
-.review-text {
-  font-size: 14px;
-  line-height: 1.65;
-  color: rgba(240,240,242,.78);
-  margin-bottom: 16px;
-  font-style: italic;
-}
-.review-text::before { content: '\201C'; color: var(--gold); font-size: 20px; line-height: 0; vertical-align: -4px; margin-right: 2px; }
-.review-text::after  { content: '\201D'; color: var(--gold); font-size: 20px; line-height: 0; vertical-align: -4px; margin-left: 2px; }
-.review-author {
-  display: flex; align-items: center; gap: 10px;
-  border-top: 1px solid var(--border);
-  padding-top: 14px;
-}
-.review-avatar {
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  background: var(--gold-dim);
-  border: 1px solid rgba(201,168,76,.2);
-  display: grid; place-items: center;
-  font-family: 'Syne', sans-serif;
-  font-size: 13px; font-weight: 800;
-  color: var(--gold);
-  flex-shrink: 0;
-}
-.review-name { font-size: 13px; font-weight: 600; }
-.review-vehicle { font-size: 11px; color: var(--muted2); margin-top: 2px; }
-.review-badge-google {
-  position: absolute; top: 16px; right: 16px;
-  font-size: 10px; font-weight: 700; letter-spacing: .06em;
-  color: var(--muted2);
-  display: flex; align-items: center; gap: 4px;
-}
-
-/* ───── ANIMATIONS ───── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.hero { animation: fadeUp .7s ease both; }
-.search-bar { animation: fadeUp .7s .1s ease both; }
-.car-card {
-  animation: fadeUp .5s ease both;
-}
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
@@ -710,13 +273,19 @@ body.modal-open { overflow: hidden; height: 100vh; }
   <div class="bg-noise"></div>
 </div>
 
-<!-- ══════════ HEADER ══════════ -->
+<!-- BANNER -->
+<div class="avail-banner">
+  <span class="avail-pulse"></span>
+  <span id="availText">Chargement…</span>
+</div>
+
+<!-- HEADER -->
 <header>
   <div class="header-inner">
     <div class="container topbar">
       <div class="brand">
         <div class="brand-logo">
-          <img src="logo-mh.png" alt="MH Location" onerror="this.parentElement.innerHTML='<span class=\'logo-fallback\'>MH</span>'">
+          <img src="logo-mh.png" alt="MH Location" onerror="this.parentElement.innerHTML='<span class=logo-fb>MH</span>'">
         </div>
         <div class="brand-text">
           <div class="brand-name">MH LOCATION</div>
@@ -726,6 +295,7 @@ body.modal-open { overflow: hidden; height: 100vh; }
       <nav class="nav">
         <a href="#home">Accueil</a>
         <a href="#cars">Véhicules</a>
+        <a href="#avis">Avis</a>
         <a href="#contact" class="nav-contact" id="btnContact">Contact</a>
         <a href="#cars" class="nav-cta">Réserver →</a>
       </nav>
@@ -733,36 +303,23 @@ body.modal-open { overflow: hidden; height: 100vh; }
   </div>
 </header>
 
-<!-- ══════════ MAIN ══════════ -->
 <main class="container" id="home">
 
   <!-- HERO -->
   <section class="hero">
     <div class="hero-label">Location de véhicules premium</div>
-    <h1 class="hero-title">
-      Conduisez<br>
-      <em>l'extraordinaire.</em>
-    </h1>
+    <h1 class="hero-title">Conduisez<br><em>l'extraordinaire.</em></h1>
     <p class="hero-sub">Des véhicules soigneusement sélectionnés et entretenus. Conditions transparentes, réponse rapide, expérience premium.</p>
 
     <div class="stats-row">
-      <div class="stat-pill">
-        <span class="icon">🚗</span>
-        <div><b>Véhicules vérifiés</b> <span>Photos réelles · entretenus</span></div>
-      </div>
-      <div class="stat-pill">
-        <span class="icon">⚡</span>
-        <div><b>Réponse rapide</b> <span>WhatsApp · Snapchat</span></div>
-      </div>
-      <div class="stat-pill">
-        <span class="icon">🔒</span>
-        <div><b>Conditions claires</b> <span>Caution · Documents</span></div>
-      </div>
+      <div class="stat-pill"><span class="ico">🚗</span><div><b><span class="count-up" data-target="8">0</span> véhicules</b></div></div>
+      <div class="stat-pill"><span class="ico">🏁</span><div><b>+<span class="count-up" data-target="200">0</span> locations</b></div></div>
+      <div class="stat-pill"><span class="ico">⭐</span><div><b><span class="count-up" data-target="5" data-dec="1">0</span>/5 moyenne</b></div></div>
+      <div class="stat-pill"><span class="ico">⚡</span><div><b>Réponse rapide</b></div></div>
     </div>
 
-    <!-- SEARCH -->
     <div class="search-bar">
-      <input id="q" type="text" placeholder="🔍  Rechercher… ex: Clio, diesel, auto, sport" autocomplete="off">
+      <input id="q" type="text" placeholder="🔍  Rechercher… ex: Clio, sport, auto" autocomplete="off">
       <select id="filterType">
         <option value="">Tous les types</option>
         <option value="sportive">Sportive</option>
@@ -775,7 +332,49 @@ body.modal-open { overflow: hidden; height: 100vh; }
         <option value="bientot">Bientôt</option>
         <option value="indispo">Indisponible</option>
       </select>
-      <div class="count-badge" id="count">0 véhicules</div>
+      <div class="price-range-wrap">
+        <label>Budget max</label>
+        <input type="range" id="priceRange" min="49" max="349" value="349" step="10">
+        <div class="price-val" id="priceVal">Max</div>
+      </div>
+      <div class="count-badge" id="count">8 véhicules</div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" id="comment">
+    <div class="section-header">
+      <div class="section-label">Simple & rapide</div>
+      <h2 class="section-title">Comment ça marche ?</h2>
+      <p class="section-meta">Réservez un véhicule en 3 étapes simples.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-icon">🔍</div>
+        <div class="step-title">Choisir</div>
+        <div class="step-desc">Parcourez notre flotte, filtrez par type ou budget et trouvez le véhicule parfait.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-icon">📋</div>
+        <div class="step-title">Réserver</div>
+        <div class="step-desc">Remplissez le formulaire, envoyez vos documents et réglez l'acompte pour confirmer.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-icon">🚀</div>
+        <div class="step-title">Profiter</div>
+        <div class="step-desc">Récupérez votre véhicule à l'agence ou en livraison et prenez la route librement.</div>
+      </div>
+    </div>
+    <div class="trust-row">
+      <div class="trust-badge">🔒 Paiement sécurisé</div>
+      <div class="trust-badge">📄 Contrat fourni</div>
+      <div class="trust-badge">🛡️ Assurance disponible</div>
+      <div class="trust-badge">✅ Véhicules contrôlés</div>
+      <div class="trust-badge">⚡ Réponse sous 30 min</div>
+      <div class="trust-badge">📍 Livraison possible</div>
     </div>
   </section>
 
@@ -802,7 +401,7 @@ body.modal-open { overflow: hidden; height: 100vh; }
       </div>
       <div class="faq-item">
         <button class="faq-question">💳 Comment se passe le paiement et la caution ?</button>
-        <div class="faq-answer">Paiement par carte bancaire ou espèces. La caution est bloquée par empreinte bancaire selon le véhicule choisi. Le montant varie de 1 000€ à 5 000€.</div>
+        <div class="faq-answer">Paiement par carte bancaire ou espèces. La caution est bloquée par empreinte bancaire selon le véhicule. Montant entre 1 000€ et 5 000€.</div>
       </div>
       <div class="faq-item">
         <button class="faq-question">⏱ Quelle est la durée minimum de location ?</button>
@@ -810,8 +409,24 @@ body.modal-open { overflow: hidden; height: 100vh; }
       </div>
       <div class="faq-item">
         <button class="faq-question">🛡️ L'assurance est-elle incluse ?</button>
-        <div class="faq-answer">Une assurance est disponible en option pour chaque véhicule. Nous vous conseillons vivement de souscrire à cette option pour une conduite sereine.</div>
+        <div class="faq-answer">Une assurance est disponible pour chaque véhicule. Touts nos véhicules sont à jour pour rouler sereinement.</div>
       </div>
+      <div class="faq-item">
+        <button class="faq-question">📍 Proposez-vous la livraison ?</button>
+        <div class="faq-answer">Oui, selon disponibilité et localisation. Contactez-nous via WhatsApp pour obtenir un tarif personnalisé.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="section" id="avis">
+    <div class="section-header">
+      <div class="section-label">Témoignages</div>
+      <h2 class="section-title">Ce que disent nos clients</h2>
+      <p class="section-meta">Des centaines de clients satisfaits — voici leurs retours.</p>
+    </div>
+    <div class="reviews-track-wrap">
+      <div class="reviews-track" id="reviewsTrack"></div>
     </div>
   </section>
 
@@ -826,9 +441,7 @@ body.modal-open { overflow: hidden; height: 100vh; }
       <div class="contact-card">
         <div class="contact-card-top">
           <div class="contact-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <path d="M12 3c2.5 0 4.5 2.2 4.5 4.8v2.1c.9.4 2 .7 2.8.9.4.1.7.4.7.8 0 .3-.2.6-.5.8-.7.5-1.5.7-2.2.8-.4.1-.6.4-.5.8.2.8.7 1.6 1.6 2.2.2.1.4.4.4.6 0 .4-.3.8-.8.8-.6 0-1.5.2-2.3.5-.6.2-1.4.4-2.2.4-.7 0-1.4-.2-2-.5-.6.3-1.3.5-2 .5-.8 0-1.6-.2-2.2-.4-.8-.3-1.7-.5-2.3-.5-.5 0-.8-.4-.8-.8 0-.2.2-.5.4-.6.9-.6 1.4-1.4 1.6-2.2.1-.4-.1-.7-.5-.8-.7-.1-1.5-.3-2.2-.8-.3-.2-.5-.5-.5-.8 0-.4.3-.7.7-.8.8-.2 1.9-.5 2.8-.9V7.8C7.5 5.2 9.5 3 12 3Z" stroke="var(--gold)" stroke-width="1.5"/>
-            </svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3c2.5 0 4.5 2.2 4.5 4.8v2.1c.9.4 2 .7 2.8.9.4.1.7.4.7.8 0 .3-.2.6-.5.8-.7.5-1.5.7-2.2.8-.4.1-.6.4-.5.8.2.8.7 1.6 1.6 2.2.2.1.4.4.4.6 0 .4-.3.8-.8.8-.6 0-1.5.2-2.3.5-.6.2-1.4.4-2.2.4-.7 0-1.4-.2-2-.5-.6.3-1.3.5-2 .5-.8 0-1.6-.2-2.2-.4-.8-.3-1.7-.5-2.3-.5-.5 0-.8-.4-.8-.8 0-.2.2-.5.4-.6.9-.6 1.4-1.4 1.6-2.2.1-.4-.1-.7-.5-.8-.7-.1-1.5-.3-2.2-.8-.3-.2-.5-.5-.5-.8 0-.4.3-.7.7-.8.8-.2 1.9-.5 2.8-.9V7.8C7.5 5.2 9.5 3 12 3Z" stroke="var(--gold)" stroke-width="1.5"/></svg>
           </div>
           <div>
             <div class="contact-name">Snapchat</div>
@@ -837,16 +450,13 @@ body.modal-open { overflow: hidden; height: 100vh; }
         </div>
         <div class="contact-actions">
           <a class="btn btn-primary" href="https://www.snapchat.com/add/mhloca7575" target="_blank" rel="noopener">Ouvrir Snapchat</a>
-          <button class="btn btn-ghost" type="button" onclick="copyText('@mohaloca7575')">Copier</button>
+          <button class="btn btn-ghost" onclick="copyText('@mohaloca7575')">Copier</button>
         </div>
       </div>
-
       <div class="contact-card">
         <div class="contact-card-top">
           <div class="contact-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <path d="M21 4L3.6 10.8c-.9.35-.86 1.65.06 1.95l4.4 1.45L18.6 7.2l-8.1 8.2 1.2 4.6c.25.96 1.47 1.12 1.94.26l2.1-3.8 3.9 2.8c.8.56 1.9.12 2.1-.84L22 5.2c.18-1-.85-1.78-1.7-1.2Z" stroke="var(--gold)" stroke-width="1.5" stroke-linejoin="round"/>
-            </svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 4L3.6 10.8c-.9.35-.86 1.65.06 1.95l4.4 1.45L18.6 7.2l-8.1 8.2 1.2 4.6c.25.96 1.47 1.12 1.94.26l2.1-3.8 3.9 2.8c.8.56 1.9.12 2.1-.84L22 5.2c.18-1-.85-1.78-1.7-1.2Z" stroke="var(--gold)" stroke-width="1.5" stroke-linejoin="round"/></svg>
           </div>
           <div>
             <div class="contact-name">WhatsApp</div>
@@ -854,26 +464,9 @@ body.modal-open { overflow: hidden; height: 100vh; }
           </div>
         </div>
         <div class="contact-actions">
-          <a class="btn btn-primary"
-             href="https://wa.me/33629549639?text=Bonjour%20je%20souhaite%20un%20renseignement%20concernant%20MH%20Location"
-             target="_blank" rel="noopener">
-            Ouvrir WhatsApp
-          </a>
+          <a class="btn btn-primary" href="https://wa.me/33629549639?text=Bonjour%20je%20souhaite%20un%20renseignement%20concernant%20MH%20Location" target="_blank" rel="noopener">Ouvrir WhatsApp</a>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- AVIS CLIENTS -->
-  <section class="section" id="avis">
-    <div class="section-header">
-      <div class="section-label">Témoignages</div>
-      <h2 class="section-title">Ce que disent nos clients</h2>
-      <p class="section-meta">Des centaines de clients satisfaits — voici leurs retours.</p>
-    </div>
-
-    <div class="reviews-track-wrap">
-      <div class="reviews-track" id="reviewsTrack"></div>
     </div>
   </section>
 
@@ -881,10 +474,17 @@ body.modal-open { overflow: hidden; height: 100vh; }
     <div class="footer-brand">MH LOCATION</div>
     <div class="footer-copy">© <span id="year"></span> MH Location — Tous droits réservés</div>
   </footer>
-
 </main>
 
-<!-- ══════════ MODAL INFOS ══════════ -->
+<!-- WA FLOAT -->
+<div class="wa-float">
+  <div class="wa-tooltip">💬 Nous contacter sur WhatsApp</div>
+  <button class="wa-btn" onclick="window.open('https://wa.me/33629549639?text=Bonjour%20je%20souhaite%20un%20renseignement%20concernant%20MH%20Location','_blank')" aria-label="WhatsApp">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+  </button>
+</div>
+
+<!-- MODAL INFOS -->
 <div class="modal" id="modalInfos">
   <div class="modal-backdrop" data-close></div>
   <div class="modal-panel">
@@ -893,28 +493,28 @@ body.modal-open { overflow: hidden; height: 100vh; }
         <div class="modal-title" id="mi_title">Infos & Prix</div>
         <div class="modal-sub" id="mi_sub">Détails du véhicule</div>
       </div>
-      <button class="modal-close" type="button" data-close>×</button>
+      <button class="modal-close" data-close>×</button>
     </div>
     <div class="modal-body">
       <div class="gallery">
         <div class="gallery-main-wrap" id="galleryBox">
-          <button class="gallery-btn-fit" type="button" id="gFitBtn">Afficher entier</button>
-          <button class="gallery-nav left" type="button" id="gPrev">‹</button>
+          <button class="gallery-btn-fit" id="gFitBtn">Afficher entier</button>
+          <button class="gallery-nav left" id="gPrev">‹</button>
           <img id="galleryMain" src="" alt="Véhicule">
-          <button class="gallery-nav right" type="button" id="gNext">›</button>
+          <button class="gallery-nav right" id="gNext">›</button>
         </div>
         <div class="gallery-thumbs" id="galleryThumbs"></div>
       </div>
       <div class="info-grid" id="mi_grid"></div>
       <div class="modal-actions">
-        <button class="btn btn-primary" type="button" id="mi_reserve">Réserver ce véhicule →</button>
-        <button class="btn btn-ghost" type="button" data-close>Fermer</button>
+        <button class="btn btn-primary" id="mi_reserve">Réserver ce véhicule →</button>
+        <button class="btn btn-ghost" data-close>Fermer</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════ MODAL RÉSERVATION ══════════ -->
+<!-- MODAL RÉSERVATION -->
 <div class="modal" id="modalReserve">
   <div class="modal-backdrop" data-close></div>
   <div class="modal-panel">
@@ -923,20 +523,26 @@ body.modal-open { overflow: hidden; height: 100vh; }
         <div class="modal-title" id="mr_title">Réservation</div>
         <div class="modal-sub">Remplis le formulaire et envoie tes documents.</div>
       </div>
-      <button class="modal-close" type="button" data-close>×</button>
+      <button class="modal-close" data-close>×</button>
     </div>
     <div class="modal-body">
-      <form name="reservation" method="POST"
-            data-netlify="true" data-netlify-honeypot="bot-field"
-            enctype="multipart/form-data" action="/thank-you">
+      <form name="reservation" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" enctype="multipart/form-data" action="/thank-you">
         <input type="hidden" name="form-name" value="reservation">
-        <p style="display:none;"><label>Ne pas remplir: <input name="bot-field"/></label></p>
-
-        <input class="form-input" id="mr_vehicle" name="vehicule" readonly style="margin-bottom:12px;">
+        <p style="display:none"><label>Ne pas remplir: <input name="bot-field"></label></p>
+        <input class="form-input" id="mr_vehicle" name="vehicule" readonly style="margin-bottom:12px">
         <input type="hidden" id="mr_type" name="type_vehicule">
         <input type="hidden" id="mr_acompte" name="acompte">
+        <input type="hidden" id="mr_price_day" value="0">
 
-        <div class="form-section-title" style="margin-top:0;padding-top:0;border-top:none;">Informations personnelles</div>
+        <div class="price-estimate" id="priceEstimate">
+          <div>
+            <div class="price-estimate-label">Estimation pour votre séjour</div>
+            <div class="price-estimate-detail" id="priceDetail">— jours × —€</div>
+          </div>
+          <div class="price-estimate-total" id="priceTotal">—</div>
+        </div>
+
+        <div class="form-section-title" style="margin-top:16px;padding-top:16px;border-top:none">Informations personnelles</div>
         <div class="form-grid">
           <div><label class="form-label">Nom</label><input class="form-input" name="nom" required placeholder="NOM"></div>
           <div><label class="form-label">Prénom</label><input class="form-input" name="prenom" required placeholder="Prénom"></div>
@@ -959,39 +565,21 @@ body.modal-open { overflow: hidden; height: 100vh; }
             </select>
           </div>
           <div></div>
-          <div><label class="form-label">Date de début</label><input class="form-input" name="date_debut" required placeholder="JJ/MM/AAAA"></div>
-          <div><label class="form-label">Date de fin</label><input class="form-input" name="date_fin" required placeholder="JJ/MM/AAAA"></div>
-          <div class="full">
-            <label class="form-label">Message (options, kilométrage…)</label>
-            <textarea class="form-input" name="message" required placeholder="Précisez vos besoins : assurance, options, boîte auto…"></textarea>
-          </div>
+          <div><label class="form-label">Date de début</label><input class="form-input" id="dateDebut" name="date_debut" type="date" required></div>
+          <div><label class="form-label">Date de fin</label><input class="form-input" id="dateFin" name="date_fin" type="date" required></div>
+          <div class="full"><label class="form-label">Message</label><textarea class="form-input" name="message" required placeholder="Assurance, options, boîte auto…"></textarea></div>
         </div>
 
         <div class="form-section-title">Documents obligatoires</div>
         <div class="form-grid">
-          <div class="file-upload-label">
-            <label class="form-label">CNI — Recto</label>
-            <input class="form-file" type="file" name="cni_recto" accept="image/*,application/pdf" required>
-          </div>
-          <div class="file-upload-label">
-            <label class="form-label">CNI — Verso</label>
-            <input class="form-file" type="file" name="cni_verso" accept="image/*,application/pdf" required>
-          </div>
-          <div class="file-upload-label">
-            <label class="form-label">Permis — Recto</label>
-            <input class="form-file" type="file" name="permis_recto" accept="image/*,application/pdf" required>
-          </div>
-          <div class="file-upload-label">
-            <label class="form-label">Permis — Verso</label>
-            <input class="form-file" type="file" name="permis_verso" accept="image/*,application/pdf" required>
-          </div>
-          <div class="file-upload-label full">
-            <label class="form-label">Justificatif de domicile</label>
-            <input class="form-file" type="file" name="justif_domicile" accept="image/*,application/pdf" required>
-          </div>
+          <div><label class="form-label">CNI — Recto</label><input class="form-file" type="file" name="cni_recto" accept="image/*,application/pdf" required></div>
+          <div><label class="form-label">CNI — Verso</label><input class="form-file" type="file" name="cni_verso" accept="image/*,application/pdf" required></div>
+          <div><label class="form-label">Permis — Recto</label><input class="form-file" type="file" name="permis_recto" accept="image/*,application/pdf" required></div>
+          <div><label class="form-label">Permis — Verso</label><input class="form-file" type="file" name="permis_verso" accept="image/*,application/pdf" required></div>
+          <div class="full"><label class="form-label">Justificatif de domicile</label><input class="form-file" type="file" name="justif_domicile" accept="image/*,application/pdf" required></div>
         </div>
 
-        <div style="margin-top:20px;">
+        <div style="margin-top:20px">
           <button class="btn btn-primary btn-full" type="submit">Envoyer ma demande →</button>
           <div class="form-status" id="mr_status"></div>
         </div>
@@ -1001,216 +589,285 @@ body.modal-open { overflow: hidden; height: 100vh; }
 </div>
 
 <script>
-// ──── UTILS ────
 document.getElementById("year").textContent = new Date().getFullYear();
 
-function copyText(txt) {
-  if (navigator.clipboard?.writeText) {
-    navigator.clipboard.writeText(txt).then(() => alert("Copié : " + txt)).catch(() => fallbackCopy(txt));
-  } else fallbackCopy(txt);
+function copyText(txt){
+  if(navigator.clipboard?.writeText){navigator.clipboard.writeText(txt).then(()=>alert("Copié : "+txt)).catch(()=>fbCopy(txt))}else fbCopy(txt)
 }
-function fallbackCopy(txt) {
-  const t = document.createElement("textarea");
-  t.value = txt; t.style.position = "fixed"; t.style.left = "-9999px";
-  document.body.appendChild(t); t.focus(); t.select();
-  try { document.execCommand("copy"); alert("Copié : " + txt); } catch(e) {}
-  document.body.removeChild(t);
+function fbCopy(txt){
+  const t=document.createElement("textarea");t.value=txt;t.style.position="fixed";t.style.left="-9999px";
+  document.body.appendChild(t);t.focus();t.select();
+  try{document.execCommand("copy");alert("Copié : "+txt)}catch(e){}
+  document.body.removeChild(t)
 }
 
-// ──── FAQ ────
-document.querySelectorAll(".faq-question").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const item = btn.closest(".faq-item");
-    const isOpen = item.classList.contains("open");
-    document.querySelectorAll(".faq-item").forEach(i => i.classList.remove("open"));
-    if (!isOpen) item.classList.add("open");
-  });
-});
-
-// ──── MODAL SYSTEM ────
-let lastFocus = null;
-
-function openModal(id) {
-  lastFocus = document.activeElement;
-  document.querySelectorAll(".modal.show").forEach(m => m.classList.remove("show"));
-  const m = document.getElementById(id);
-  if (m) {
-    m.classList.add("show");
-    document.body.classList.add("modal-open");
-    const el = m.querySelector("button, input");
-    if (el) el.focus();
-  }
-}
-
-function closeModal(m) {
-  if (!m) return;
-  m.classList.remove("show");
-  document.body.classList.remove("modal-open");
-  if (lastFocus?.focus) lastFocus.focus();
-}
-
-document.querySelectorAll(".modal").forEach(m => {
-  m.addEventListener("click", e => {
-    if (e.target.hasAttribute("data-close")) closeModal(m);
-  });
-});
-
-document.addEventListener("keydown", e => {
-  if (e.key === "Escape") closeModal(document.querySelector(".modal.show"));
-});
-
-// ──── DATA ────
+// ── 8 VÉHICULES ──
 const CARS = [
   {
-    id: "merecesa45s",
-    name: "Mercedes A45s 2025",
-    type: "sportive",
-    pricePerDay: "349€",
-    caution: "5 000€",
-    dispo: "dispo",
-    gearbox: "Automatique",
-    fuel: "Essence",
-    seats: "5 places",
-    doors: "5 portes",
-    conditions: "Permis valide / CNI / CB",
-    km: "Selon offre",
-    images: ["cars/a45s/merco1.png","cars/a45s/merco2.png","cars/a45s/merco3.png","cars/a45s/merco4.png","cars/a45s/merco5.png","cars/a45s/merco6.png"]
+    id:"merecesa45s",
+    name:"Mercedes A45s 2025",
+    type:"sportive",
+    pricePerDay:349,
+    caution:"5 000€",
+    dispo:"dispo",
+    gearbox:"Automatique",
+    fuel:"Essence",
+    seats:"5 places",
+    doors:"5 portes",
+    conditions:"Permis valide / CNI / CB",
+    km:"Selon offre",
+    images:[
+      "cars/a45s/merco1.png",
+      "cars/a45s/merco2.png",
+      "cars/a45s/merco3.png",
+      "cars/a45s/merco4.png",
+      "cars/a45s/merco5.png",
+      "cars/a45s/merco6.png"
+    ]
   },
   {
-    id: "audirs3sedan",
-    name: "Audi RS3 Sedan 2025",
-    type: "sportive",
-    pricePerDay: "349€",
-    caution: "5 000€",
-    dispo: "dispo",
-    gearbox: "Automatique",
-    fuel: "Essence",
-    seats: "5 places",
-    doors: "5 portes",
-    conditions: "Permis valide / CNI / CB",
-    km: "Selon offre",
-    images: ["cars/rs3sedan/audi1.png","cars/rs3sedan/audi2.png","cars/rs3sedan/audi4.png","cars/rs3sedan/audi5.png","cars/rs3sedan/audi6.png","cars/rs3sedan/audi7.jpg","cars/rs3sedan/audi8.jpg"]
+    id:"audirs3sedan",
+    name:"Audi RS3 Sedan 2025",
+    type:"sportive",
+    pricePerDay:349,
+    caution:"5 000€",
+    dispo:"dispo",
+    gearbox:"Automatique",
+    fuel:"Essence",
+    seats:"5 places",
+    doors:"5 portes",
+    conditions:"Permis valide / CNI / CB",
+    km:"Selon offre",
+    images:[
+      "cars/rs3sedan/audi1.png",
+      "cars/rs3sedan/audi2.png",
+      "cars/rs3sedan/audi4.png",
+      "cars/rs3sedan/audi5.png",
+      "cars/rs3sedan/audi6.png",
+      "cars/rs3sedan/audi7.jpg",
+      "cars/rs3sedan/audi8.jpg"
+    ]
   },
   {
-    id: "rs3hulk",
-    name: "Audi RS3 Hulk 8Y 2023 — Pack Akra",
-    type: "sportive",
-    pricePerDay: "249€",
-    caution: "4 500€",
-    dispo: "dispo",
-    gearbox: "Automatique",
-    fuel: "Essence",
-    seats: "5 places",
-    doors: "5 portes",
-    conditions: "Permis valide / CNI / CB",
-    km: "Selon offre",
-    images: ["cars/rs3hulk/audi1.png","cars/rs3hulk/audi2.png","cars/rs3hulk/audi3.png","cars/rs3hulk/audi4.png","cars/rs3hulk/audi5.png","cars/rs3hulk/audi6.png","cars/rs3hulk/audi7.png","cars/rs3hulk/audi8.png"]
+    id:"rs3hulk",
+    name:"Audi RS3 Hulk 8Y 2023 — Pack Akra",
+    type:"sportive",
+    pricePerDay:249,
+    caution:"4 500€",
+    dispo:"dispo",
+    gearbox:"Automatique",
+    fuel:"Essence",
+    seats:"5 places",
+    doors:"5 portes",
+    conditions:"Permis valide / CNI / CB",
+    km:"Selon offre",
+    images:[
+      "cars/rs3hulk/audi1.png",
+      "cars/rs3hulk/audi2.png",
+      "cars/rs3hulk/audi3.png",
+      "cars/rs3hulk/audi4.png",
+      "cars/rs3hulk/audi5.png",
+      "cars/rs3hulk/audi6.png",
+      "cars/rs3hulk/audi7.png",
+      "cars/rs3hulk/audi8.png"
+    ]
   },
   {
-    id: "golfgtics",
-    name: "Golf 8 GTI CS",
-    type: "sportive",
-    pricePerDay: "149€",
-    caution: "3 500€",
-    dispo: "dispo",
-    gearbox: "Automatique",
-    fuel: "Essence",
-    seats: "5 places",
-    doors: "5 portes",
-    conditions: "Permis valide / CNI / CB",
-    km: "Selon offre",
-    images: ["cars/golfgti/golf1.png","cars/golfgti/golf3.png","cars/golfgti/golf7.png","cars/golfgti/golf2.png","cars/golfgti/golf4.png","cars/golfgti/golf5.png","cars/golfgti/golf6.jpeg"]
+    id:"golfgtics",
+    name:"Golf 8 GTI CS",
+    type:"sportive",
+    pricePerDay:149,
+    caution:"3 500€",
+    dispo:"dispo",
+    gearbox:"Automatique",
+    fuel:"Essence",
+    seats:"5 places",
+    doors:"5 portes",
+    conditions:"Permis valide / CNI / CB",
+    km:"Selon offre",
+    images:[
+      "cars/golfgti/golf1.png",
+      "cars/golfgti/golf3.png",
+      "cars/golfgti/golf7.png",
+      "cars/golfgti/golf2.png",
+      "cars/golfgti/golf4.png",
+      "cars/golfgti/golf5.png",
+      "cars/golfgti/golf6.jpeg"
+    ]
   },
   {
-    id: "golf8rline",
-    name: "Golf 8 R-Line 2025",
-    type: "citadine",
-    pricePerDay: "129€",
-    caution: "1 500€",
-    dispo: "dispo",
-    gearbox: "Automatique",
-    fuel: "Essence",
-    seats: "5 places",
-    doors: "5 portes",
-    conditions: "Permis valide / CNI / CB",
-    km: "Selon offre",
-    images: ["cars/rlinenoir/rline1.png","cars/rlinenoir/rline2.png","cars/rlinenoir/rline3.png","cars/rlinenoir/rline4.png","cars/rlinenoir/rline5.png","cars/rlinenoir/rline6.png","cars/rlinenoir/rline7.jpeg","cars/rlinenoir/rline8.png"]
+    id:"golf8rline",
+    name:"Golf 8 R-Line 2025",
+    type:"citadine",
+    pricePerDay:129,
+    caution:"1 500€",
+    dispo:"dispo",
+    gearbox:"Automatique",
+    fuel:"Essence",
+    seats:"5 places",
+    doors:"5 portes",
+    conditions:"Permis valide / CNI / CB",
+    km:"Selon offre",
+    images:[
+      "cars/rlinenoir/rline1.png",
+      "cars/rlinenoir/rline2.png",
+      "cars/rlinenoir/rline3.png",
+      "cars/rlinenoir/rline4.png",
+      "cars/rlinenoir/rline5.png",
+      "cars/rlinenoir/rline6.png",
+      "cars/rlinenoir/rline7.jpeg",
+      "cars/rlinenoir/rline8.png"
+    ]
   },
   {
-    id: "clio5alpine",
-    name: "Clio 5 Alpine 2025",
-    type: "citadine",
-    pricePerDay: "79€",
-    caution: "1 500€",
-    dispo: "dispo",
-    gearbox: "Automatique",
-    fuel: "Essence",
-    seats: "5 places",
-    doors: "5 portes",
-    conditions: "Permis valide / CNI / CB",
-    km: "Selon offre",
-    images: ["cars/clio5noir/clio5-1.png","cars/clio5noir/clio5-2.png","cars/clio5noir/clio5-3.png","cars/clio5noir/clio5-4.png","cars/clio5noir/clio5-7.png","cars/clio5noir/clio5-5.png","cars/clio5noir/clio5-6.png","cars/clio5noir/clio5-8.jpg"]
+    id:"clio5alpine",
+    name:"Clio 5 Alpine 2025",
+    type:"citadine",
+    pricePerDay:79,
+    caution:"1 500€",
+    dispo:"dispo",
+    gearbox:"Automatique",
+    fuel:"Essence",
+    seats:"5 places",
+    doors:"5 portes",
+    conditions:"Permis valide / CNI / CB",
+    km:"Selon offre",
+    images:[
+      "cars/clio5noir/clio5-1.png",
+      "cars/clio5noir/clio5-2.png",
+      "cars/clio5noir/clio5-3.png",
+      "cars/clio5noir/clio5-4.png",
+      "cars/clio5noir/clio5-7.png",
+      "cars/clio5noir/clio5-5.png",
+      "cars/clio5noir/clio5-6.png",
+      "cars/clio5noir/clio5-8.jpg"
+    ]
   },
   {
-    id: "clio5alpinegrise",
-    name: "Clio 5 Alpine Gris Nardo 2025",
-    type: "citadine",
-    pricePerDay: "79€",
-    caution: "1 500€",
-    dispo: "dispo",
-    gearbox: "Automatique",
-    fuel: "Essence",
-    seats: "5 places",
-    doors: "5 portes",
-    conditions: "Permis valide / CNI / CB",
-    km: "Selon offre",
-    images: ["cars/clio5gris/cliogris1.png","cars/clio5gris/cliogris2.png","cars/clio5gris/cliogris3.png","cars/clio5gris/cliogris4.png","cars/clio5gris/cliogris5.png","cars/clio5gris/cliogris6.png","cars/clio5gris/cliogris7.png","cars/clio5gris/cliogris8.jpg"]
+    id:"clio5alpinegrise",
+    name:"Clio 5 Alpine Gris Nardo 2025",
+    type:"citadine",
+    pricePerDay:79,
+    caution:"1 500€",
+    dispo:"dispo",
+    gearbox:"Automatique",
+    fuel:"Essence",
+    seats:"5 places",
+    doors:"5 portes",
+    conditions:"Permis valide / CNI / CB",
+    km:"Selon offre",
+    images:[
+      "cars/clio5gris/cliogris1.png",
+      "cars/clio5gris/cliogris2.png",
+      "cars/clio5gris/cliogris3.png",
+      "cars/clio5gris/cliogris4.png",
+      "cars/clio5gris/cliogris5.png",
+      "cars/clio5gris/cliogris6.png",
+      "cars/clio5gris/cliogris7.png",
+      "cars/clio5gris/cliogris8.jpg"
+    ]
   },
   {
-    id: "clio5intense",
-    name: "Clio 5 Intense — Boîte Manuelle",
-    type: "citadine",
-    pricePerDay: "49€",
-    caution: "1 000€",
-    dispo: "dispo",
-    gearbox: "Manuel",
-    fuel: "Essence",
-    seats: "5 places",
-    doors: "5 portes",
-    conditions: "Permis valide / CNI / CB",
-    km: "Selon offre",
-    images: ["cars/cliointense/cliointense1.png","cars/cliointense/cliointense2.png","cars/cliointense/cliointense3.png","cars/cliointense/cliointense4.png","cars/cliointense/cliointense5.png","cars/cliointense/cliointense6.png","cars/cliointense/cliointense7.jpg","cars/cliointense/cliointense8.jpg"]
+    id:"clio5intense",
+    name:"Clio 5 Intense — Boîte Manuelle",
+    type:"citadine",
+    pricePerDay:49,
+    caution:"1 000€",
+    dispo:"dispo",
+    gearbox:"Manuel",
+    fuel:"Essence",
+    seats:"5 places",
+    doors:"5 portes",
+    conditions:"Permis valide / CNI / CB",
+    km:"Selon offre",
+    images:[
+      "cars/cliointense/cliointense1.png",
+      "cars/cliointense/cliointense2.png",
+      "cars/cliointense/cliointense3.png",
+      "cars/cliointense/cliointense4.png",
+      "cars/cliointense/cliointense5.png",
+      "cars/cliointense/cliointense6.png",
+      "cars/cliointense/cliointense7.jpg",
+      "cars/cliointense/cliointense8.jpg"
+    ]
   }
 ];
 
-// ──── RENDER ────
-const TYPE_LABELS = { sportive: "Sportive", citadine: "Citadine", suv: "SUV", berline: "Berline" };
+// ── BANNER ──
+const dispoCount = CARS.filter(c=>c.dispo==="dispo").length;
+document.getElementById("availText").innerHTML =
+  `<span>${dispoCount} véhicule${dispoCount>1?'s':''} disponible${dispoCount>1?'s':''} ce week-end</span> — Réservation rapide sur WhatsApp`;
 
-function dispoBadge(d) {
-  if (d === "dispo") return `<span class="badge badge-dispo">Disponible</span>`;
-  if (d === "bientot") return `<span class="badge badge-soon">Bientôt</span>`;
-  return `<span class="badge badge-indispo">Indisponible</span>`;
+// ── COUNT UP ──
+function animateCount(el){
+  const target=parseFloat(el.dataset.target);
+  const dec=el.dataset.dec==="1";
+  const dur=1800,start=performance.now();
+  function step(now){
+    const p=Math.min((now-start)/dur,1);
+    const e=1-Math.pow(1-p,3);
+    el.textContent=dec?(e*target).toFixed(1):Math.floor(e*target);
+    if(p<1)requestAnimationFrame(step);
+    else el.textContent=dec?target.toFixed(1):target;
+  }
+  requestAnimationFrame(step);
+}
+const statsObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){document.querySelectorAll(".count-up").forEach(animateCount);statsObs.disconnect()}});
+},{threshold:0.3});
+const statsRow=document.querySelector(".stats-row");
+if(statsRow)statsObs.observe(statsRow);
+
+// ── FAQ ──
+document.querySelectorAll(".faq-question").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const item=btn.closest(".faq-item");
+    const isOpen=item.classList.contains("open");
+    document.querySelectorAll(".faq-item").forEach(i=>i.classList.remove("open"));
+    if(!isOpen)item.classList.add("open");
+  });
+});
+
+// ── MODAL ──
+let lastFocus=null;
+function openModal(id){
+  lastFocus=document.activeElement;
+  document.querySelectorAll(".modal.show").forEach(m=>m.classList.remove("show"));
+  const m=document.getElementById(id);
+  if(m){m.classList.add("show");document.body.classList.add("modal-open");m.querySelector("button,input")?.focus()}
+}
+function closeModal(m){
+  if(!m)return;
+  m.classList.remove("show");
+  document.body.classList.remove("modal-open");
+  lastFocus?.focus?.();
+}
+document.querySelectorAll(".modal").forEach(m=>{
+  m.addEventListener("click",e=>{if(e.target.hasAttribute("data-close"))closeModal(m)});
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape")closeModal(document.querySelector(".modal.show"));
+});
+
+// ── RENDER ──
+const TYPE_LABELS={sportive:"Sportive",citadine:"Citadine",suv:"SUV",berline:"Berline"};
+function dispoBadge(d){
+  if(d==="dispo")return`<span class="badge badge-dispo">Disponible</span>`;
+  if(d==="bientot")return`<span class="badge badge-soon">Bientôt</span>`;
+  return`<span class="badge badge-indispo">Indisponible</span>`;
 }
 
-function renderCars(list) {
-  const grid = document.getElementById("carGrid");
-  document.getElementById("count").textContent = `${list.length} véhicule${list.length > 1 ? "s" : ""}`;
-
-  if (!list.length) {
-    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)">
-      <div style="font-size:40px;margin-bottom:14px">🔍</div>
-      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px">Aucun résultat</div>
-      <div>Essayez d'autres critères de recherche.</div>
-    </div>`;
+function renderCars(list){
+  const grid=document.getElementById("carGrid");
+  document.getElementById("count").textContent=`${list.length} véhicule${list.length>1?"s":""}`;
+  if(!list.length){
+    grid.innerHTML=`<div class="no-results"><div style="font-size:40px;margin-bottom:14px">🔍</div><div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px">Aucun résultat</div><div>Essayez d'autres critères.</div></div>`;
     return;
   }
-
-  grid.innerHTML = list.map(car => {
-    const img = car.images?.[0] || "";
-    return `
-    <div class="car-card" data-id="${car.id}">
+  grid.innerHTML=list.map((car,i)=>`
+    <div class="car-card" style="animation-delay:${i*60}ms" data-id="${car.id}">
       <div class="car-image" data-gallery="${car.id}">
-        <img src="${img}" alt="${car.name}" loading="lazy"
+        <img src="${car.images[0]}" alt="${car.name}" loading="lazy"
              onerror="this.src='https://picsum.photos/800/500?random=${encodeURIComponent(car.id)}'">
         <div class="car-image-overlay"></div>
         <div class="car-image-badge">${dispoBadge(car.dispo)}</div>
@@ -1219,10 +876,10 @@ function renderCars(list) {
         <div class="car-top">
           <div>
             <div class="car-name">${car.name}</div>
-            <div class="car-type">${TYPE_LABELS[car.type] || car.type}</div>
+            <div class="car-type">${TYPE_LABELS[car.type]||car.type}</div>
           </div>
           <div class="car-price-block">
-            <div class="car-price">${car.pricePerDay}</div>
+            <div class="car-price">${car.pricePerDay}€</div>
             <div class="car-price-label">/ jour</div>
           </div>
         </div>
@@ -1233,167 +890,157 @@ function renderCars(list) {
           <span class="chip">🔒 ${car.caution}</span>
         </div>
         <div class="car-actions">
-          <button class="btn btn-primary" type="button" data-reserve="${car.id}">Réserver</button>
-          <button class="btn btn-ghost" type="button" data-infos="${car.id}">Infos & Photos</button>
+          <button class="btn btn-primary" data-reserve="${car.id}">Réserver</button>
+          <button class="btn btn-ghost" data-infos="${car.id}">Infos & Photos</button>
         </div>
       </div>
-    </div>`;
-  }).join("");
+    </div>`).join("");
 
-  // Animate cards with stagger
-  grid.querySelectorAll(".car-card").forEach((card, i) => {
-    card.style.animationDelay = `${i * 60}ms`;
-  });
-
-  grid.querySelectorAll("[data-infos]").forEach(btn =>
-    btn.addEventListener("click", () => openInfos(btn.dataset.infos)));
-  grid.querySelectorAll("[data-reserve]").forEach(btn =>
-    btn.addEventListener("click", () => openReserve(btn.dataset.reserve)));
-  grid.querySelectorAll("[data-gallery]").forEach(box =>
-    box.addEventListener("click", () => openInfos(box.dataset.gallery)));
+  grid.querySelectorAll("[data-infos]").forEach(btn=>btn.addEventListener("click",()=>openInfos(btn.dataset.infos)));
+  grid.querySelectorAll("[data-reserve]").forEach(btn=>btn.addEventListener("click",()=>openReserve(btn.dataset.reserve)));
+  grid.querySelectorAll("[data-gallery]").forEach(box=>box.addEventListener("click",()=>openInfos(box.dataset.gallery)));
 }
 
-// ──── GALLERY STATE ────
-let gImages = [], gIndex = 0;
-const galleryMain = document.getElementById("galleryMain");
-const galleryThumbs = document.getElementById("galleryThumbs");
-const galleryBox = document.getElementById("galleryBox");
-const gFitBtn = document.getElementById("gFitBtn");
+// ── GALLERY ──
+let gImages=[],gIndex=0;
+const galleryMain=document.getElementById("galleryMain");
+const galleryThumbs=document.getElementById("galleryThumbs");
+const galleryBox=document.getElementById("galleryBox");
+const gFitBtn=document.getElementById("gFitBtn");
 
-function setGalleryImg(i) {
-  gIndex = i;
-  galleryMain.src = gImages[i];
-  galleryThumbs.querySelectorAll("img").forEach((t, idx) => t.classList.toggle("active", idx === i));
+function setGImg(i){
+  gIndex=i;galleryMain.src=gImages[i];
+  galleryThumbs.querySelectorAll("img").forEach((t,idx)=>t.classList.toggle("active",idx===i));
 }
-document.getElementById("gPrev").addEventListener("click", () => setGalleryImg((gIndex - 1 + gImages.length) % gImages.length));
-document.getElementById("gNext").addEventListener("click", () => setGalleryImg((gIndex + 1) % gImages.length));
-gFitBtn.addEventListener("click", () => {
+document.getElementById("gPrev").addEventListener("click",()=>setGImg((gIndex-1+gImages.length)%gImages.length));
+document.getElementById("gNext").addEventListener("click",()=>setGImg((gIndex+1)%gImages.length));
+gFitBtn.addEventListener("click",()=>{
   galleryBox.classList.toggle("fullfit");
-  gFitBtn.textContent = galleryBox.classList.contains("fullfit") ? "Remplir" : "Afficher entier";
+  gFitBtn.textContent=galleryBox.classList.contains("fullfit")?"Remplir":"Afficher entier";
 });
 
-// ──── OPEN INFOS MODAL ────
-function openInfos(id) {
-  const car = CARS.find(c => c.id === id);
-  if (!car) return;
-
-  document.getElementById("mi_title").textContent = car.name;
-  document.getElementById("mi_sub").textContent =
-    `${TYPE_LABELS[car.type] || car.type} · ${car.pricePerDay}/jour · ${car.dispo === "dispo" ? "Disponible" : (car.dispo === "bientot" ? "Bientôt" : "Indisponible")}`;
-
-  galleryBox.classList.remove("fullfit");
-  gFitBtn.textContent = "Afficher entier";
-  gImages = car.images?.length ? [...car.images] : [`https://picsum.photos/900/600?random=${encodeURIComponent(car.id)}`];
-
-  galleryThumbs.innerHTML = gImages.map((src, i) =>
-    `<img src="${src}" alt="Photo ${i + 1}" class="${i === 0 ? 'active' : ''}"
-          onerror="this.style.display='none'">`
-  ).join("");
-  galleryThumbs.querySelectorAll("img").forEach((t, i) => t.addEventListener("click", () => setGalleryImg(i)));
-  setGalleryImg(0);
-
-  document.getElementById("mi_grid").innerHTML = `
-    <div class="info-card"><b>Prix / jour</b><span>${car.pricePerDay}</span></div>
+function openInfos(id){
+  const car=CARS.find(c=>c.id===id);if(!car)return;
+  document.getElementById("mi_title").textContent=car.name;
+  document.getElementById("mi_sub").textContent=`${TYPE_LABELS[car.type]||car.type} · ${car.pricePerDay}€/jour · ${car.dispo==="dispo"?"Disponible":car.dispo==="bientot"?"Bientôt":"Indisponible"}`;
+  galleryBox.classList.remove("fullfit");gFitBtn.textContent="Afficher entier";
+  gImages=car.images.length?[...car.images]:[`https://picsum.photos/900/600?random=${encodeURIComponent(car.id)}`];
+  galleryThumbs.innerHTML=gImages.map((src,i)=>`<img src="${src}" alt="Photo ${i+1}" class="${i===0?"active":""}" onerror="this.style.display='none'">`).join("");
+  galleryThumbs.querySelectorAll("img").forEach((t,i)=>t.addEventListener("click",()=>setGImg(i)));
+  setGImg(0);
+  document.getElementById("mi_grid").innerHTML=`
+    <div class="info-card"><b>Prix / jour</b><span>${car.pricePerDay}€</span></div>
     <div class="info-card"><b>Caution</b><span>${car.caution}</span></div>
     <div class="info-card"><b>Boîte de vitesse</b><span>${car.gearbox}</span></div>
     <div class="info-card"><b>Carburant</b><span>${car.fuel}</span></div>
     <div class="info-card"><b>Places</b><span>${car.seats}</span></div>
     <div class="info-card"><b>Portes</b><span>${car.doors}</span></div>
     <div class="info-card"><b>Conditions</b><span>${car.conditions}</span></div>
-    <div class="info-card"><b>Kilométrage</b><span>${car.km}</span></div>
-  `;
-
-  document.getElementById("mi_reserve").onclick = () => openReserve(id);
+    <div class="info-card"><b>Kilométrage</b><span>${car.km}</span></div>`;
+  document.getElementById("mi_reserve").onclick=()=>openReserve(id);
   openModal("modalInfos");
 }
 
-// ──── OPEN RESERVE MODAL ────
-function openReserve(id) {
-  const car = CARS.find(c => c.id === id);
-  if (!car) return;
-
-  document.getElementById("mr_title").textContent = `Réserver — ${car.name}`;
-  document.getElementById("mr_vehicle").value = car.name;
-  document.getElementById("mr_type").value = car.type;
-  document.getElementById("mr_acompte").value = car.type === "sportive" ? "150" : "100";
-
+function openReserve(id){
+  const car=CARS.find(c=>c.id===id);if(!car)return;
+  document.getElementById("mr_title").textContent=`Réserver — ${car.name}`;
+  document.getElementById("mr_vehicle").value=car.name;
+  document.getElementById("mr_type").value=car.type;
+  document.getElementById("mr_acompte").value=car.type==="sportive"?"150":"100";
+  document.getElementById("mr_price_day").value=car.pricePerDay;
+  updatePriceEst();
   openModal("modalReserve");
 }
 
-// ──── FORM SUBMIT FEEDBACK ────
-const reserveForm = document.querySelector('form[name="reservation"]');
-if (reserveForm) {
-  reserveForm.addEventListener("submit", () => {
-    const status = document.getElementById("mr_status");
-    if (status) status.textContent = "✅ Envoi en cours…";
-  });
+// ── PRICE ESTIMATOR ──
+function updatePriceEst(){
+  const d1=document.getElementById("dateDebut").value;
+  const d2=document.getElementById("dateFin").value;
+  const pdj=parseInt(document.getElementById("mr_price_day").value)||0;
+  const box=document.getElementById("priceEstimate");
+  if(!d1||!d2||!pdj){box.classList.remove("show");return}
+  const diff=Math.round((new Date(d2)-new Date(d1))/86400000);
+  if(diff<=0){box.classList.remove("show");return}
+  document.getElementById("priceDetail").textContent=`${diff} jour${diff>1?"s":""} × ${pdj}€`;
+  document.getElementById("priceTotal").textContent=`${(diff*pdj).toLocaleString("fr-FR")}€`;
+  box.classList.add("show");
 }
+document.getElementById("dateDebut").addEventListener("change",updatePriceEst);
+document.getElementById("dateFin").addEventListener("change",updatePriceEst);
 
-// ──── FILTERS ────
-function applyFilters() {
-  const q = document.getElementById("q").value.trim().toLowerCase();
-  const t = document.getElementById("filterType").value;
-  const d = document.getElementById("filterDispo").value;
-
-  const filtered = CARS.filter(car => {
-    const hay = [car.name, car.type, car.gearbox, car.fuel, car.seats, car.pricePerDay, car.caution, car.km].join(" ").toLowerCase();
-    return (!q || hay.includes(q)) && (!t || car.type === t) && (!d || car.dispo === d);
-  });
-
-  renderCars(filtered);
-}
-
-document.getElementById("q").addEventListener("input", applyFilters);
-document.getElementById("filterType").addEventListener("change", applyFilters);
-document.getElementById("filterDispo").addEventListener("change", applyFilters);
-
-// ──── CONTACT NAV BUTTON ────
-document.getElementById("btnContact")?.addEventListener("click", e => {
-  e.preventDefault();
-  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+// ── FORM ──
+document.querySelector('form[name="reservation"]')?.addEventListener("submit",()=>{
+  const s=document.getElementById("mr_status");
+  if(s)s.textContent="✅ Envoi en cours…";
 });
 
-// ──── REVIEWS ────
-const REVIEWS = [
-  { name: "Karim B.", initials: "KB", vehicle: "Audi RS3 Sedan 2025", stars: 5, text: "Service au top, voiture impeccable et livrée à l'heure. Je recommande à 100%, je reviendrai sans hésiter." },
-  { name: "Yasmine L.", initials: "YL", vehicle: "Mercedes A45s 2025", stars: 5, text: "La A45s est une bête ! Tout s'est passé nickel, du premier contact jusqu'au retour du véhicule. Très pro." },
-  { name: "Sofiane M.", initials: "SM", vehicle: "Golf 8 GTI CS", stars: 5, text: "Voiture propre, bien entretenue, et le contact est rapide sur WhatsApp. Parfait pour le week-end." },
-  { name: "Inès R.", initials: "IR", vehicle: "Clio 5 Alpine 2025", stars: 5, text: "Excellent rapport qualité/prix pour la Clio Alpine. Elle est superbe et très agréable à conduire." },
-  { name: "Mehdi T.", initials: "MT", vehicle: "Audi RS3 Hulk", stars: 5, text: "Le son de l'Akrapovic… incroyable. Location sans prise de tête, conditions claires. Merci MH !" },
-  { name: "Lina K.", initials: "LK", vehicle: "Golf 8 R-Line 2025", stars: 5, text: "Très belle voiture, propre et bien équipée. Le processus de réservation est simple et rapide." },
-  { name: "Rayan C.", initials: "RC", vehicle: "Mercedes A45s 2025", stars: 5, text: "Je loue régulièrement chez MH, jamais eu de problème. Toujours disponibles et à l'écoute." },
-  { name: "Amina F.", initials: "AF", vehicle: "Clio 5 Alpine Gris Nardo", stars: 5, text: "La couleur Gris Nardo est magnifique en vrai. Voiture en parfait état. Je referai appel à eux." },
-  { name: "Bilal S.", initials: "BS", vehicle: "Audi RS3 Sedan 2025", stars: 5, text: "Superbe expérience du début à la fin. Documents simples, caution transparente. Top niveau !" },
-  { name: "Nadia O.", initials: "NO", vehicle: "Golf 8 GTI CS", stars: 5, text: "On a loué pour un anniversaire, tout le monde était impressionné par la voiture. Merci MH Location !" },
-];
+// ── SLIDER ──
+const priceRange=document.getElementById("priceRange");
+const priceVal=document.getElementById("priceVal");
+function updateSlider(){
+  const mn=49,mx=349,v=priceRange.value;
+  const pct=((v-mn)/(mx-mn))*100;
+  priceRange.style.setProperty("--pct",pct+"%");
+  priceVal.textContent=v>=349?"Max":v+"€/j";
+  applyFilters();
+}
+priceRange.addEventListener("input",updateSlider);
 
-function renderReviews() {
-  const track = document.getElementById("reviewsTrack");
-  // Duplicate for seamless loop
-  const all = [...REVIEWS, ...REVIEWS];
-  track.innerHTML = all.map(r => `
+// ── FILTERS ──
+function applyFilters(){
+  const q=document.getElementById("q").value.trim().toLowerCase();
+  const t=document.getElementById("filterType").value;
+  const d=document.getElementById("filterDispo").value;
+  const mp=parseInt(priceRange.value);
+  renderCars(CARS.filter(car=>{
+    const hay=[car.name,car.type,car.gearbox,car.fuel,car.seats,car.pricePerDay,car.caution,car.km].join(" ").toLowerCase();
+    return(!q||hay.includes(q))&&(!t||car.type===t)&&(!d||car.dispo===d)&&car.pricePerDay<=mp;
+  }));
+}
+document.getElementById("q").addEventListener("input",applyFilters);
+document.getElementById("filterType").addEventListener("change",applyFilters);
+document.getElementById("filterDispo").addEventListener("change",applyFilters);
+
+// ── REVIEWS ──
+const REVIEWS=[
+  {name:"Karim B.",initials:"KB",vehicle:"Audi RS3 Sedan 2025",stars:5,text:"Service au top, voiture impeccable et livrée à l'heure. Je recommande à 100%, je reviendrai sans hésiter."},
+  {name:"Yasmine L.",initials:"YL",vehicle:"Mercedes A45s 2025",stars:5,text:"La A45s est une bête ! Tout s'est passé nickel, du premier contact jusqu'au retour. Très pro."},
+  {name:"Sofiane M.",initials:"SM",vehicle:"Golf 8 GTI CS",stars:5,text:"Voiture propre, bien entretenue, contact rapide sur WhatsApp. Parfait pour le week-end."},
+  {name:"Inès R.",initials:"IR",vehicle:"Clio 5 Alpine 2025",stars:5,text:"Excellent rapport qualité/prix pour la Clio Alpine. Elle est superbe et très agréable à conduire."},
+  {name:"Mehdi T.",initials:"MT",vehicle:"Audi RS3 Hulk",stars:5,text:"Le son de l'Akrapovic… incroyable. Location sans prise de tête, conditions claires. Merci MH !"},
+  {name:"Lina K.",initials:"LK",vehicle:"Golf 8 R-Line 2025",stars:5,text:"Très belle voiture, propre et bien équipée. Le processus de réservation est simple et rapide."},
+  {name:"Rayan C.",initials:"RC",vehicle:"Mercedes A45s 2025",stars:5,text:"Je loue régulièrement chez MH, jamais eu de problème. Toujours disponibles et à l'écoute."},
+  {name:"Amina F.",initials:"AF",vehicle:"Clio 5 Alpine Gris Nardo",stars:5,text:"La couleur Gris Nardo est magnifique en vrai. Voiture en parfait état. Je referai appel à eux."},
+  {name:"Bilal S.",initials:"BS",vehicle:"Audi RS3 Sedan 2025",stars:5,text:"Superbe expérience du début à la fin. Documents simples, caution transparente. Top niveau !"},
+  {name:"Nadia O.",initials:"NO",vehicle:"Golf 8 GTI CS",stars:5,text:"Loué pour un anniversaire, tout le monde était impressionné par la voiture. Merci MH Location !"},
+];
+(function renderReviews(){
+  const track=document.getElementById("reviewsTrack");
+  const all=[...REVIEWS,...REVIEWS];
+  track.innerHTML=all.map(r=>`
     <div class="review-card">
-      <div class="review-badge-google">
+      <div class="review-google">
         <svg width="12" height="12" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
         Google
       </div>
-      <div class="review-stars">${'<span>★</span>'.repeat(r.stars)}</div>
+      <div class="review-stars">${"<span>★</span>".repeat(r.stars)}</div>
       <div class="review-text">${r.text}</div>
       <div class="review-author">
         <div class="review-avatar">${r.initials}</div>
-        <div>
-          <div class="review-name">${r.name}</div>
-          <div class="review-vehicle">${r.vehicle}</div>
-        </div>
+        <div><div class="review-name">${r.name}</div><div class="review-vehicle">${r.vehicle}</div></div>
       </div>
-    </div>
-  `).join("");
-}
+    </div>`).join("");
+})();
 
-renderReviews();
+// ── CONTACT NAV ──
+document.getElementById("btnContact")?.addEventListener("click",e=>{
+  e.preventDefault();
+  document.getElementById("contact")?.scrollIntoView({behavior:"smooth"});
+});
 
-// ──── INIT ────
+// ── INIT ──
 renderCars(CARS);
+updateSlider();
 </script>
 </body>
 </html>
