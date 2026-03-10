@@ -1,1426 +1,1265 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="google-site-verification: google5f390a0ebfdb0371.html"/>
 <title>MH LOCATION — Véhicules disponibles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 
 <style>
-  :root{
-    --bg:#06070b;
-    --card: rgba(255,255,255,.03);
-    --line: rgba(255,255,255,.09);
-    --text:#ffffff;
-    --muted: rgba(255,255,255,.68);
-    --blue:#2f6dff;
-    --shadow: 0 18px 40px rgba(0,0,0,.40);
-    --r: 16px;
-  }
-
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    overflow-x:hidden;
-  }
-
-  /* background soft + logo watermark */
-  .bg{
-    position: fixed; inset:0; z-index:-5; pointer-events:none;
-    background:
-      radial-gradient(circle at 20% 10%, rgba(47,109,255,.14), transparent 45%),
-      radial-gradient(circle at 80% 0%, rgba(47,109,255,.08), transparent 50%),
-      radial-gradient(circle at 50% 90%, rgba(47,109,255,.06), transparent 55%),
-      var(--bg);
-  }
-  .bg::before{
-    content:"";
-    position:absolute; inset:0;
-    background: url("logo-mh.png") center / 520px auto no-repeat;
-    opacity: 0.10;
-    filter: blur(2.2px);
-  }
-  .bg::after{
-    content:"";
-    position:absolute; inset:0;
-    background:
-      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-    background-size: 64px 64px;
-    opacity:.55;
-  }
-
-  .container{ max-width: 980px; margin:0 auto; padding: 0 16px; }
-
-  header{
-    position: sticky; top:0; z-index:50;
-    background: rgba(6,7,11,.78);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid rgba(255,255,255,.06);
-  }
-
-  .topbar{
-    display:flex; align-items:center; justify-content:space-between; gap:12px;
-    padding: 14px 0;
-  }
-
-  .brand{
-    height: 90px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    gap: 12px;
-  }
-
-  .brand img{
-    height: 160px;
-    width: auto;
-    object-fit: contain;
-    display:block;
-  }
-
-  .brand .name{ display:flex; flex-direction:column; line-height:1; min-width:0; }
-  .brand .name b{ font-size:14px; letter-spacing:.9px; opacity:.95; }
-  .brand .name span{
-    font-size:12px; color: var(--muted); margin-top:6px;
-    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  }
-
-  .nav{ display:flex; gap:10px; align-items:center; flex-shrink:0; }
-  .nav a{
-    text-decoration:none;
-    color: rgba(255,255,255,.82);
-    font-weight: 900;
-    font-size: 13px;
-    padding: 10px 12px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,.07);
-    background: rgba(255,255,255,.02);
-    transition: .18s ease;
-  }
-  .nav a.primary{
-    background: var(--blue);
-    border-color: transparent;
-    color:#fff;
-  }
-
- @media (max-width: 720px){
-  .nav a{ display:none; }
-  .nav a.primary,
-  .nav a.contact{ display:inline-flex; }
-  .nav{ gap:8px; }
+:root {
+  --bg: #050608;
+  --surface: #0c0d12;
+  --surface2: #111318;
+  --border: rgba(255,255,255,.07);
+  --border-hover: rgba(255,255,255,.16);
+  --text: #f0f0f2;
+  --muted: rgba(240,240,242,.5);
+  --muted2: rgba(240,240,242,.32);
+  --gold: #c9a84c;
+  --gold2: #e8c97a;
+  --gold-glow: rgba(201,168,76,.18);
+  --gold-dim: rgba(201,168,76,.08);
+  --red: #e04040;
+  --green: #3ecf8e;
+  --r: 18px;
+  --r-sm: 12px;
 }
 
-  /* hero */
-  .hero{ padding: 18px 0 10px; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
-  .stats{
-    display:grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-top: 14px;
-  }
-  .stat{
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--r);
-    padding: 14px;
-    box-shadow: 0 10px 30px rgba(0,0,0,.25);
-  }
-  .stat .num{ font-size: 16px; font-weight: 950; }
-  .stat .label{
-    margin-top: 6px;
-    font-size: 12px;
-    font-weight: 900;
-    letter-spacing: .8px;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
 
-  .search-wrap{
-    margin-top: 12px;
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--r);
-    padding: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,.25);
-  }
-  .search{
-    display:flex; gap: 10px; align-items:center; flex-wrap:wrap;
-  }
-  .search input, .search select{
-    width:100%;
-    padding: 12px 12px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,.10);
-    background: rgba(0,0,0,.35);
-    color: var(--text);
-    outline:none;
-    font-size: 14px;
-    transition: .18s ease;
-  }
-  .search input:focus, .search select:focus{
-    border-color: rgba(47,109,255,.55);
-    box-shadow: 0 0 0 4px rgba(47,109,255,.12);
-  }
-  .pill{
-    padding: 10px 12px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,.10);
-    background: rgba(255,255,255,.03);
-    color: rgba(255,255,255,.85);
-    font-weight: 950;
-    font-size: 13px;
-    white-space:nowrap;
-  }
-  .filters{
-    display:grid;
-    grid-template-columns: 1.3fr .7fr .7fr;
-    gap: 10px;
-    width:100%;
-  }
-  @media(max-width:720px){
-    .stats{ grid-template-columns: 1fr; }
-    .filters{ grid-template-columns: 1fr; }
-  }
+/* ───── BACKGROUND ───── */
+.bg-layer {
+  position: fixed; inset: 0; z-index: -10; pointer-events: none;
+  overflow: hidden;
+}
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: .55;
+}
+.bg-orb-1 { width: 600px; height: 600px; top: -200px; left: -150px; background: radial-gradient(circle, rgba(201,168,76,.22), transparent 70%); }
+.bg-orb-2 { width: 500px; height: 500px; top: 10%; right: -200px; background: radial-gradient(circle, rgba(201,168,76,.10), transparent 70%); }
+.bg-orb-3 { width: 700px; height: 700px; bottom: -300px; left: 30%; background: radial-gradient(circle, rgba(201,168,76,.08), transparent 70%); }
+.bg-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+.bg-noise {
+  position: absolute; inset: 0;
+  opacity: .04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
 
-  .section{ padding: 18px 0 28px; }
-  .section h2{
-    font-size: 16px;
-    font-weight: 950;
-    margin: 18px 0 10px;
-  }
-  .meta{
-    color: var(--muted);
-    font-size: 13px;
-    margin-bottom: 12px;
-  }
+/* ───── CONTAINER ───── */
+.container { max-width: 1060px; margin: 0 auto; padding: 0 20px; }
 
-  .grid{
-    display:grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-  @media(max-width:720px){
-    .grid{ grid-template-columns: 1fr; }
-  }
+/* ───── HEADER ───── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  padding: 0;
+}
+.header-inner {
+  background: rgba(5,6,8,.8);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+}
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; padding: 12px 0;
+}
+.brand {
+  display: flex; align-items: center; gap: 14px;
+}
+.brand-logo {
+  height: 52px; width: 52px;
+  border-radius: 14px;
+  border: 1px solid rgba(201,168,76,.25);
+  background: rgba(201,168,76,.06);
+  display: grid; place-items: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.brand-logo img { height: 44px; width: auto; object-fit: contain; }
+.brand-logo .logo-fallback {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 18px;
+  color: var(--gold);
+  letter-spacing: -0.5px;
+}
+.brand-text { display: flex; flex-direction: column; gap: 2px; }
+.brand-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 15px;
+  letter-spacing: .04em;
+  color: var(--text);
+}
+.brand-tagline {
+  font-size: 11px; color: var(--muted);
+  letter-spacing: .02em;
+}
 
-  .card2{
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--r);
-    box-shadow: var(--shadow);
-    transition: .18s ease;
-    overflow:hidden;
-  }
-  .card2:hover{
-    transform: translateY(-2px);
-    border-color: rgba(47,109,255,.45);
-  }
+.nav { display: flex; gap: 6px; align-items: center; }
+.nav a {
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 13px; font-weight: 500;
+  padding: 8px 14px; border-radius: 10px;
+  transition: .2s ease;
+  letter-spacing: .01em;
+}
+.nav a:hover { color: var(--text); background: rgba(255,255,255,.05); }
+.nav a.nav-cta {
+  background: var(--gold);
+  color: #000;
+  font-weight: 700;
+  font-family: 'Syne', sans-serif;
+  letter-spacing: .04em;
+}
+.nav a.nav-cta:hover { background: var(--gold2); }
 
-  .card-image{
-    width:100%;
-    height: 260px;
-    overflow:hidden;
-    cursor:pointer;
-    background: rgba(0,0,0,.25);
-  }
-  .card-image img{
-    width:100%;
-    height:100%;
-    object-fit: cover;
-    object-position: center;
-    transition:.35s ease;
-    display:block;
-  }
-  .card2:hover .card-image img{ transform:scale(1.03); }
+@media(max-width:720px) {
+  .nav a:not(.nav-cta):not(.nav-contact) { display: none; }
+}
 
-  @media(max-width:720px){
-    .card-image{ height: 220px; }
-  }
+/* ───── HERO ───── */
+.hero { padding: 52px 0 28px; }
+.hero-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 18px;
+}
+.hero-label::before {
+  content: '';
+  width: 24px; height: 1px;
+  background: var(--gold);
+}
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(32px, 5vw, 54px);
+  font-weight: 800; line-height: 1.08;
+  letter-spacing: -.02em;
+  margin-bottom: 14px;
+}
+.hero-title em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 50%, #fff8e0 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  color: var(--muted); font-size: 16px; max-width: 520px;
+  line-height: 1.6; margin-bottom: 36px;
+}
 
-  .card-content{ padding:14px; }
+/* STATS PILLS */
+.stats-row {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+.stat-pill {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 13px; font-weight: 500;
+}
+.stat-pill .icon { font-size: 16px; }
+.stat-pill b { color: var(--text); }
+.stat-pill span { color: var(--muted); font-size: 12px; }
 
-  .card-top{
-    display:flex; align-items:flex-start; justify-content:space-between;
-    gap: 10px; flex-wrap:wrap;
-  }
+/* ───── SEARCH BAR ───── */
+.search-bar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 16px;
+  display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+  box-shadow: 0 8px 40px rgba(0,0,0,.3), 0 0 0 1px rgba(201,168,76,.08) inset;
+}
+.search-bar input,
+.search-bar select {
+  flex: 1; min-width: 180px;
+  padding: 12px 16px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px;
+  outline: none; transition: .2s;
+  appearance: none; -webkit-appearance: none;
+}
+.search-bar select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(240,240,242,.4)' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 38px;
+  cursor: pointer;
+}
+.search-bar select option { background: #111318; }
+.search-bar input:focus, .search-bar select:focus {
+  border-color: rgba(201,168,76,.4);
+  box-shadow: 0 0 0 3px rgba(201,168,76,.1);
+}
+.count-badge {
+  background: var(--gold-dim);
+  border: 1px solid rgba(201,168,76,.2);
+  color: var(--gold);
+  font-size: 12px; font-weight: 700; font-family: 'Syne', sans-serif;
+  padding: 8px 16px; border-radius: 999px; white-space: nowrap;
+}
 
-  .title{ font-weight: 950; font-size: 14px; line-height: 1.25; }
-  .sub{ font-size: 12px; color: var(--muted); margin-top: 6px; }
+/* ───── SECTION ───── */
+.section { padding: 48px 0; }
+.section-header { margin-bottom: 28px; }
+.section-label {
+  font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+}
+.section-label::before { content: ''; width: 20px; height: 1px; background: var(--gold); }
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px; font-weight: 800; letter-spacing: -.02em;
+}
+.section-meta { color: var(--muted); font-size: 14px; margin-top: 6px; }
 
-  .badge{
-    font-size: 11px;
-    font-weight: 950;
-    padding: 6px 10px;
-    border-radius: 999px;
-    border: 1px solid rgba(255,255,255,.10);
-    background: rgba(255,255,255,.03);
-    color: rgba(255,255,255,.86);
-    white-space:nowrap;
-  }
-  .badge--ok{
-    border-color: rgba(46, 204, 113, .35);
-    background: rgba(46, 204, 113, .14);
-    color: rgba(200, 255, 220, .95);
-  }
-  .badge--warn{
-    border-color: rgba(241, 196, 15, .35);
-    background: rgba(241, 196, 15, .12);
-    color: rgba(255, 245, 200, .95);
-  }
-  .badge--bad{
-    border-color: rgba(231, 76, 60, .35);
-    background: rgba(231, 76, 60, .12);
-    color: rgba(255, 210, 210, .95);
-  }
+/* ───── CAR GRID ───── */
+.car-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media(max-width:720px) { .car-grid { grid-template-columns: 1fr; } }
 
-  .kv{
-    display:flex; gap:10px; flex-wrap:wrap;
-    margin-top: 10px;
-  }
-  .kv .chip{
-    font-size: 12px;
-    font-weight: 900;
-    padding: 8px 10px;
-    border-radius: 999px;
-    border: 1px solid rgba(255,255,255,.10);
-    background: rgba(255,255,255,.03);
-    color: rgba(255,255,255,.85);
-  }
+/* ───── CAR CARD ───── */
+.car-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  overflow: hidden;
+  transition: .3s cubic-bezier(.2,.8,.2,1);
+  cursor: pointer;
+  position: relative;
+}
+.car-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(201,168,76,.06), transparent 60%);
+  opacity: 0;
+  transition: .3s;
+  pointer-events: none;
+  z-index: 1;
+}
+.car-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(201,168,76,.3);
+  box-shadow: 0 24px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(201,168,76,.12);
+}
+.car-card:hover::before { opacity: 1; }
 
-  .card-actions{
-    margin-top: 12px;
-    display:flex;
-    gap: 10px;
-  }
+.car-image {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+  background: rgba(0,0,0,.3);
+}
+.car-image img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  transition: .5s cubic-bezier(.2,.8,.2,1);
+  display: block;
+}
+.car-card:hover .car-image img { transform: scale(1.06); }
+.car-image-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(5,6,8,.8) 0%, transparent 60%);
+  pointer-events: none;
+}
+.car-image-badge {
+  position: absolute; top: 14px; right: 14px;
+  z-index: 2;
+}
 
-  .btn{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    width:100%;
-    padding: 12px 12px;
-    border-radius: 14px;
-    font-weight: 950;
-    font-size: 13px;
-    text-decoration:none;
-    border: 1px solid rgba(255,255,255,.10);
-    background: rgba(255,255,255,.03);
-    color: var(--text);
-    cursor:pointer;
-    transition: .18s ease;
-  }
-  .btn.primary{
-    background: var(--blue);
-    border-color: transparent;
-    color:#fff;
-  }
-  .btn:active{ transform: translateY(1px); }
+.car-body { padding: 18px; }
+.car-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 10px; margin-bottom: 12px;
+}
+.car-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px; font-weight: 700; line-height: 1.3;
+}
+.car-type { font-size: 12px; color: var(--muted); margin-top: 3px; }
 
-  /* FAQ */
-  .faq-item{
-    border:1px solid var(--line);
-    border-radius:16px;
-    margin-bottom:10px;
-    overflow:hidden;
-    background: var(--card);
-    box-shadow: var(--shadow);
-  }
-  .faq-question{
-    width:100%;
-    text-align:left;
-    padding:14px;
-    background:none;
-    border:none;
-    color:var(--text);
-    font-weight:950;
-    font-size:14px;
-    cursor:pointer;
-  }
-  .faq-answer{
-    padding:0 14px 14px 14px;
-    font-size:14px;
-    color: var(--muted);
-    line-height:1.6;
-    display:none;
-  }
+.car-price-block { text-align: right; flex-shrink: 0; }
+.car-price {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px; font-weight: 800;
+  color: var(--gold);
+}
+.car-price-label { font-size: 11px; color: var(--muted2); margin-top: 1px; }
 
-  /* MODALS */
-  .modal{ position: fixed; inset: 0; z-index: 999; display:none; }
-  .modal.show{ display:block; }
-  .modal-backdrop{
-    position:absolute; inset:0;
-    background: rgba(0,0,0,.62);
-    backdrop-filter: blur(6px);
-  }
-  .modal-panel{
-    position: relative;
-    width: min(860px, calc(100% - 26px));
-    margin: 6vh auto;
-    border-radius: 18px;
-    background: rgba(12,14,22,.92);
-    border: 1px solid rgba(255,255,255,.10);
-    box-shadow: 0 30px 90px rgba(0,0,0,.65);
-    overflow:hidden;
-    max-height: 88vh;
-    display:flex;
-    flex-direction:column;
-  }
-  .modal-header{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap: 10px;
-    padding: 14px 14px 10px;
-    border-bottom: 1px solid rgba(255,255,255,.06);
-    flex: 0 0 auto;
-  }
-  .modal-title{ font-weight: 950; font-size: 15px; line-height: 1.2; }
-  .modal-sub{ margin-top:6px; color: var(--muted); font-size: 13px; line-height:1.4; }
-  .modal-close{
-    border: 1px solid rgba(255,255,255,.12);
-    background: rgba(255,255,255,.06);
-    color: #fff;
-    width: 38px; height: 38px;
-    border-radius: 12px;
-    cursor:pointer;
-    font-size: 18px;
-    line-height: 1;
-  }
-  .modal-body{
-    padding: 14px;
-    overflow:auto;
-    -webkit-overflow-scrolling: touch;
-    flex: 1 1 auto;
-  }
+.car-chips {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-bottom: 16px;
+}
+.chip {
+  font-size: 12px; font-weight: 500;
+  padding: 5px 11px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: rgba(240,240,242,.75);
+}
 
-  .modal-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  @media(max-width:720px){ .modal-grid{ grid-template-columns: 1fr; } }
+.car-actions { display: flex; gap: 8px; }
 
-  .mini-card{
-    background: rgba(255,255,255,.03);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 14px;
-    padding: 12px;
-  }
-  .mini-card b{ display:block; font-size: 13px; }
-  .mini-card span{ display:block; margin-top: 6px; color: var(--muted); font-size: 13px; line-height: 1.55; }
+/* ───── BADGES ───── */
+.badge {
+  font-size: 11px; font-weight: 700; font-family: 'Syne', sans-serif;
+  padding: 5px 12px; border-radius: 999px; letter-spacing: .04em;
+}
+.badge-dispo {
+  background: rgba(62,207,142,.12);
+  border: 1px solid rgba(62,207,142,.3);
+  color: #3ecf8e;
+}
+.badge-soon {
+  background: rgba(201,168,76,.12);
+  border: 1px solid rgba(201,168,76,.3);
+  color: var(--gold2);
+}
+.badge-indispo {
+  background: rgba(224,64,64,.1);
+  border: 1px solid rgba(224,64,64,.25);
+  color: #e87070;
+}
 
-  .input, textarea, select{
-    width:100%;
-    padding:12px;
-    border-radius:12px;
-    border:1px solid rgba(255,255,255,.10);
-    background:rgba(0,0,0,.35);
-    color:#fff;
-    outline:none;
-    font-size:14px;
-  }
-  textarea{ min-height: 110px; resize: vertical; }
-  .input:focus, textarea:focus, select:focus{
-    border-color: rgba(47,109,255,.55);
-    box-shadow: 0 0 0 4px rgba(47,109,255,.12);
-  }
+/* ───── BUTTONS ───── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 11px 18px; border-radius: 12px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+  text-decoration: none; cursor: pointer;
+  transition: .2s ease; border: 1px solid transparent;
+  white-space: nowrap; flex: 1;
+}
+.btn-primary {
+  background: var(--gold);
+  color: #000;
+  border-color: transparent;
+}
+.btn-primary:hover { background: var(--gold2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,168,76,.3); }
+.btn-ghost {
+  background: var(--surface2);
+  border-color: var(--border);
+  color: var(--text);
+}
+.btn-ghost:hover { border-color: var(--border-hover); background: rgba(255,255,255,.07); }
+.btn:active { transform: translateY(1px) !important; }
+.btn-full { width: 100%; }
 
-  .modal-actions{ display:flex; gap:10px; margin-top:12px; }
-  body.modal-open{ overflow:hidden; height:100vh; }
+/* ───── FAQ ───── */
+.faq-list { display: flex; flex-direction: column; gap: 8px; }
+.faq-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  transition: .2s;
+}
+.faq-item:hover { border-color: rgba(201,168,76,.2); }
+.faq-question {
+  width: 100%; text-align: left;
+  padding: 18px 20px;
+  background: none; border: none;
+  color: var(--text); font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 600;
+  cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.faq-question::after {
+  content: '+';
+  font-size: 22px; font-weight: 300;
+  color: var(--gold); flex-shrink: 0;
+  transition: .25s;
+}
+.faq-item.open .faq-question::after { transform: rotate(45deg); }
+.faq-answer {
+  padding: 0 20px;
+  font-size: 14px; color: var(--muted); line-height: 1.7;
+  max-height: 0; overflow: hidden;
+  transition: max-height .35s ease, padding .35s ease;
+}
+.faq-item.open .faq-answer { max-height: 300px; padding: 0 20px 18px; }
 
-  /* GALERIE PHOTOS (MODAL) */
-  .gallery{ margin-bottom: 14px; }
-  .gallery-main{
-    position:relative;
-    height: 360px;
-    border-radius: 14px;
-    overflow:hidden;
-    border: 1px solid rgba(255,255,255,.10);
-    background: rgba(0,0,0,.25);
-  }
-  @media(max-width:720px){
-    .gallery-main{ height: 260px; }
-  }
+/* ───── CONTACT ───── */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media(max-width:720px) { .contact-grid { grid-template-columns: 1fr; } }
+.contact-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 22px;
+  transition: .25s;
+}
+.contact-card:hover { border-color: rgba(201,168,76,.25); }
+.contact-card-top { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.contact-icon {
+  width: 46px; height: 46px;
+  border-radius: 14px;
+  background: var(--gold-dim);
+  border: 1px solid rgba(201,168,76,.2);
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.contact-name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; }
+.contact-handle { font-size: 13px; color: var(--muted); margin-top: 3px; }
+.contact-actions { display: flex; gap: 8px; }
 
-  .gallery-fit{
-    position:absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 5;
-    border: 1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.45);
-    color: rgba(255,255,255,.92);
-    padding: 8px 10px;
-    border-radius: 12px;
-    font-weight: 950;
-    font-size: 12px;
-    cursor:pointer;
-    backdrop-filter: blur(8px);
-  }
+/* ───── FOOTER ───── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 0 40px;
+  text-align: center;
+}
+.footer-brand {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px; font-weight: 800;
+  letter-spacing: .06em;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 10px;
+}
+.footer-copy { font-size: 12px; color: var(--muted2); }
 
-  .gallery-main img{
-    width:100%;
-    height:100%;
-    object-fit: cover;
-    object-position: center;
-    display:block;
-  }
+/* ───── MODAL ───── */
+.modal { position: fixed; inset: 0; z-index: 999; display: none; }
+.modal.show { display: block; }
+.modal-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.7);
+  backdrop-filter: blur(8px);
+}
+.modal-panel {
+  position: relative;
+  width: min(900px, calc(100% - 24px));
+  margin: 4vh auto;
+  border-radius: 24px;
+  background: rgba(11,12,18,.96);
+  border: 1px solid rgba(201,168,76,.15);
+  box-shadow: 0 40px 100px rgba(0,0,0,.8), 0 0 0 1px rgba(201,168,76,.05);
+  overflow: hidden;
+  max-height: 92vh;
+  display: flex; flex-direction: column;
+}
+.modal-header {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  padding: 20px 22px 16px;
+  border-bottom: 1px solid var(--border);
+  flex: 0 0 auto;
+}
+.modal-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px; font-weight: 800; line-height: 1.2;
+}
+.modal-sub { color: var(--muted); font-size: 13px; margin-top: 5px; }
+.modal-close {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text); font-size: 20px; line-height: 1;
+  cursor: pointer; flex-shrink: 0;
+  display: grid; place-items: center;
+  transition: .2s;
+}
+.modal-close:hover { background: rgba(255,255,255,.1); border-color: var(--border-hover); }
+.modal-body { padding: 20px 22px; overflow: auto; flex: 1; }
 
-  .gallery-main.show-full img{
-    object-fit: contain;
-    background: rgba(0,0,0,.25);
-  }
+/* GALLERY */
+.gallery { margin-bottom: 18px; }
+.gallery-main-wrap {
+  position: relative;
+  height: 380px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #000;
+}
+@media(max-width:720px) { .gallery-main-wrap { height: 250px; } }
+.gallery-main-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block; transition: .3s;
+}
+.gallery-main-wrap.fullfit img { object-fit: contain; background: rgba(0,0,0,.5); }
+.gallery-btn-fit {
+  position: absolute; top: 12px; right: 12px; z-index: 5;
+  padding: 7px 12px;
+  background: rgba(0,0,0,.5); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.15);
+  color: rgba(255,255,255,.9); font-size: 12px; font-weight: 600;
+  border-radius: 10px; cursor: pointer; font-family: 'DM Sans', sans-serif;
+}
+.gallery-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(0,0,0,.5); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.14);
+  color: #fff; font-size: 20px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 4; user-select: none;
+  transition: .2s;
+}
+.gallery-nav:hover { background: rgba(201,168,76,.25); border-color: rgba(201,168,76,.4); }
+.gallery-nav.left { left: 12px; }
+.gallery-nav.right { right: 12px; }
+.gallery-thumbs {
+  display: flex; gap: 8px; margin-top: 10px;
+  overflow-x: auto; padding-bottom: 4px;
+  scrollbar-width: thin; scrollbar-color: rgba(201,168,76,.3) transparent;
+}
+.gallery-thumbs img {
+  width: 76px; height: 56px;
+  object-fit: cover; border-radius: 10px;
+  cursor: pointer; flex-shrink: 0;
+  border: 2px solid transparent; opacity: .7;
+  transition: .2s;
+}
+.gallery-thumbs img:hover { opacity: .9; }
+.gallery-thumbs img.active { border-color: var(--gold); opacity: 1; }
 
-  .gallery-nav{
-    position:absolute;
-    top:50%;
-    transform:translateY(-50%);
-    background: rgba(0,0,0,.45);
-    border: 1px solid rgba(255,255,255,.12);
-    color:#fff;
-    font-size: 22px;
-    width: 42px;
-    height: 42px;
-    border-radius: 999px;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    user-select:none;
-    z-index: 4;
-  }
-  .gallery-nav.left{ left: 10px; }
-  .gallery-nav.right{ right: 10px; }
+/* Modal info grid */
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media(max-width:600px) { .info-grid { grid-template-columns: 1fr; } }
+.info-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+.info-card b { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted2); font-weight: 600; display: block; margin-bottom: 5px; }
+.info-card span { font-size: 14px; font-weight: 500; color: var(--text); }
 
-  .gallery-thumbs{
-    display:flex;
-    gap: 8px;
-    margin-top: 10px;
-    overflow:auto;
-    padding-bottom: 2px;
-  }
-  .gallery-thumbs img{
-    width: 76px;
-    height: 58px;
-    object-fit: cover;
-    border-radius: 12px;
-    cursor:pointer;
-    border: 2px solid transparent;
-    opacity:.9;
-    flex: 0 0 auto;
-  }
-  .gallery-thumbs img.active{
-    border-color: rgba(47,109,255,.9);
-    opacity: 1;
-  }
+.modal-actions { display: flex; gap: 10px; margin-top: 18px; }
 
-  /* Contact blocks */
-  .contact-grid{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  @media(max-width:720px){
-    .contact-grid{ grid-template-columns:1fr; }
-  }
-  .contact-card{
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--r);
-    padding: 14px;
-    box-shadow: var(--shadow);
-  }
-  .contact-row{
-    display:flex;
-    align-items:center;
-    gap: 12px;
-  }
-  .icon{
-    width: 42px;
-    height: 42px;
-    border-radius: 14px;
-    display:grid;
-    place-items:center;
-    border: 1px solid rgba(255,255,255,.10);
-    background: rgba(255,255,255,.03);
-    flex: 0 0 auto;
-  }
-  .contact-card b{ display:block; font-weight: 950; }
-  .contact-card span{ display:block; color: var(--muted); margin-top:6px; font-size: 13px; line-height:1.4; }
-  .contact-actions{ margin-top:12px; display:flex; gap: 10px; }
+/* Reservation form */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media(max-width:600px) { .form-grid { grid-template-columns: 1fr; } }
+.form-grid .full { grid-column: 1 / -1; }
+.form-label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted2); margin-bottom: 6px; }
+.form-input {
+  width: 100%; padding: 12px 14px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--r-sm); color: var(--text);
+  font-family: 'DM Sans', sans-serif; font-size: 14px;
+  outline: none; transition: .2s;
+  appearance: none;
+}
+.form-input:focus {
+  border-color: rgba(201,168,76,.5);
+  box-shadow: 0 0 0 3px rgba(201,168,76,.1);
+}
+textarea.form-input { min-height: 100px; resize: vertical; }
+select.form-input {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(240,240,242,.4)' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px; cursor: pointer;
+}
+select.form-input option { background: #111318; }
+.file-upload-label {
+  display: flex; flex-direction: column;
+  gap: 4px;
+}
+.form-file {
+  padding: 10px 14px;
+  background: var(--surface2); border: 1px dashed rgba(201,168,76,.3);
+  border-radius: var(--r-sm); color: var(--muted);
+  font-family: 'DM Sans', sans-serif; font-size: 13px;
+  cursor: pointer; transition: .2s; width: 100%;
+}
+.form-file:hover { border-color: rgba(201,168,76,.6); color: var(--text); }
+.form-section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px; font-weight: 700; letter-spacing: .04em;
+  color: var(--gold); margin: 20px 0 12px;
+  padding-top: 20px; border-top: 1px solid var(--border);
+}
+.form-status { font-size: 13px; color: var(--green); margin-top: 10px; }
 
-  footer{
-    border-top: 1px solid rgba(255,255,255,.06);
-    padding: 26px 0 34px;
-    color: rgba(255,255,255,.55);
-    font-size: 12px;
-    text-align:center;
-  }
+body.modal-open { overflow: hidden; height: 100vh; }
+
+/* ───── ANIMATIONS ───── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero { animation: fadeUp .7s ease both; }
+.search-bar { animation: fadeUp .7s .1s ease both; }
+.car-card {
+  animation: fadeUp .5s ease both;
+}
 </style>
 </head>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="google-site-verification: google5f390a0ebfdb0371.html" />
-<title>MH LOCATION — Location de véhicules</title>
-  <script>
-  (function () {
-    const hash = window.location.hash || "";
-
-    if (
-      hash.includes("invite_token=") ||
-      hash.includes("recovery_token=") ||
-      hash.includes("confirmation_token=") ||
-      hash.includes("email_change_token=")
-    ) {
-      window.location.replace("/admin/" + hash);
-    }
-  })();
-</script>
-  <script>
-  (function () {
-    const hash = window.location.hash || "";
-    if (
-      hash.includes("invite_token=") ||
-      hash.includes("recovery_token=") ||
-      hash.includes("confirmation_token=") ||
-      hash.includes("email_change_token=")
-    ) {
-      window.location.replace("/admin/" + hash);
-    }
-  })();
-</script>
 <body>
-<div class="bg"></div>
 
-<header>
-  <div class="container topbar">
-    <div class="brand">
-      <img src="logo-mh.png" alt="Logo MH Location" onerror="this.style.display='none'">
-      <div class="name">
-        <b>MH LOCATION</b>
-        <span>L'Agence de location qu'il vous faut • Véhicules disponibles</span>
-      </div>
-    </div>
-
-    <div class="nav">
-  <a href="#home">Accueil</a>
-  <a href="#cars">Véhicules</a>
-  <a class="contact" id="btnContact" href="#">Contact</a>
-<a class="primary" href="#cars">Réserver !</a>
+<div class="bg-layer">
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+  <div class="bg-grid"></div>
+  <div class="bg-noise"></div>
 </div>
+
+<!-- ══════════ HEADER ══════════ -->
+<header>
+  <div class="header-inner">
+    <div class="container topbar">
+      <div class="brand">
+        <div class="brand-logo">
+          <img src="logo-mh.png" alt="MH Location" onerror="this.parentElement.innerHTML='<span class=\'logo-fallback\'>MH</span>'">
+        </div>
+        <div class="brand-text">
+          <div class="brand-name">MH LOCATION</div>
+          <div class="brand-tagline">L'agence de location qu'il vous faut</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#home">Accueil</a>
+        <a href="#cars">Véhicules</a>
+        <a href="#contact" class="nav-contact" id="btnContact">Contact</a>
+        <a href="#cars" class="nav-cta">Réserver →</a>
+      </nav>
+    </div>
   </div>
 </header>
 
+<!-- ══════════ MAIN ══════════ -->
 <main class="container" id="home">
 
+  <!-- HERO -->
   <section class="hero">
-    <div class="stats">
-      <div class="stat">
-        <div class="num">🚗 Véhicules vérifiés et entretenus</div>
-        <div class="label">Photos - Infos & Prix</div>
+    <div class="hero-label">Location de véhicules premium</div>
+    <h1 class="hero-title">
+      Conduisez<br>
+      <em>l'extraordinaire.</em>
+    </h1>
+    <p class="hero-sub">Des véhicules soigneusement sélectionnés et entretenus. Conditions transparentes, réponse rapide, expérience premium.</p>
+
+    <div class="stats-row">
+      <div class="stat-pill">
+        <span class="icon">🚗</span>
+        <div><b>Véhicules vérifiés</b> <span>Photos réelles · entretenus</span></div>
       </div>
-      <div class="stat">
-        <div class="num">⚡ Réponse rapide</div>
-        <div class="label">WhatsApp / Email</div>
+      <div class="stat-pill">
+        <span class="icon">⚡</span>
+        <div><b>Réponse rapide</b> <span>WhatsApp · Snapchat</span></div>
       </div>
-      <div class="stat">
-        <div class="num">🔒 Conditions claires</div>
-        <div class="label">Caution / Documents</div>
+      <div class="stat-pill">
+        <span class="icon">🔒</span>
+        <div><b>Conditions claires</b> <span>Caution · Documents</span></div>
       </div>
     </div>
 
-    <div class="search-wrap">
-      <div class="search">
-        <div class="filters">
-          <input id="q" type="text" placeholder="Rechercher… (ex: Clio, diesel, automatique, 7 places)" autocomplete="off">
-          <select id="type">
-            <option value="">Type</option>
-            <option value="sportive">Sportive</option>
-            <option value="citadine">Citadine</option>
-            <option value="suv">SUV</option>
-          </select>
-          <select id="dispo">
-            <option value="">Les Dispos</option>
-            <option value="dispo">Disponible</option>
-            <option value="bientot">Bientôt</option>
-            <option value="indispo">Indisponible</option>
-          </select>
-        </div>
-        <div class="pill" id="count">0 véhicules</div>
-      </div>
+    <!-- SEARCH -->
+    <div class="search-bar">
+      <input id="q" type="text" placeholder="🔍  Rechercher… ex: Clio, diesel, auto, sport" autocomplete="off">
+      <select id="filterType">
+        <option value="">Tous les types</option>
+        <option value="sportive">Sportive</option>
+        <option value="citadine">Citadine</option>
+        <option value="suv">SUV</option>
+      </select>
+      <select id="filterDispo">
+        <option value="">Disponibilité</option>
+        <option value="dispo">Disponible</option>
+        <option value="bientot">Bientôt</option>
+        <option value="indispo">Indisponible</option>
+      </select>
+      <div class="count-badge" id="count">0 véhicules</div>
     </div>
   </section>
 
+  <!-- VEHICLES -->
   <section class="section" id="cars">
-    <h2>Véhicules</h2>
-    <div class="meta">Clique sur une photo pour ouvrir la galerie et découvrir nos photos</div>
-    <div class="grid" id="grid"></div>
+    <div class="section-header">
+      <div class="section-label">Notre flotte</div>
+      <h2 class="section-title">Véhicules disponibles</h2>
+      <p class="section-meta">Cliquez sur une photo pour découvrir la galerie complète</p>
+    </div>
+    <div class="car-grid" id="carGrid"></div>
   </section>
 
+  <!-- FAQ -->
   <section class="section" id="faq">
-    <h2>FAQ</h2>
-    <div class="meta">Questions fréquentes</div>
-
-    <div class="faq-item">
-      <button class="faq-question">📄 Quels documents faut-il ?</button>
-      <div class="faq-answer">Permis en cours de validité + Pièce d’identité + Justificatif de domicile</div>
+    <div class="section-header">
+      <div class="section-label">Informations</div>
+      <h2 class="section-title">Questions fréquentes</h2>
     </div>
-
-    <div class="faq-item">
-      <button class="faq-question">💳 Paiement / caution ?</button>
-      <div class="faq-answer">Carte Bancaire / Espèces / Empreinte bancaire (selon véhicule)</div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-question">⏱ Durée minimum / maximum ?</button>
-      <div class="faq-answer">Variable selon le véhicule. Priorisez minimum 48h en week-end.</div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question">📄 Quels documents faut-il fournir ?</button>
+        <div class="faq-answer">Permis de conduire en cours de validité + Pièce d'identité (CNI ou Passeport) + Justificatif de domicile de moins de 3 mois.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">💳 Comment se passe le paiement et la caution ?</button>
+        <div class="faq-answer">Paiement par carte bancaire ou espèces. La caution est bloquée par empreinte bancaire selon le véhicule choisi. Le montant varie de 1 000€ à 5 000€.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">⏱ Quelle est la durée minimum de location ?</button>
+        <div class="faq-answer">Variable selon le véhicule. En week-end, nous recommandons un minimum de 48h pour profiter pleinement de l'expérience.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">🛡️ L'assurance est-elle incluse ?</button>
+        <div class="faq-answer">Une assurance est disponible en option pour chaque véhicule. Nous vous conseillons vivement de souscrire à cette option pour une conduite sereine.</div>
+      </div>
     </div>
   </section>
 
   <!-- CONTACT -->
   <section class="section" id="contact">
-    <h2>Contact</h2>
-    <div class="meta">Veuillez nous contacter via Snapchat ou WhatsApp. Nous vous répondrons dans les meilleurs délais.</div>
-
+    <div class="section-header">
+      <div class="section-label">Nous contacter</div>
+      <h2 class="section-title">Prenez contact avec nous</h2>
+      <p class="section-meta">Disponibles via Snapchat ou WhatsApp — réponse rapide garantie.</p>
+    </div>
     <div class="contact-grid">
-
-      <!-- SNAP -->
       <div class="contact-card">
-        <div class="contact-row">
-          <div class="icon" aria-hidden="true">
+        <div class="contact-card-top">
+          <div class="contact-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <path d="M12 3c2.5 0 4.5 2.2 4.5 4.8v2.1c.9.4 2 .7 2.8.9.4.1.7.4.7.8 0 .3-.2.6-.5.8-.7.5-1.5.7-2.2.8-.4.1-.6.4-.5.8.2.8.7 1.6 1.6 2.2.2.1.4.4.4.6 0 .4-.3.8-.8.8-.6 0-1.5.2-2.3.5-.6.2-1.4.4-2.2.4-.7 0-1.4-.2-2-.5-.6.3-1.3.5-2 .5-.8 0-1.6-.2-2.2-.4-.8-.3-1.7-.5-2.3-.5-.5 0-.8-.4-.8-.8 0-.2.2-.5.4-.6.9-.6 1.4-1.4 1.6-2.2.1-.4-.1-.7-.5-.8-.7-.1-1.5-.3-2.2-.8-.3-.2-.5-.5-.5-.8 0-.4.3-.7.7-.8.8-.2 1.9-.5 2.8-.9V7.8C7.5 5.2 9.5 3 12 3Z"
-                stroke="rgba(255,255,255,.85)" stroke-width="1.4" />
+              <path d="M12 3c2.5 0 4.5 2.2 4.5 4.8v2.1c.9.4 2 .7 2.8.9.4.1.7.4.7.8 0 .3-.2.6-.5.8-.7.5-1.5.7-2.2.8-.4.1-.6.4-.5.8.2.8.7 1.6 1.6 2.2.2.1.4.4.4.6 0 .4-.3.8-.8.8-.6 0-1.5.2-2.3.5-.6.2-1.4.4-2.2.4-.7 0-1.4-.2-2-.5-.6.3-1.3.5-2 .5-.8 0-1.6-.2-2.2-.4-.8-.3-1.7-.5-2.3-.5-.5 0-.8-.4-.8-.8 0-.2.2-.5.4-.6.9-.6 1.4-1.4 1.6-2.2.1-.4-.1-.7-.5-.8-.7-.1-1.5-.3-2.2-.8-.3-.2-.5-.5-.5-.8 0-.4.3-.7.7-.8.8-.2 1.9-.5 2.8-.9V7.8C7.5 5.2 9.5 3 12 3Z" stroke="var(--gold)" stroke-width="1.5"/>
             </svg>
           </div>
-          <div style="min-width:0">
-            <b>Snapchat</b>
-            <span>@mohaloca7575</span>
+          <div>
+            <div class="contact-name">Snapchat</div>
+            <div class="contact-handle">@mohaloca7575</div>
           </div>
         </div>
         <div class="contact-actions">
-          <a class="btn primary" href="https://www.snapchat.com/add/mhloca7575" target="_blank" rel="noopener">Ouvrir Snapchat</a>
-          <button class="btn" type="button" onclick="copyText('@mohaloca7575')">Copier</button>
+          <a class="btn btn-primary" href="https://www.snapchat.com/add/mhloca7575" target="_blank" rel="noopener">Ouvrir Snapchat</a>
+          <button class="btn btn-ghost" type="button" onclick="copyText('@mohaloca7575')">Copier</button>
         </div>
       </div>
 
-      <!-- WHATSAPP -->
       <div class="contact-card">
-        <div class="contact-row">
-          <div class="icon" aria-hidden="true">
+        <div class="contact-card-top">
+          <div class="contact-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <path d="M21 4L3.6 10.8c-.9.35-.86 1.65.06 1.95l4.4 1.45L18.6 7.2l-8.1 8.2 1.2 4.6c.25.96 1.47 1.12 1.94.26l2.1-3.8 3.9 2.8c.8.56 1.9.12 2.1-.84L22 5.2c.18-1-.85-1.78-1.7-1.2Z"
-                stroke="rgba(255,255,255,.85)" stroke-width="1.4" stroke-linejoin="round"/>
+              <path d="M21 4L3.6 10.8c-.9.35-.86 1.65.06 1.95l4.4 1.45L18.6 7.2l-8.1 8.2 1.2 4.6c.25.96 1.47 1.12 1.94.26l2.1-3.8 3.9 2.8c.8.56 1.9.12 2.1-.84L22 5.2c.18-1-.85-1.78-1.7-1.2Z" stroke="var(--gold)" stroke-width="1.5" stroke-linejoin="round"/>
             </svg>
           </div>
-          <div style="min-width:0">
-            <b>WhatsApp</b>
-            <span>+33 6 29 54 96 39</span>
+          <div>
+            <div class="contact-name">WhatsApp</div>
+            <div class="contact-handle">+33 6 29 54 96 39</div>
           </div>
         </div>
         <div class="contact-actions">
-          <a class="btn primary"
+          <a class="btn btn-primary"
              href="https://wa.me/33629549639?text=Bonjour%20je%20souhaite%20un%20renseignement%20concernant%20MH%20Location"
-             target="_blank"
-             rel="noopener">
-             Ouvrir WhatsApp
+             target="_blank" rel="noopener">
+            Ouvrir WhatsApp
           </a>
         </div>
       </div>
-
     </div>
   </section>
 
   <footer>
-    © <span id="year"></span> — MH LOCATION
+    <div class="footer-brand">MH LOCATION</div>
+    <div class="footer-copy">© <span id="year"></span> MH Location — Tous droits réservés</div>
   </footer>
+
 </main>
 
-<!-- =========================
-  MODAL INFOS + GALERIE
-========================== -->
+<!-- ══════════ MODAL INFOS ══════════ -->
 <div class="modal" id="modalInfos">
   <div class="modal-backdrop" data-close></div>
   <div class="modal-panel">
     <div class="modal-header">
       <div>
-        <div class="modal-title" id="mi_title">Infos & Prix —</div>
+        <div class="modal-title" id="mi_title">Infos & Prix</div>
         <div class="modal-sub" id="mi_sub">Détails du véhicule</div>
       </div>
       <button class="modal-close" type="button" data-close>×</button>
     </div>
-
     <div class="modal-body">
       <div class="gallery">
-        <div class="gallery-main" id="galleryMainBox">
-          <button class="gallery-fit" type="button" id="gFitBtn">Afficher entier</button>
-          <button class="gallery-nav left" type="button" id="gPrev" aria-label="Photo précédente">‹</button>
-          <img id="galleryMain" src="" alt="Photo véhicule">
-          <button class="gallery-nav right" type="button" id="gNext" aria-label="Photo suivante">›</button>
+        <div class="gallery-main-wrap" id="galleryBox">
+          <button class="gallery-btn-fit" type="button" id="gFitBtn">Afficher entier</button>
+          <button class="gallery-nav left" type="button" id="gPrev">‹</button>
+          <img id="galleryMain" src="" alt="Véhicule">
+          <button class="gallery-nav right" type="button" id="gNext">›</button>
         </div>
         <div class="gallery-thumbs" id="galleryThumbs"></div>
       </div>
-
-      <div class="modal-grid" id="mi_grid"></div>
-
+      <div class="info-grid" id="mi_grid"></div>
       <div class="modal-actions">
-        <button class="btn primary" type="button" id="mi_reserve">Réserver</button>
-        <button class="btn" type="button" data-close>Fermer</button>
+        <button class="btn btn-primary" type="button" id="mi_reserve">Réserver ce véhicule →</button>
+        <button class="btn btn-ghost" type="button" data-close>Fermer</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- =========================
-  MODAL RÉSERVATION
-========================== -->
+<!-- ══════════ MODAL RÉSERVATION ══════════ -->
 <div class="modal" id="modalReserve">
   <div class="modal-backdrop" data-close></div>
   <div class="modal-panel">
     <div class="modal-header">
       <div>
-        <div class="modal-title" id="mr_title">Réserver —</div>
-        <div class="modal-sub">Remplis le formulaire, envoie les documents et paye l’acompte.</div>
+        <div class="modal-title" id="mr_title">Réservation</div>
+        <div class="modal-sub">Remplis le formulaire et envoie tes documents.</div>
       </div>
       <button class="modal-close" type="button" data-close>×</button>
     </div>
-
     <div class="modal-body">
+      <form name="reservation" method="POST"
+            data-netlify="true" data-netlify-honeypot="bot-field"
+            enctype="multipart/form-data" action="/thank-you">
+        <input type="hidden" name="form-name" value="reservation">
+        <p style="display:none;"><label>Ne pas remplir: <input name="bot-field"/></label></p>
 
-  <form name="reservation"
-      method="POST"
-      data-netlify="true"
-      data-netlify-honeypot="bot-field"
-      enctype="multipart/form-data"
-      action="/thank-you">
+        <input class="form-input" id="mr_vehicle" name="vehicule" readonly style="margin-bottom:12px;">
+        <input type="hidden" id="mr_type" name="type_vehicule">
+        <input type="hidden" id="mr_acompte" name="acompte">
 
-<input type="hidden" name="form-name" value="reservation">
+        <div class="form-section-title" style="margin-top:0;padding-top:0;border-top:none;">Informations personnelles</div>
+        <div class="form-grid">
+          <div><label class="form-label">Nom</label><input class="form-input" name="nom" required placeholder="NOM"></div>
+          <div><label class="form-label">Prénom</label><input class="form-input" name="prenom" required placeholder="Prénom"></div>
+          <div><label class="form-label">Téléphone</label><input class="form-input" name="telephone" required placeholder="+33 6 XX XX XX XX"></div>
+          <div><label class="form-label">Email</label><input class="form-input" name="email" type="email" placeholder="votre@email.com"></div>
+          <div><label class="form-label">Année du permis</label><input class="form-input" name="annee_permis" required placeholder="ex: 2018"></div>
+          <div><label class="form-label">Adresse complète</label><input class="form-input" name="adresse_complete" required placeholder="Rue, CP, Ville"></div>
+        </div>
 
-<p style="display:none;">
-  <label>Ne pas remplir: <input name="bot-field" /></label>
-</p>
-
-        <input class="input" id="mr_vehicle" name="vehicule" value="" readonly>
-        <input type="hidden" id="mr_type" name="type_vehicule" value="">
-        <input type="hidden" id="mr_acompte" name="acompte" value="">
-        <div style="height:10px"></div>
-
-        <div class="modal-grid">
-          <input class="input" name="nom" required placeholder="NOM" />
-          <input class="input" name="prenom" required placeholder="Prénom" />
-          <input class="input" name="telephone" required placeholder="Téléphone" />
-          <input class="input" name="email" type="email" placeholder="Email" />
-          <input class="input" name="annee_permis" required placeholder="Année de Permis" />
-          <input class="input" name="adresse_complete" required placeholder="Adresse complète" />
-
-          <select class="input" name="lieu_retrait" required>
-            <option value="" selected>Lieu de retrait</option>
-            <option>Agence / dépôt</option>
-            <option>Aéroport</option>
-            <option>Gare</option>
-            <option>Livraison (si dispo)</option>
-          </select>
-
-          <input class="input" name="date_debut" required placeholder="Date de début (JJ/MM/AAAA)" />
-          <input class="input" name="date_fin" required placeholder="Date de fin (JJ/MM/AAAA)" />
-
-          <div style="grid-column: 1 / -1;">
-            <textarea class="input" name="message" required
-              placeholder="Message (kilométrage, options, boîte auto, assurance…)"></textarea>
+        <div class="form-section-title">Détails de la location</div>
+        <div class="form-grid">
+          <div>
+            <label class="form-label">Lieu de retrait</label>
+            <select class="form-input" name="lieu_retrait" required>
+              <option value="">Choisir…</option>
+              <option>Agence / dépôt</option>
+              <option>Aéroport</option>
+              <option>Gare</option>
+              <option>Livraison (si dispo)</option>
+            </select>
           </div>
-
-          <div style="grid-column: 1 / -1;">
-            <div class="meta" style="margin:10px 0;">
-              📎 Documents obligatoires (JPG/PNG/PDF). Évite des fichiers trop lourds.
-            </div>
-
-            <label class="meta">Carte d'identité (RECTO)</label>
-            <input class="input" type="file" name="cni_recto" accept="image/*,application/pdf" required>
-
-            <div style="height:10px"></div>
-            <label class="meta">Carte d'identité (VERSO)</label>
-            <input class="input" type="file" name="cni_verso" accept="image/*,application/pdf" required>
-
-            <div style="height:10px"></div>
-            <label class="meta">Permis (RECTO)</label>
-            <input class="input" type="file" name="permis_recto" accept="image/*,application/pdf" required>
-
-            <div style="height:10px"></div>
-            <label class="meta">Permis (VERSO)</label>
-            <input class="input" type="file" name="permis_verso" accept="image/*,application/pdf" required>
-
-            <div style="height:10px"></div>
-            <label class="meta">Justificatif de domicile</label>
-            <input class="input" type="file" name="justif_domicile" accept="image/*,application/pdf" required>
+          <div></div>
+          <div><label class="form-label">Date de début</label><input class="form-input" name="date_debut" required placeholder="JJ/MM/AAAA"></div>
+          <div><label class="form-label">Date de fin</label><input class="form-input" name="date_fin" required placeholder="JJ/MM/AAAA"></div>
+          <div class="full">
+            <label class="form-label">Message (options, kilométrage…)</label>
+            <textarea class="form-input" name="message" required placeholder="Précisez vos besoins : assurance, options, boîte auto…"></textarea>
           </div>
         </div>
 
-        <div style="height:12px"></div>
-        <button class="btn primary" type="submit">Envoyer</button>
-        <div class="meta" id="mr_status" style="margin-top:10px;"></div>
-      </form>
+        <div class="form-section-title">Documents obligatoires</div>
+        <div class="form-grid">
+          <div class="file-upload-label">
+            <label class="form-label">CNI — Recto</label>
+            <input class="form-file" type="file" name="cni_recto" accept="image/*,application/pdf" required>
+          </div>
+          <div class="file-upload-label">
+            <label class="form-label">CNI — Verso</label>
+            <input class="form-file" type="file" name="cni_verso" accept="image/*,application/pdf" required>
+          </div>
+          <div class="file-upload-label">
+            <label class="form-label">Permis — Recto</label>
+            <input class="form-file" type="file" name="permis_recto" accept="image/*,application/pdf" required>
+          </div>
+          <div class="file-upload-label">
+            <label class="form-label">Permis — Verso</label>
+            <input class="form-file" type="file" name="permis_verso" accept="image/*,application/pdf" required>
+          </div>
+          <div class="file-upload-label full">
+            <label class="form-label">Justificatif de domicile</label>
+            <input class="form-file" type="file" name="justif_domicile" accept="image/*,application/pdf" required>
+          </div>
+        </div>
 
+        <div style="margin-top:20px;">
+          <button class="btn btn-primary btn-full" type="submit">Envoyer ma demande →</button>
+          <div class="form-status" id="mr_status"></div>
+        </div>
+      </form>
     </div>
   </div>
 </div>
 
 <script>
-  document.getElementById("year").textContent = new Date().getFullYear();
+// ──── UTILS ────
+document.getElementById("year").textContent = new Date().getFullYear();
 
-  // helper: copy to clipboard
-  function copyText(txt){
-    if(navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(txt).then(()=> alert("Copié : " + txt)).catch(()=> fallbackCopy(txt));
-    } else {
-      fallbackCopy(txt);
-    }
-  }
-  function fallbackCopy(txt){
-    const t = document.createElement("textarea");
-    t.value = txt;
-    t.style.position = "fixed";
-    t.style.left = "-9999px";
-    document.body.appendChild(t);
-    t.focus();
-    t.select();
-    try{ document.execCommand("copy"); alert("Copié : " + txt); }
-    catch(e){ alert("Impossible de copier"); }
-    document.body.removeChild(t);
-  }
+function copyText(txt) {
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(txt).then(() => alert("Copié : " + txt)).catch(() => fallbackCopy(txt));
+  } else fallbackCopy(txt);
+}
+function fallbackCopy(txt) {
+  const t = document.createElement("textarea");
+  t.value = txt; t.style.position = "fixed"; t.style.left = "-9999px";
+  document.body.appendChild(t); t.focus(); t.select();
+  try { document.execCommand("copy"); alert("Copié : " + txt); } catch(e) {}
+  document.body.removeChild(t);
+}
 
-  // FAQ accordion
-  document.querySelectorAll(".faq-question").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const answer = btn.nextElementSibling;
-      const isOpen = answer.style.display === "block";
-      document.querySelectorAll(".faq-answer").forEach(a=>a.style.display="none");
-      if(!isOpen) answer.style.display = "block";
-    });
+// ──── FAQ ────
+document.querySelectorAll(".faq-question").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const item = btn.closest(".faq-item");
+    const isOpen = item.classList.contains("open");
+    document.querySelectorAll(".faq-item").forEach(i => i.classList.remove("open"));
+    if (!isOpen) item.classList.add("open");
   });
+});
 
-  // Modal system
-  const modals = new Map();
-  document.querySelectorAll(".modal").forEach(m => modals.set(m.id, m));
-  let lastFocus = null;
+// ──── MODAL SYSTEM ────
+let lastFocus = null;
 
-  function openModal(id){
-    const m = modals.get(id);
-    if(!m) return;
-    lastFocus = document.activeElement;
-
-    document.querySelectorAll(".modal.show").forEach(x => x.classList.remove("show"));
+function openModal(id) {
+  lastFocus = document.activeElement;
+  document.querySelectorAll(".modal.show").forEach(m => m.classList.remove("show"));
+  const m = document.getElementById(id);
+  if (m) {
     m.classList.add("show");
     document.body.classList.add("modal-open");
-
-    const focusEl = m.querySelector("input, select, textarea, button");
-    if(focusEl) focusEl.focus();
+    const el = m.querySelector("button, input");
+    if (el) el.focus();
   }
+}
 
-  function closeModal(m){
-    if(!m) return;
-    m.classList.remove("show");
-    document.body.classList.remove("modal-open");
-    if(lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
-  }
+function closeModal(m) {
+  if (!m) return;
+  m.classList.remove("show");
+  document.body.classList.remove("modal-open");
+  if (lastFocus?.focus) lastFocus.focus();
+}
 
-  document.querySelectorAll(".modal").forEach(m=>{
-    m.addEventListener("click", (e)=>{
-      if(e.target.hasAttribute("data-close")) closeModal(m);
-    });
+document.querySelectorAll(".modal").forEach(m => {
+  m.addEventListener("click", e => {
+    if (e.target.hasAttribute("data-close")) closeModal(m);
   });
+});
 
-  document.addEventListener("keydown", (e)=>{
-    if(e.key === "Escape"){
-      const opened = document.querySelector(".modal.show");
-      if(opened) closeModal(opened);
-    }
-  });
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeModal(document.querySelector(".modal.show"));
+});
 
-  // ====== DATA: véhicules ======
-  const cars = [
-    {
-      id: "merecesa45s",
-      name: "Mercedes A45s 2025",
-      type: "sportive",
-      pricePerDay: "349€ / jour",
-      cautionAmount: "Caution : 5 000€",
-      dispo: "dispo",
-      gearbox: "Automatique",
-      fuel: "Essence",
-      seats: "5 places",
-      doors: "5 portes",
-      deposit: "Permis valide / CNI / CB",
-      km: "Kilométrage : selon offre",
-      images: [
-        "cars/a45s/merco1.png",
-        "cars/a45s/merco2.png",
-        "cars/a45s/merco3.png",
-        "cars/a45s/merco4.png",
-        "cars/a45s/merco5.png",
-        "cars/a45s/merco6.png"
-      ],
-      tags: ["Sport", "Ville", "Assurance option"]
-    },
-    {
-      id: "audirs3sedan",
-      name: "Audi RS3 SEDAN 2025",
-      type: "sportive",
-      pricePerDay: "349€ / jour",
-      cautionAmount: "Caution : 5 000€",
-      dispo: "dispo",
-      gearbox: "Automatique",
-      fuel: "Essence",
-      seats: "5 places",
-      doors: "5 portes",
-      deposit: "Permis valide / CNI / CB",
-      km: "Km : selon offres",
-      images: [
-        "cars/rs3sedan/audi1.png",
-        "cars/rs3sedan/audi2.png",
-        "cars/rs3sedan/audi4.png",
-        "cars/rs3sedan/audi5.png",
-        "cars/rs3sedan/audi6.png",
-        "cars/rs3sedan/audi7.jpg",
-        "cars/rs3sedan/audi8.jpg"
-      ],
-      tags: ["Sport", "Ville", "Assurance option"]
-    },
-    {
-      id: "rs3hulk",
-      name: "Audi RS3 Hulk 8y 2023 Pack Akra",
-      type: "sportive",
-      pricePerDay: "249€ / jour",
-      cautionAmount: "Caution : 4 500€",
-      dispo: "dispo",
-      gearbox: "Automatique",
-      fuel: "Essence",
-      seats: "5 places",
-      doors: "5 portes",
-      deposit: "Permis valide / CNI / CB",
-      km: "Km : selon offre",
-      images: [
-        "cars/rs3hulk/audi1.png",
-        "cars/rs3hulk/audi2.png",
-        "cars/rs3hulk/audi3.png",
-        "cars/rs3hulk/audi4.png",
-        "cars/rs3hulk/audi5.png",
-        "cars/rs3hulk/audi6.png",
-        "cars/rs3hulk/audi7.png",
-        "cars/rs3hulk/audi8.png"
-      ],
-      tags: ["Sport", "Ville", "Assurance option"]
-    },
-    {
-      id: "golfgtics",
-      name: "Golf 8 GTI CS",
-      type: "sportive",
-      pricePerDay: "149€ / jour",
-      cautionAmount: "Caution : 3 500€",
-      dispo: "dispo",
-      gearbox: "Automatique",
-      fuel: "Essence",
-      seats: "5 places",
-      doors: "5 portes",
-      deposit: "Permis valide / CNI / CB",
-      km: "Km : selon offre",
-      images: [
-        "cars/golfgti/golf1.png",
-        "cars/golfgti/golf3.png",
-        "cars/golfgti/golf7.png",
-        "cars/golfgti/golf2.png",
-        "cars/golfgti/golf4.png",
-        "cars/golfgti/golf5.png",
-        "cars/golfgti/golf6.jpeg"
-      ],
-      tags: ["Sport", "Ville", "Assurance option"]
-    },
-    {
-      id: "golf8rline",
-      name: "Golf 8 R LINE 2025",
-      type: "citadine",
-      pricePerDay: "129€ / jour",
-      cautionAmount: "Caution : 1 500€",
-      dispo: "dispo",
-      gearbox: "Automatique",
-      fuel: "Essence",
-      seats: "5 places",
-      doors: "5 portes",
-      deposit: "Permis valide / CNI / CB",
-      km: "Km : selon offre",
-      images: [
-        "cars/rlinenoir/rline1.png",
-        "cars/rlinenoir/rline2.png",
-        "cars/rlinenoir/rline3.png",
-        "cars/rlinenoir/rline4.png",
-        "cars/rlinenoir/rline5.png",
-        "cars/rlinenoir/rline6.png",
-        "cars/rlinenoir/rline7.jpeg",
-        "cars/rlinenoir/rline8.png"
-      ],
-      tags: ["Sport", "Ville", "Assurance option"]
-    },
-    {
-      id: "clio5alpine",
-      name: "Clio 5 Alpine 2025",
-      type: "citadine",
-      pricePerDay: "79€ / jour",
-      cautionAmount: "Caution : 1 500€",
-      dispo: "dispo",
-      gearbox: "Automatique",
-      fuel: "Essence",
-      seats: "5 places",
-      doors: "5 portes",
-      deposit: "Permis valide / CNI / CB",
-      km: "Km : selon offre",
-      images: [
-        "cars/clio5noir/clio5-1.png",
-        "cars/clio5noir/clio5-2.png",
-        "cars/clio5noir/clio5-3.png",
-        "cars/clio5noir/clio5-4.png",
-        "cars/clio5noir/clio5-7.png",
-        "cars/clio5noir/clio5-5.png",
-        "cars/clio5noir/clio5-6.png",
-        "cars/clio5noir/clio5-8.jpg"
-      ],
-      tags: ["Sport", "Ville", "Assurance option"]
-    },
-    {
-      id: "clio5alpinegrise",
-      name: "Clio 5 Alpine Gris Nardo 2025",
-      type: "citadine",
-      pricePerDay: "79€ / jour",
-      cautionAmount: "Caution : 1 500€",
-      dispo: "dispo",
-      gearbox: "Automatique",
-      fuel: "Essence",
-      seats: "5 places",
-      doors: "5 portes",
-      deposit: "Permis valide / CNI / CB",
-      km: "Km : selon offre",
-      images: [
-        "cars/clio5gris/cliogris1.png",
-        "cars/clio5gris/cliogris2.png",
-        "cars/clio5gris/cliogris3.png",
-        "cars/clio5gris/cliogris4.png",
-        "cars/clio5gris/cliogris5.png",
-        "cars/clio5gris/cliogris6.png",
-        "cars/clio5gris/cliogris7.png",
-        "cars/clio5gris/cliogris8.jpg"
-      ],
-      tags: ["Sport", "Ville", "Assurance option"]
-    },
-    {
-      id: "clio5intense",
-      name: "Clio 5 Intense Boîte Manuel",
-      type: "citadine",
-      pricePerDay: "49€ / jour",
-      cautionAmount: "Caution : 1 000€",
-      dispo: "dispo",
-      gearbox: "Manuel",
-      fuel: "Essence",
-      seats: "5 places",
-      doors: "5 portes",
-      deposit: "Permis valide / CNI / CB",
-      km: "Km : selon offre",
-      images: [
-        "cars/cliointense/cliointense1.png",
-        "cars/cliointense/cliointense2.png",
-        "cars/cliointense/cliointense3.png",
-        "cars/cliointense/cliointense4.png",
-        "cars/cliointense/cliointense5.png",
-        "cars/cliointense/cliointense6.png",
-        "cars/cliointense/cliointense7.jpg",
-        "cars/cliointense/cliointense8.jpg"
-      ],
-      tags: ["Sport", "Ville", "Assurance option"]
-    }
-  ];
+// ──── DATA ────
+const CARS = [
+  {
+    id: "merecesa45s",
+    name: "Mercedes A45s 2025",
+    type: "sportive",
+    pricePerDay: "349€",
+    caution: "5 000€",
+    dispo: "dispo",
+    gearbox: "Automatique",
+    fuel: "Essence",
+    seats: "5 places",
+    doors: "5 portes",
+    conditions: "Permis valide / CNI / CB",
+    km: "Selon offre",
+    images: ["cars/a45s/merco1.png","cars/a45s/merco2.png","cars/a45s/merco3.png","cars/a45s/merco4.png","cars/a45s/merco5.png","cars/a45s/merco6.png"]
+  },
+  {
+    id: "audirs3sedan",
+    name: "Audi RS3 Sedan 2025",
+    type: "sportive",
+    pricePerDay: "349€",
+    caution: "5 000€",
+    dispo: "dispo",
+    gearbox: "Automatique",
+    fuel: "Essence",
+    seats: "5 places",
+    doors: "5 portes",
+    conditions: "Permis valide / CNI / CB",
+    km: "Selon offre",
+    images: ["cars/rs3sedan/audi1.png","cars/rs3sedan/audi2.png","cars/rs3sedan/audi4.png","cars/rs3sedan/audi5.png","cars/rs3sedan/audi6.png","cars/rs3sedan/audi7.jpg","cars/rs3sedan/audi8.jpg"]
+  },
+  {
+    id: "rs3hulk",
+    name: "Audi RS3 Hulk 8Y 2023 — Pack Akra",
+    type: "sportive",
+    pricePerDay: "249€",
+    caution: "4 500€",
+    dispo: "dispo",
+    gearbox: "Automatique",
+    fuel: "Essence",
+    seats: "5 places",
+    doors: "5 portes",
+    conditions: "Permis valide / CNI / CB",
+    km: "Selon offre",
+    images: ["cars/rs3hulk/audi1.png","cars/rs3hulk/audi2.png","cars/rs3hulk/audi3.png","cars/rs3hulk/audi4.png","cars/rs3hulk/audi5.png","cars/rs3hulk/audi6.png","cars/rs3hulk/audi7.png","cars/rs3hulk/audi8.png"]
+  },
+  {
+    id: "golfgtics",
+    name: "Golf 8 GTI CS",
+    type: "sportive",
+    pricePerDay: "149€",
+    caution: "3 500€",
+    dispo: "dispo",
+    gearbox: "Automatique",
+    fuel: "Essence",
+    seats: "5 places",
+    doors: "5 portes",
+    conditions: "Permis valide / CNI / CB",
+    km: "Selon offre",
+    images: ["cars/golfgti/golf1.png","cars/golfgti/golf3.png","cars/golfgti/golf7.png","cars/golfgti/golf2.png","cars/golfgti/golf4.png","cars/golfgti/golf5.png","cars/golfgti/golf6.jpeg"]
+  },
+  {
+    id: "golf8rline",
+    name: "Golf 8 R-Line 2025",
+    type: "citadine",
+    pricePerDay: "129€",
+    caution: "1 500€",
+    dispo: "dispo",
+    gearbox: "Automatique",
+    fuel: "Essence",
+    seats: "5 places",
+    doors: "5 portes",
+    conditions: "Permis valide / CNI / CB",
+    km: "Selon offre",
+    images: ["cars/rlinenoir/rline1.png","cars/rlinenoir/rline2.png","cars/rlinenoir/rline3.png","cars/rlinenoir/rline4.png","cars/rlinenoir/rline5.png","cars/rlinenoir/rline6.png","cars/rlinenoir/rline7.jpeg","cars/rlinenoir/rline8.png"]
+  },
+  {
+    id: "clio5alpine",
+    name: "Clio 5 Alpine 2025",
+    type: "citadine",
+    pricePerDay: "79€",
+    caution: "1 500€",
+    dispo: "dispo",
+    gearbox: "Automatique",
+    fuel: "Essence",
+    seats: "5 places",
+    doors: "5 portes",
+    conditions: "Permis valide / CNI / CB",
+    km: "Selon offre",
+    images: ["cars/clio5noir/clio5-1.png","cars/clio5noir/clio5-2.png","cars/clio5noir/clio5-3.png","cars/clio5noir/clio5-4.png","cars/clio5noir/clio5-7.png","cars/clio5noir/clio5-5.png","cars/clio5noir/clio5-6.png","cars/clio5noir/clio5-8.jpg"]
+  },
+  {
+    id: "clio5alpinegrise",
+    name: "Clio 5 Alpine Gris Nardo 2025",
+    type: "citadine",
+    pricePerDay: "79€",
+    caution: "1 500€",
+    dispo: "dispo",
+    gearbox: "Automatique",
+    fuel: "Essence",
+    seats: "5 places",
+    doors: "5 portes",
+    conditions: "Permis valide / CNI / CB",
+    km: "Selon offre",
+    images: ["cars/clio5gris/cliogris1.png","cars/clio5gris/cliogris2.png","cars/clio5gris/cliogris3.png","cars/clio5gris/cliogris4.png","cars/clio5gris/cliogris5.png","cars/clio5gris/cliogris6.png","cars/clio5gris/cliogris7.png","cars/clio5gris/cliogris8.jpg"]
+  },
+  {
+    id: "clio5intense",
+    name: "Clio 5 Intense — Boîte Manuelle",
+    type: "citadine",
+    pricePerDay: "49€",
+    caution: "1 000€",
+    dispo: "dispo",
+    gearbox: "Manuel",
+    fuel: "Essence",
+    seats: "5 places",
+    doors: "5 portes",
+    conditions: "Permis valide / CNI / CB",
+    km: "Selon offre",
+    images: ["cars/cliointense/cliointense1.png","cars/cliointense/cliointense2.png","cars/cliointense/cliointense3.png","cars/cliointense/cliointense4.png","cars/cliointense/cliointense5.png","cars/cliointense/cliointense6.png","cars/cliointense/cliointense7.jpg","cars/cliointense/cliointense8.jpg"]
+  }
+];
 
-  // ====== UI helpers ======
-  function dispoBadge(dispo){
-    if(dispo === "dispo") return `<div class="badge badge--ok">Dispo</div>`;
-    if(dispo === "bientot") return `<div class="badge badge--warn">Bientôt</div>`;
-    return `<div class="badge badge--bad">Indispo</div>`;
+// ──── RENDER ────
+const TYPE_LABELS = { sportive: "Sportive", citadine: "Citadine", suv: "SUV", berline: "Berline" };
+
+function dispoBadge(d) {
+  if (d === "dispo") return `<span class="badge badge-dispo">Disponible</span>`;
+  if (d === "bientot") return `<span class="badge badge-soon">Bientôt</span>`;
+  return `<span class="badge badge-indispo">Indisponible</span>`;
+}
+
+function renderCars(list) {
+  const grid = document.getElementById("carGrid");
+  document.getElementById("count").textContent = `${list.length} véhicule${list.length > 1 ? "s" : ""}`;
+
+  if (!list.length) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)">
+      <div style="font-size:40px;margin-bottom:14px">🔍</div>
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px">Aucun résultat</div>
+      <div>Essayez d'autres critères de recherche.</div>
+    </div>`;
+    return;
   }
 
-  function typeLabel(t){
-    const map = {citadine:"Citadine", berline:"Berline", suv:"SUV", utilitaire:"Utilitaire", van:"Van", sportive:"Sportive"};
-    return map[t] || t;
-  }
-
-  const grid = document.getElementById("grid");
-  const count = document.getElementById("count");
-
-  function firstImage(car){
-    return (car.images && car.images.length) ? car.images[0] : "";
-  }
-
-  function render(list){
-    grid.innerHTML = list.map(car => `
-      <div class="card2"
-           data-id="${car.id}"
-           data-name="${[
-             car.name, car.type, car.gearbox, car.fuel, car.seats, car.pricePerDay, car.cautionAmount, ...(car.tags||[])
-           ].join(" ").toLowerCase()}"
-           data-type="${car.type}"
-           data-dispo="${car.dispo}">
-        <div class="card-image" data-gallery="${car.id}">
-          <img src="${firstImage(car)}"
-               alt="${car.name}"
-               onerror="this.src='https://picsum.photos/800/500?random=${encodeURIComponent(car.id)}'">
+  grid.innerHTML = list.map(car => {
+    const img = car.images?.[0] || "";
+    return `
+    <div class="car-card" data-id="${car.id}">
+      <div class="car-image" data-gallery="${car.id}">
+        <img src="${img}" alt="${car.name}" loading="lazy"
+             onerror="this.src='https://picsum.photos/800/500?random=${encodeURIComponent(car.id)}'">
+        <div class="car-image-overlay"></div>
+        <div class="car-image-badge">${dispoBadge(car.dispo)}</div>
+      </div>
+      <div class="car-body">
+        <div class="car-top">
+          <div>
+            <div class="car-name">${car.name}</div>
+            <div class="car-type">${TYPE_LABELS[car.type] || car.type}</div>
+          </div>
+          <div class="car-price-block">
+            <div class="car-price">${car.pricePerDay}</div>
+            <div class="car-price-label">/ jour</div>
+          </div>
         </div>
-
-        <div class="card-content">
-          <div class="card-top">
-            <div>
-              <div class="title">${car.name}</div>
-              <div class="sub">${typeLabel(car.type)} • ${car.pricePerDay}</div>
-            </div>
-            ${dispoBadge(car.dispo)}
-          </div>
-
-          <div class="kv">
-            <div class="chip">💰 ${car.pricePerDay}</div>
-            <div class="chip">🔒 ${car.cautionAmount}</div>
-            <div class="chip">⛽ ${car.fuel}</div>
-            <div class="chip">⚙️ ${car.gearbox}</div>
-            <div class="chip">👥 ${car.seats}</div>
-          </div>
-
-          <div class="card-actions">
-            <button class="btn primary" type="button" data-reserve="${car.id}">Réserver</button>
-            <button class="btn" type="button" data-infos="${car.id}">Infos & Prix</button>
-          </div>
+        <div class="car-chips">
+          <span class="chip">⛽ ${car.fuel}</span>
+          <span class="chip">⚙️ ${car.gearbox}</span>
+          <span class="chip">👥 ${car.seats}</span>
+          <span class="chip">🔒 ${car.caution}</span>
+        </div>
+        <div class="car-actions">
+          <button class="btn btn-primary" type="button" data-reserve="${car.id}">Réserver</button>
+          <button class="btn btn-ghost" type="button" data-infos="${car.id}">Infos & Photos</button>
         </div>
       </div>
-    `).join("");
+    </div>`;
+  }).join("");
 
-    count.textContent = `${list.length} véhicule${list.length>1?"s":""}`;
-
-    document.querySelectorAll("[data-infos]").forEach(btn=>{
-      btn.addEventListener("click", ()=> openInfos(btn.getAttribute("data-infos")));
-    });
-    document.querySelectorAll("[data-reserve]").forEach(btn=>{
-      btn.addEventListener("click", ()=> openReserve(btn.getAttribute("data-reserve")));
-    });
-    document.querySelectorAll("[data-gallery]").forEach(box=>{
-      box.addEventListener("click", ()=> openInfos(box.getAttribute("data-gallery")));
-    });
-  }
-
-  // ====== Modals content ======
-  const miTitle = document.getElementById("mi_title");
-  const miSub = document.getElementById("mi_sub");
-  const miGrid = document.getElementById("mi_grid");
-  const miReserve = document.getElementById("mi_reserve");
-
-  const mrTitle = document.getElementById("mr_title");
-  const mrVehicle = document.getElementById("mr_vehicle");
-
-  // ====== Gallery state ======
-  let currentImages = [];
-  let currentIndex = 0;
-
-  const galleryMain = document.getElementById("galleryMain");
-  const galleryThumbs = document.getElementById("galleryThumbs");
-  const gPrev = document.getElementById("gPrev");
-  const gNext = document.getElementById("gNext");
-  const gFitBtn = document.getElementById("gFitBtn");
-  const galleryMainBox = document.getElementById("galleryMainBox");
-
-  function setImg(i){
-    if(!currentImages.length) return;
-    currentIndex = i;
-    galleryMain.src = currentImages[i];
-    Array.from(galleryThumbs.querySelectorAll("img")).forEach((img, idx)=>{
-      img.classList.toggle("active", idx === i);
-    });
-  }
-
-  function nextImg(){
-    if(!currentImages.length) return;
-    setImg((currentIndex + 1) % currentImages.length);
-  }
-  function prevImg(){
-    if(!currentImages.length) return;
-    setImg((currentIndex - 1 + currentImages.length) % currentImages.length);
-  }
-  gPrev.addEventListener("click", prevImg);
-  gNext.addEventListener("click", nextImg);
-
-  function setFitButtonLabel(){
-    const full = galleryMainBox.classList.contains("show-full");
-    gFitBtn.textContent = full ? "Remplir" : "Afficher entier";
-  }
-  gFitBtn.addEventListener("click", ()=>{
-    galleryMainBox.classList.toggle("show-full");
-    setFitButtonLabel();
+  // Animate cards with stagger
+  grid.querySelectorAll(".car-card").forEach((card, i) => {
+    card.style.animationDelay = `${i * 60}ms`;
   });
 
-  function openInfos(id){
-    const car = cars.find(c=>c.id===id);
-    if(!car) return;
+  grid.querySelectorAll("[data-infos]").forEach(btn =>
+    btn.addEventListener("click", () => openInfos(btn.dataset.infos)));
+  grid.querySelectorAll("[data-reserve]").forEach(btn =>
+    btn.addEventListener("click", () => openReserve(btn.dataset.reserve)));
+  grid.querySelectorAll("[data-gallery]").forEach(box =>
+    box.addEventListener("click", () => openInfos(box.dataset.gallery)));
+}
 
-    miTitle.textContent = `Infos & Prix — ${car.name}`;
-    miSub.textContent =
-      `${typeLabel(car.type)} • ${car.pricePerDay} • ${car.dispo === "dispo" ? "Disponible" : (car.dispo==="bientot" ? "Bientôt dispo" : "Indisponible")}`;
+// ──── GALLERY STATE ────
+let gImages = [], gIndex = 0;
+const galleryMain = document.getElementById("galleryMain");
+const galleryThumbs = document.getElementById("galleryThumbs");
+const galleryBox = document.getElementById("galleryBox");
+const gFitBtn = document.getElementById("gFitBtn");
 
-    galleryMainBox.classList.remove("show-full");
-    setFitButtonLabel();
+function setGalleryImg(i) {
+  gIndex = i;
+  galleryMain.src = gImages[i];
+  galleryThumbs.querySelectorAll("img").forEach((t, idx) => t.classList.toggle("active", idx === i));
+}
+document.getElementById("gPrev").addEventListener("click", () => setGalleryImg((gIndex - 1 + gImages.length) % gImages.length));
+document.getElementById("gNext").addEventListener("click", () => setGalleryImg((gIndex + 1) % gImages.length));
+gFitBtn.addEventListener("click", () => {
+  galleryBox.classList.toggle("fullfit");
+  gFitBtn.textContent = galleryBox.classList.contains("fullfit") ? "Remplir" : "Afficher entier";
+});
 
-    currentImages = (car.images && car.images.length) ? car.images.slice() : [];
-    currentIndex = 0;
+// ──── OPEN INFOS MODAL ────
+function openInfos(id) {
+  const car = CARS.find(c => c.id === id);
+  if (!car) return;
 
-    if(!currentImages.length){
-      currentImages = [`https://picsum.photos/900/600?random=${encodeURIComponent(car.id)}`];
-    }
+  document.getElementById("mi_title").textContent = car.name;
+  document.getElementById("mi_sub").textContent =
+    `${TYPE_LABELS[car.type] || car.type} · ${car.pricePerDay}/jour · ${car.dispo === "dispo" ? "Disponible" : (car.dispo === "bientot" ? "Bientôt" : "Indisponible")}`;
 
-    galleryThumbs.innerHTML = "";
-    currentImages.forEach((src, i)=>{
-      const t = document.createElement("img");
-      t.src = src;
-      t.alt = `Photo ${i+1} — ${car.name}`;
-      if(i===0) t.classList.add("active");
-      t.addEventListener("click", ()=> setImg(i));
-      galleryThumbs.appendChild(t);
-    });
-    setImg(0);
+  galleryBox.classList.remove("fullfit");
+  gFitBtn.textContent = "Afficher entier";
+  gImages = car.images?.length ? [...car.images] : [`https://picsum.photos/900/600?random=${encodeURIComponent(car.id)}`];
 
-    miGrid.innerHTML = `
-      <div class="mini-card"><b>💰 Prix par jour</b><span>${car.pricePerDay}</span></div>
-      <div class="mini-card"><b>🔒 Caution</b><span>${car.cautionAmount}</span></div>
+  galleryThumbs.innerHTML = gImages.map((src, i) =>
+    `<img src="${src}" alt="Photo ${i + 1}" class="${i === 0 ? 'active' : ''}"
+          onerror="this.style.display='none'">`
+  ).join("");
+  galleryThumbs.querySelectorAll("img").forEach((t, i) => t.addEventListener("click", () => setGalleryImg(i)));
+  setGalleryImg(0);
 
-      <div class="mini-card"><b>Boîte</b><span>${car.gearbox}</span></div>
-      <div class="mini-card"><b>Carburant</b><span>${car.fuel}</span></div>
-      <div class="mini-card"><b>Places</b><span>${car.seats}</span></div>
-      <div class="mini-card"><b>Portes</b><span>${car.doors}</span></div>
-      <div class="mini-card"><b>Conditions</b><span>${car.deposit}</span></div>
-      <div class="mini-card"><b>Kilométrage</b><span>${car.km}</span></div>
-    `;
+  document.getElementById("mi_grid").innerHTML = `
+    <div class="info-card"><b>Prix / jour</b><span>${car.pricePerDay}</span></div>
+    <div class="info-card"><b>Caution</b><span>${car.caution}</span></div>
+    <div class="info-card"><b>Boîte de vitesse</b><span>${car.gearbox}</span></div>
+    <div class="info-card"><b>Carburant</b><span>${car.fuel}</span></div>
+    <div class="info-card"><b>Places</b><span>${car.seats}</span></div>
+    <div class="info-card"><b>Portes</b><span>${car.doors}</span></div>
+    <div class="info-card"><b>Conditions</b><span>${car.conditions}</span></div>
+    <div class="info-card"><b>Kilométrage</b><span>${car.km}</span></div>
+  `;
 
-    miReserve.onclick = ()=> openReserve(id);
-    openModal("modalInfos");
-  }
+  document.getElementById("mi_reserve").onclick = () => openReserve(id);
+  openModal("modalInfos");
+}
 
-  function openReserve(id){
-  const car = cars.find(c=>c.id===id);
-  if(!car) return;
+// ──── OPEN RESERVE MODAL ────
+function openReserve(id) {
+  const car = CARS.find(c => c.id === id);
+  if (!car) return;
 
-   mrTitle.textContent = `Réserver — ${car.name}`;
-   mrVehicle.value = car.name;
+  document.getElementById("mr_title").textContent = `Réserver — ${car.name}`;
+  document.getElementById("mr_vehicle").value = car.name;
+  document.getElementById("mr_type").value = car.type;
+  document.getElementById("mr_acompte").value = car.type === "sportive" ? "150" : "100";
 
-    // acompte automatique selon type
-    const acompte = (car.type === "sportive") ? 150 : 100;
-    document.getElementById("mr_type").value = car.type;
-    document.getElementById("mr_acompte").value = acompte;
+  openModal("modalReserve");
+}
 
-    // sauvegarde pour merci.html (afficher véhicule + acompte + image)
-     localStorage.setItem("mh_last_vehicle", car.name);
-  localStorage.setItem("mh_last_type", car.type);
-  localStorage.setItem("mh_last_acompte", car.type === "sportive" ? "150" : "100");
-  localStorage.setItem("mh_last_image", car.images[0]);
-  localStorage.setItem("mh_last_caution", car.cautionAmount);
-    const form = document.querySelector('form[name="reservation"]');
-if(form){
-  form.addEventListener("submit", ()=>{
-    const vehicule = document.getElementById("mr_vehicle")?.value || "";
-    const type = document.getElementById("mr_type")?.value || "";
-    const acompte = document.getElementById("mr_acompte")?.value || "";
-
-    if(vehicule) localStorage.setItem("mh_last_vehicle", vehicule);
-    if(type) localStorage.setItem("mh_last_type", type);
-    if(acompte) localStorage.setItem("mh_last_acompte", String(acompte));
+// ──── FORM SUBMIT FEEDBACK ────
+const reserveForm = document.querySelector('form[name="reservation"]');
+if (reserveForm) {
+  reserveForm.addEventListener("submit", () => {
+    const status = document.getElementById("mr_status");
+    if (status) status.textContent = "✅ Envoi en cours…";
   });
 }
 
-    openModal("modalReserve");
-  }
+// ──── FILTERS ────
+function applyFilters() {
+  const q = document.getElementById("q").value.trim().toLowerCase();
+  const t = document.getElementById("filterType").value;
+  const d = document.getElementById("filterDispo").value;
 
-  // ====== Filters ======
-  const q = document.getElementById("q");
-  const type = document.getElementById("type");
-  const dispo = document.getElementById("dispo");
+  const filtered = CARS.filter(car => {
+    const hay = [car.name, car.type, car.gearbox, car.fuel, car.seats, car.pricePerDay, car.caution, car.km].join(" ").toLowerCase();
+    return (!q || hay.includes(q)) && (!t || car.type === t) && (!d || car.dispo === d);
+  });
 
-  function apply(){
-    const term = q.value.trim().toLowerCase();
-    const t = type.value;
-    const d = dispo.value;
-
-    const filtered = cars.filter(c=>{
-      const hay = [
-        c.name, c.type, c.gearbox, c.fuel, c.seats, c.doors,
-        c.pricePerDay, c.cautionAmount, c.km,
-        ...(c.tags||[])
-      ].join(" ").toLowerCase();
-
-      const okTerm = !term || hay.includes(term);
-      const okType = !t || c.type === t;
-      const okDispo = !d || c.dispo === d;
-
-      return okTerm && okType && okDispo;
-    });
-
-    render(filtered);
-  }
-
-  q.addEventListener("input", apply);
-  type.addEventListener("change", apply);
-  dispo.addEventListener("change", apply);
-
-  // init
-  render(cars);
-
-  // message UI au submit (sans bloquer Netlify)
-  const form = document.querySelector('form[name="reservation"]');
-  if(form){
-    form.addEventListener("submit", ()=>{
-      const status = document.getElementById("mr_status");
-      if(status){
-        status.textContent = "✅ Envoi en cours…";
-      }
-    });
-    function contactWhatsApp(){
-
-  const phone = "33629549639"; // ton numéro
-
-  const vehicule = localStorage.getItem("mh_last_vehicle") || "";
-
-  let message = "Bonjour, je vous contacte concernant ma location";
-
-  if(vehicule){
-    message += " du véhicule : " + vehicule;
-  }
-
-  const url =
-  "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
-
-  window.open(url, "_blank");
+  renderCars(filtered);
 }
-  }
+
+document.getElementById("q").addEventListener("input", applyFilters);
+document.getElementById("filterType").addEventListener("change", applyFilters);
+document.getElementById("filterDispo").addEventListener("change", applyFilters);
+
+// ──── CONTACT NAV BUTTON ────
+document.getElementById("btnContact")?.addEventListener("click", e => {
+  e.preventDefault();
+  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+});
+
+// ──── INIT ────
+renderCars(CARS);
 </script>
-<script>
-  const WHATSAPP_NUMBER = "33629549639"; // sans +, sans espaces
-
-  function buildWhatsappLink(){
-    const vehicule = localStorage.getItem("mh_last_vehicle") || "—";
-    const msg = `Bonjour, je vous contacte concernant ma location du véhicule : ${vehicule}`;
-    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
-  }
-
-  const btn = document.getElementById("btnContact");
-  if(btn){
-    btn.addEventListener("click", (e)=>{
-      e.preventDefault();
-      window.open(buildWhatsappLink(), "_blank");
-    });
-  }
-</script>
-
 </body>
 </html>
-
-
-
-
