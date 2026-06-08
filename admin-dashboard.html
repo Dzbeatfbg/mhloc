@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>MH Location — Admin</title>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -142,6 +143,8 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'D
 <body>
 
 <!-- HEADER -->
+<div id="authGate" style="display:flex;position:fixed;inset:0;z-index:9999;background:#030405;align-items:center;justify-content:center;flex-direction:column;gap:16px"><div style="font-family:Syne,sans-serif;font-size:18px;font-weight:800;color:#c9a84c">MH LOCATION — ADMIN</div><div style="font-size:13px;color:rgba(240,240,242,.5)">Vérification de votre identité…</div><button onclick="window.netlifyIdentity.open()" style="margin-top:8px;padding:10px 24px;background:#c9a84c;border:none;border-radius:10px;color:#000;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer">Se connecter</button></div>
+<div id="appContent" style="display:none">
 <div class="header">
   <div class="header-inner">
     <div class="brand">MH LOCATION — ADMIN</div>
@@ -152,6 +155,7 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'D
     <div class="header-right">
       <div class="status-dot"></div>
       <span class="status-label">En ligne</span>
+      <button onclick="window.netlifyIdentity.logout()" style="padding:6px 14px;background:transparent;border:1px solid rgba(255,255,255,.12);color:rgba(240,240,242,.5);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:.2s" onmouseover="this.style.borderColor='rgba(232,112,112,.4)';this.style.color='#e87070'" onmouseout="this.style.borderColor='rgba(255,255,255,.12)';this.style.color='rgba(240,240,242,.5)'">Déconnexion</button>
     </div>
   </div>
 </div>
@@ -686,6 +690,31 @@ function autoSave() {
 // ── INIT ──
 loadCarsFromServer();
 updateSliders();
+</script>
+</div><!-- /appContent -->
+
+<script>
+// Netlify Identity — vérification au chargement
+if(window.netlifyIdentity){
+  window.netlifyIdentity.on("init", function(user){
+    if(user){
+      document.getElementById("authGate").style.display="none";
+      document.getElementById("appContent").style.display="block";
+    } else {
+      window.netlifyIdentity.open();
+    }
+  });
+  window.netlifyIdentity.on("login", function(){
+    document.getElementById("authGate").style.display="none";
+    document.getElementById("appContent").style.display="block";
+    window.netlifyIdentity.close();
+  });
+  window.netlifyIdentity.on("logout", function(){
+    document.getElementById("authGate").style.display="flex";
+    document.getElementById("appContent").style.display="none";
+    window.netlifyIdentity.open();
+  });
+}
 </script>
 </body>
 </html>
