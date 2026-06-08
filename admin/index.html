@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<title>MH Location — Admin</title>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+(function(){
+  var hash = window.location.hash;
+  var tokens = ["invite_token=","recovery_token=","confirmation_token=","email_change_token=","access_token="];
+  var hasToken = tokens.some(function(t){ return hash.includes(t); });
+  if(hasToken){
+    window.addEventListener("load", function(){
+      if(window.netlifyIdentity){
+        window.netlifyIdentity.on("init", function(){
+          window.netlifyIdentity.open();
+        });
+        window.netlifyIdentity.on("login", function(){
+          window.netlifyIdentity.close();
+          window.location.href = "/admin-dashboard.html";
+        });
+      }
+    });
+  } else {
+    window.location.href = "/admin-dashboard.html";
+  }
+})();
+</script>
+<style>
+body{margin:0;background:#030405;display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;flex-direction:column;gap:12px}
+p{color:rgba(240,240,242,.5);font-size:13px}
+.logo{font-size:20px;font-weight:800;color:#c9a84c;letter-spacing:.06em}
+</style>
+</head>
+<body>
+  <div class="logo">MH LOCATION</div>
+  <p>Redirection en cours…</p>
+</body>
+</html>
