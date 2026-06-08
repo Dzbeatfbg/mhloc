@@ -9,21 +9,33 @@
   var hash = window.location.hash;
   var tokens = ["invite_token=","recovery_token=","confirmation_token=","email_change_token=","access_token="];
   var hasToken = tokens.some(function(t){ return hash.includes(t); });
-  if(hasToken){
-    window.addEventListener("load", function(){
-      if(window.netlifyIdentity){
-        window.netlifyIdentity.on("init", function(){
-          window.netlifyIdentity.open();
-        });
-        window.netlifyIdentity.on("login", function(){
-          window.netlifyIdentity.close();
-          window.location.href = "/admin-dashboard.html";
-        });
-      }
-    });
-  } else {
-    window.location.href = "/admin-dashboard.html";
+
+  if(!hasToken){
+    // Pas de token → redirige immédiatement
+    window.location.replace("/admin-dashboard.html");
+    return;
   }
+
+  // Token présent → ouvre le widget
+  window.addEventListener("load", function(){
+    if(window.netlifyIdentity){
+      window.netlifyIdentity.on("init", function(){
+        window.netlifyIdentity.open();
+      });
+      window.netlifyIdentity.on("login", function(){
+        window.netlifyIdentity.close();
+        window.location.replace("/admin-dashboard.html");
+      });
+    } else {
+      // Widget pas dispo → redirige quand même
+      window.location.replace("/admin-dashboard.html");
+    }
+  });
+
+  // Sécurité : si rien ne se passe après 5s → redirige
+  setTimeout(function(){
+    window.location.replace("/admin-dashboard.html");
+  }, 5000);
 })();
 </script>
 <style>
