@@ -4,30 +4,57 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>MH LOCATION — Admin</title>
+  <!-- Netlify Identity widget chargé EN PREMIER et de façon synchrone -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    // ── Intercepte TOUS les tokens dans le hash AVANT que Decap CMS charge ──
+    (function() {
+      var hash = window.location.hash;
+      var tokens = [
+        "invite_token=",
+        "recovery_token=",
+        "confirmation_token=",
+        "email_change_token=",
+        "access_token="
+      ];
+      var hasToken = tokens.some(function(t) { return hash.includes(t); });
+
+      if (hasToken) {
+        // S'assure que le hash est bien sur /admin/
+        if (!window.location.pathname.startsWith("/admin")) {
+          window.location.replace("/admin/#" + hash.replace(/^#/, ""));
+          return;
+        }
+        // Ouvre le widget Identity dès que possible
+        window.addEventListener("load", function() {
+          if (window.netlifyIdentity) {
+            window.netlifyIdentity.on("init", function() {
+              window.netlifyIdentity.open();
+            });
+          }
+        });
+      }
+    })();
+  </script>
 </head>
 <body>
   <script>
-    if (window.location.hash.includes("invite_token=") ||
-        window.location.hash.includes("recovery_token=") ||
-        window.location.hash.includes("confirmation_token=") ||
-        window.location.hash.includes("email_change_token=")) {
-      window.history.replaceState({}, document.title, "/admin/" + window.location.hash);
-    }
-
+    // ── Init Identity : redirige vers / après logout ──
     if (window.netlifyIdentity) {
       window.netlifyIdentity.on("init", function(user) {
-        if (!user && window.location.hash.includes("invite_token=")) {
-          window.netlifyIdentity.open();
-        }
-        if (!user && window.location.hash.includes("recovery_token=")) {
-          window.netlifyIdentity.open();
+        if (!user) {
+          window.netlifyIdentity.on("login", function() {
+            document.location.href = "/admin/";
+          });
         }
       });
-      window.netlifyIdentity.init();
+      window.netlifyIdentity.on("logout", function() {
+        document.location.href = "/";
+      });
     }
   </script>
 
+  <!-- Decap CMS chargé APRÈS le widget Identity -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </body>
 </html>
