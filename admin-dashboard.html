@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MH Location — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#030405;--surface:#0b0c11;--surface2:#0f1016;
+  --border:rgba(255,255,255,.07);--border-hover:rgba(255,255,255,.18);
+  --text:#f0f0f2;--muted:rgba(240,240,242,.5);--muted2:rgba(240,240,242,.32);
+  --gold:#c9a84c;--gold2:#e8c97a;--gold-dim:rgba(201,168,76,.08);
+  --green:#3ecf8e;--red:#e87070;--r:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px}
+
+/* ── HEADER ── */
+.header{position:sticky;top:0;z-index:50;background:rgba(3,4,5,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px}
+.header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:58px;gap:16px}
+.brand{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap}
+.tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:4px}
+.tab{padding:7px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--muted);transition:.2s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.tab.active{background:var(--gold-dim);border:1px solid rgba(201,168,76,.25);color:var(--gold2)}
+.tab:hover:not(.active){color:var(--text);background:rgba(255,255,255,.04)}
+.header-right{display:flex;align-items:center;gap:10px}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.status-label{font-size:12px;color:var(--muted)}
+
+/* ── LAYOUT ── */
+.page{display:none;max-width:1100px;margin:0 auto;padding:28px 24px 80px}
+.page.active{display:block}
+
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;transition:.2s}
+.stat:hover{border-color:rgba(201,168,76,.2)}
+.stat .n{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--text);line-height:1}
+.stat .l{font-size:11px;color:var(--muted);margin-top:5px;letter-spacing:.03em}
+.stat .ico{font-size:20px;margin-bottom:8px}
+
+/* ── TOOLBAR ── */
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:12px;flex-wrap:wrap}
+.toolbar-left{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.search-input{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:8px 14px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;width:220px;transition:.2s}
+.search-input:focus{border-color:rgba(201,168,76,.35)}
+.filter-select{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;cursor:pointer}
+.filter-select option{background:#0f1016}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text);transition:.2s;white-space:nowrap}
+.btn:hover{background:rgba(255,255,255,.06);border-color:var(--border-hover)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));border:none;color:#000}
+.btn-gold:hover{filter:brightness(1.1)}
+.btn-sm{padding:6px 11px;font-size:12px;border-radius:8px}
+
+/* ── CAR GRID ── */
+.cars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:800px){.cars-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.cars-grid{grid-template-columns:1fr}}
+
+.car-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:.25s}
+.car-card:hover{border-color:rgba(201,168,76,.25);transform:translateY(-2px)}
+.car-thumb{height:140px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:42px;position:relative;overflow:hidden}
+.car-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.car-thumb-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(3,4,5,.6),transparent)}
+.car-dispo-badge{position:absolute;top:10px;right:10px;font-size:10px;font-weight:700;padding:3px 9px;border-radius:999px;font-family:'Syne',sans-serif;letter-spacing:.04em}
+.dispo{background:rgba(62,207,142,.15);border:1px solid rgba(62,207,142,.3);color:var(--green)}
+.indispo{background:rgba(232,112,112,.12);border:1px solid rgba(232,112,112,.25);color:var(--red)}
+.soon{background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);color:var(--gold2)}
+.car-body{padding:13px}
+.car-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:4px;line-height:1.3}
+.car-meta{font-size:12px;color:var(--muted);margin-bottom:10px}
+.car-price{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--gold)}
+.car-price span{font-size:11px;font-weight:400;color:var(--muted);font-family:'DM Sans',sans-serif}
+.car-actions{display:flex;gap:6px;margin-top:10px}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:5vh 16px;overflow-y:auto}
+.modal-overlay.open{display:flex}
+.modal{background:rgba(11,12,18,.98);border:1px solid rgba(201,168,76,.15);border-radius:20px;width:min(520px,100%);padding:24px;position:relative;margin:auto}
+.modal-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;margin-bottom:20px;color:var(--text)}
+.modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s}
+.modal-close:hover{color:var(--text);border-color:var(--border-hover)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-grid .full{grid-column:1/-1}
+.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px;letter-spacing:.04em;text-transform:uppercase}
+.field input,.field select,.field textarea{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:.2s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(201,168,76,.4);box-shadow:0 0 0 3px rgba(201,168,76,.08)}
+.field select option{background:#0f1016}
+.modal-actions{display:flex;gap:8px;margin-top:18px;justify-content:flex-end}
+.btn-danger{background:rgba(232,112,112,.1);border:1px solid rgba(232,112,112,.25);color:var(--red)}
+.btn-danger:hover{background:rgba(232,112,112,.18)}
+
+/* ── WATERMARK PAGE ── */
+.wm-layout{display:grid;grid-template-columns:320px 1fr;gap:20px;align-items:start}
+@media(max-width:720px){.wm-layout{grid-template-columns:1fr}}
+.wm-panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;position:sticky;top:80px}
+.wm-panel h3{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:14px;color:var(--text)}
+.wm-field{margin-bottom:12px}
+.wm-field label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
+.wm-field input[type=range]{width:100%;accent-color:var(--gold);margin-top:4px}
+.wm-field select{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none}
+.wm-field select option{background:#0f1016}
+.range-row{display:flex;align-items:center;gap:10px}
+.range-val{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--gold);min-width:36px;text-align:right}
+.logo-box{border:1px dashed rgba(201,168,76,.25);border-radius:10px;padding:12px;text-align:center;cursor:pointer;position:relative;transition:.2s;margin-bottom:14px}
+.logo-box:hover{border-color:rgba(201,168,76,.5);background:var(--gold-dim)}
+.logo-box input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.logo-box-preview{max-height:50px;max-width:100%;object-fit:contain;display:block;margin:0 auto}
+.logo-box-hint{font-size:12px;color:var(--muted)}
+
+.drop-zone{background:var(--surface);border:2px dashed rgba(201,168,76,.2);border-radius:16px;padding:40px 20px;text-align:center;cursor:pointer;transition:.25s;position:relative;margin-bottom:16px}
+.drop-zone:hover,.drop-zone.drag{border-color:rgba(201,168,76,.55);background:var(--gold-dim)}
+.drop-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.drop-icon{font-size:36px;margin-bottom:10px}
+.drop-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px}
+.drop-sub{font-size:12px;color:var(--muted)}
+
+.photos-results{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.photo-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.photo-item canvas{width:100%;display:block}
+.photo-footer{padding:8px 10px;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.photo-name{font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.btn-dl{padding:5px 10px;font-size:11px;border-radius:7px;background:var(--gold-dim);border:1px solid rgba(201,168,76,.25);color:var(--gold2);cursor:pointer;font-weight:600;transition:.2s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.btn-dl:hover{background:rgba(201,168,76,.18)}
+.btn-rm{padding:5px 8px;font-size:11px;border-radius:7px;background:transparent;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:.2s;font-family:'DM Sans',sans-serif}
+.btn-rm:hover{color:var(--red);border-color:rgba(232,112,112,.3)}
+
+.results-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.results-bar h3{font-family:'Syne',sans-serif;font-size:14px;font-weight:700}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(62,207,142,.1);border:1px solid rgba(62,207,142,.3);color:var(--green);padding:9px 22px;border-radius:999px;font-size:13px;font-weight:600;opacity:0;transition:.3s;pointer-events:none;z-index:999;white-space:nowrap}
+.toast.show{opacity:1}
+.divider{height:1px;background:var(--border);margin:16px 0}
+.section-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.empty-state{text-align:center;padding:48px 20px;color:var(--muted)}
+.empty-state .e-icon{font-size:40px;margin-bottom:12px}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="brand">MH LOCATION — ADMIN</div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('vehicles')">🚗 Véhicules</button>
+      <button class="tab" onclick="switchTab('watermark')">🖼 Watermark</button>
+    </div>
+    <div class="header-right">
+      <div class="status-dot"></div>
+      <span class="status-label">En ligne</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     PAGE VÉHICULES
+════════════════════════════════ -->
+<div class="page active" id="page-vehicles">
+
+  <div class="stats" id="statsBar"></div>
+
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <input class="search-input" type="text" id="searchInput" placeholder="🔍  Rechercher un véhicule…" oninput="filterCars()">
+      <select class="filter-select" id="filterDispo" onchange="filterCars()">
+        <option value="">Toutes disponibilités</option>
+        <option value="dispo">Disponible</option>
+        <option value="soon">Bientôt</option>
+        <option value="indispo">Indisponible</option>
+      </select>
+      <select class="filter-select" id="filterType" onchange="filterCars()">
+        <option value="">Tous types</option>
+        <option value="sportive">Sportive</option>
+        <option value="citadine">Citadine</option>
+        <option value="suv">SUV</option>
+      </select>
+    </div>
+    <button class="btn btn-gold" onclick="openAdd()">+ Ajouter un véhicule</button>
+  </div>
+
+  <div class="cars-grid" id="carsGrid"></div>
+</div>
+
+<!-- ════════════════════════════════
+     PAGE WATERMARK
+════════════════════════════════ -->
+<div class="page" id="page-watermark">
+  <div class="wm-layout">
+
+    <!-- PANNEAU OPTIONS -->
+    <div class="wm-panel">
+      <h3>⚙️ Réglages du logo</h3>
+
+      <div class="wm-field">
+        <label>Logo (PNG transparent)</label>
+        <div class="logo-box" id="logoBox">
+          <input type="file" accept="image/*" id="logoInput" onchange="loadLogo(this)">
+          <div id="logoBoxContent">
+            <div style="font-size:24px;margin-bottom:4px">📁</div>
+            <div class="logo-box-hint">Cliquez pour charger logo-mh.png</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wm-field">
+        <label>Position</label>
+        <select id="posSelect" onchange="reprocessAll()">
+          <option value="center">Centré</option>
+          <option value="br">Bas droite</option>
+          <option value="bl">Bas gauche</option>
+          <option value="tr">Haut droite</option>
+          <option value="tl">Haut gauche</option>
+        </select>
+      </div>
+
+      <div class="wm-field">
+        <label>Opacité — <span id="opacityVal">45%</span></label>
+        <div class="range-row">
+          <input type="range" id="opacitySlider" min="10" max="90" value="45" oninput="updateSliders();reprocessAll()">
+        </div>
+      </div>
+
+      <div class="wm-field">
+        <label>Taille du logo — <span id="sizeVal">35%</span></label>
+        <div class="range-row">
+          <input type="range" id="sizeSlider" min="10" max="65" value="35" oninput="updateSliders();reprocessAll()">
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div id="wmStats" style="font-size:12px;color:var(--muted)">Aucune photo chargée</div>
+
+      <button class="btn btn-gold" style="width:100%;margin-top:12px;justify-content:center" id="dlAllBtn" onclick="downloadAll()" disabled>⬇ Tout télécharger</button>
+    </div>
+
+    <!-- ZONE PRINCIPALE -->
+    <div>
+      <div class="drop-zone" id="dropZone">
+        <input type="file" accept="image/*" multiple id="photosInput" onchange="handlePhotos(this.files)">
+        <div class="drop-icon">🚗</div>
+        <div class="drop-title">Glissez vos photos ici</div>
+        <div class="drop-sub">ou cliquez pour sélectionner · JPG PNG WEBP · Plusieurs fichiers</div>
+      </div>
+
+      <div id="resultsSection" style="display:none">
+        <div class="results-bar">
+          <h3 id="resultsTitle">Photos traitées</h3>
+          <button class="btn btn-sm" onclick="clearAll()">✕ Tout effacer</button>
+        </div>
+        <div class="photos-results" id="photosGrid"></div>
+      </div>
+
+      <div class="empty-state" id="wmEmpty">
+        <div class="e-icon">📸</div>
+        <div>Uploadez des photos pour appliquer le logo</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     MODAL VÉHICULE
+════════════════════════════════ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-title" id="modalTitle">Ajouter un véhicule</div>
+    <div class="form-grid">
+      <div class="field full"><label>Nom du véhicule</label><input id="fName" placeholder="ex: Mercedes A45s 2025"></div>
+      <div class="field"><label>Type</label>
+        <select id="fType">
+          <option value="sportive">Sportive</option>
+          <option value="citadine">Citadine</option>
+          <option value="suv">SUV</option>
+        </select>
+      </div>
+      <div class="field"><label>Disponibilité</label>
+        <select id="fDispo">
+          <option value="dispo">Disponible</option>
+          <option value="soon">Bientôt</option>
+          <option value="indispo">Indisponible</option>
+        </select>
+      </div>
+      <div class="field"><label>Prix / jour (€)</label><input id="fPrice" type="number" placeholder="149"></div>
+      <div class="field"><label>Caution</label><input id="fCaution" placeholder="ex: 3 500€"></div>
+      <div class="field"><label>Boîte de vitesse</label><input id="fGear" placeholder="Automatique / Manuel"></div>
+      <div class="field"><label>Carburant</label><input id="fFuel" placeholder="Essence"></div>
+      <div class="field full"><label>Image principale (chemin)</label><input id="fImg" placeholder="cars/a45s/merco1.png"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-danger" id="deleteBtn" onclick="deleteCar()" style="display:none">🗑 Supprimer</button>
+      <button class="btn" onclick="closeModal()">Annuler</button>
+      <button class="btn btn-gold" onclick="saveCar()">✓ Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════════
+// DONNÉES VÉHICULES
+// ════════════════════════════════
+let CARS = [
+  {id:"merecesa45s",name:"Mercedes A45s 2025",type:"sportive",pricePerDay:349,caution:"5 000€",dispo:"dispo",gearbox:"Automatique",fuel:"Essence",images:["cars/a45s/merco1.png"]},
+  {id:"audirs3sedan",name:"Audi RS3 Sedan 2025",type:"sportive",pricePerDay:349,caution:"5 000€",dispo:"dispo",gearbox:"Automatique",fuel:"Essence",images:["cars/rs3sedan/audi1.png"]},
+  {id:"rs3hulk",name:"Audi RS3 Hulk 8Y 2023",type:"sportive",pricePerDay:249,caution:"4 500€",dispo:"dispo",gearbox:"Automatique",fuel:"Essence",images:["cars/rs3hulk/audi1.png"]},
+  {id:"golfgtics",name:"Golf 8 GTI CS",type:"sportive",pricePerDay:149,caution:"3 500€",dispo:"dispo",gearbox:"Automatique",fuel:"Essence",images:["cars/golfgti/golf1.png"]},
+  {id:"golf8rline",name:"Golf 8 R-Line 2025",type:"citadine",pricePerDay:129,caution:"1 500€",dispo:"dispo",gearbox:"Automatique",fuel:"Essence",images:["cars/rlinenoir/rline1.png"]},
+  {id:"clio5alpine",name:"Clio 5 Alpine 2025",type:"citadine",pricePerDay:79,caution:"1 500€",dispo:"dispo",gearbox:"Automatique",fuel:"Essence",images:["cars/clio5noir/clio5-1.png"]},
+  {id:"clio5alpinegrise",name:"Clio 5 Alpine Gris Nardo",type:"citadine",pricePerDay:79,caution:"1 500€",dispo:"dispo",gearbox:"Automatique",fuel:"Essence",images:["cars/clio5gris/cliogris1.png"]},
+  {id:"clio5intense",name:"Clio 5 Intense — Manuelle",type:"citadine",pricePerDay:49,caution:"1 000€",dispo:"indispo",gearbox:"Manuel",fuel:"Essence",images:["cars/cliointense/cliointense1.png"]}
+];
+
+let editIdx = -1;
+const DISPO_LABELS = {dispo:"Disponible",soon:"Bientôt",indispo:"Indisponible"};
+const TYPE_ICONS = {sportive:"🏎",citadine:"🚗",suv:"🚙"};
+
+// ── STATS ──
+function renderStats(){
+  const total = CARS.length;
+  const dispo = CARS.filter(c=>c.dispo==="dispo").length;
+  const indispo = CARS.filter(c=>c.dispo==="indispo").length;
+  const min = Math.min(...CARS.map(c=>c.pricePerDay));
+  document.getElementById("statsBar").innerHTML = `
+    <div class="stat"><div class="ico">🚗</div><div class="n">${total}</div><div class="l">Véhicules total</div></div>
+    <div class="stat"><div class="ico">✅</div><div class="n" style="color:var(--green)">${dispo}</div><div class="l">Disponibles</div></div>
+    <div class="stat"><div class="ico">🔴</div><div class="n" style="color:var(--red)">${indispo}</div><div class="l">Indisponibles</div></div>
+    <div class="stat"><div class="ico">💰</div><div class="n">${min}€</div><div class="l">À partir de / jour</div></div>
+  `;
+}
+
+// ── RENDER CARS ──
+function renderCars(list){
+  renderStats();
+  const grid = document.getElementById("carsGrid");
+  if(!list.length){
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--muted)">Aucun véhicule trouvé</div>`;
+    return;
+  }
+  grid.innerHTML = list.map((car,i) => {
+    const realIdx = CARS.indexOf(car);
+    const dc = car.dispo==="dispo"?"dispo":car.dispo==="indispo"?"indispo":"soon";
+    return `
+    <div class="car-card">
+      <div class="car-thumb">
+        <img src="${car.images[0]}" alt="${car.name}"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+             onload="this.style.display='block'">
+        <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:42px">${TYPE_ICONS[car.type]||"🚗"}</div>
+        <div class="car-thumb-overlay"></div>
+        <div class="car-dispo-badge ${dc}">${DISPO_LABELS[car.dispo]}</div>
+      </div>
+      <div class="car-body">
+        <div class="car-name">${car.name}</div>
+        <div class="car-meta">${car.gearbox} · ${car.fuel} · Caution ${car.caution}</div>
+        <div class="car-price">${car.pricePerDay}€ <span>/ jour</span></div>
+        <div class="car-actions">
+          <button class="btn btn-sm btn-gold" onclick="openEdit(${realIdx})">✏️ Modifier</button>
+          <button class="btn btn-sm" onclick="quickToggle(${realIdx})">🔄 Dispo</button>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+// ── FILTRES ──
+function filterCars(){
+  const q = document.getElementById("searchInput").value.toLowerCase();
+  const d = document.getElementById("filterDispo").value;
+  const t = document.getElementById("filterType").value;
+  let list = CARS.filter(c => {
+    const hay = [c.name,c.type,c.gearbox,c.fuel].join(" ").toLowerCase();
+    return (!q||hay.includes(q)) && (!d||c.dispo===d) && (!t||c.type===t);
+  });
+  renderCars(list);
+}
+
+// ── QUICK TOGGLE DISPO ──
+function quickToggle(idx){
+  const order = ["dispo","soon","indispo"];
+  const cur = order.indexOf(CARS[idx].dispo);
+  CARS[idx].dispo = order[(cur+1)%3];
+  filterCars();
+  showToast("Disponibilité → " + DISPO_LABELS[CARS[idx].dispo]);
+  autoSave();
+}
+
+// ── MODAL ──
+function openAdd(){
+  editIdx = -1;
+  document.getElementById("modalTitle").textContent = "Ajouter un véhicule";
+  document.getElementById("deleteBtn").style.display = "none";
+  ["fName","fPrice","fCaution","fGear","fFuel","fImg"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("fType").value="citadine";
+  document.getElementById("fDispo").value="dispo";
+  document.getElementById("modalOverlay").classList.add("open");
+}
+
+function openEdit(idx){
+  editIdx = idx;
+  const c = CARS[idx];
+  document.getElementById("modalTitle").textContent = "Modifier — " + c.name;
+  document.getElementById("deleteBtn").style.display = "inline-flex";
+  document.getElementById("fName").value = c.name;
+  document.getElementById("fType").value = c.type;
+  document.getElementById("fDispo").value = c.dispo;
+  document.getElementById("fPrice").value = c.pricePerDay;
+  document.getElementById("fCaution").value = c.caution;
+  document.getElementById("fGear").value = c.gearbox;
+  document.getElementById("fFuel").value = c.fuel;
+  document.getElementById("fImg").value = c.images?.[0]||"";
+  document.getElementById("modalOverlay").classList.add("open");
+}
+
+function closeModal(){
+  document.getElementById("modalOverlay").classList.remove("open");
+}
+
+function saveCar(){
+  const name = document.getElementById("fName").value.trim();
+  if(!name){ alert("Le nom est requis"); return; }
+  const data = {
+    id: editIdx>=0 ? CARS[editIdx].id : name.toLowerCase().replace(/\s+/g,"-").replace(/[^a-z0-9-]/g,""),
+    name,
+    type: document.getElementById("fType").value,
+    dispo: document.getElementById("fDispo").value,
+    pricePerDay: parseInt(document.getElementById("fPrice").value)||0,
+    caution: document.getElementById("fCaution").value,
+    gearbox: document.getElementById("fGear").value,
+    fuel: document.getElementById("fFuel").value,
+    images: [document.getElementById("fImg").value]
+  };
+  if(editIdx>=0) CARS[editIdx]=data;
+  else CARS.push(data);
+  closeModal();
+  filterCars();
+  showToast(editIdx>=0 ? "✅ Véhicule mis à jour" : "✅ Véhicule ajouté");
+  autoSave();
+}
+
+function deleteCar(){
+  if(!confirm("Supprimer ce véhicule ?")) return;
+  CARS.splice(editIdx,1);
+  closeModal();
+  filterCars();
+  showToast("🗑 Véhicule supprimé");
+  autoSave();
+}
+
+document.getElementById("modalOverlay").addEventListener("click", e=>{
+  if(e.target===document.getElementById("modalOverlay")) closeModal();
+});
+
+// ════════════════════════════════
+// WATERMARK
+// ════════════════════════════════
+let logoImg = null;
+let wmItems = [];
+
+function loadLogo(input){
+  if(!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      logoImg = img;
+      document.getElementById("logoBoxContent").innerHTML = `<img src="${e.target.result}" class="logo-box-preview" alt="logo">`;
+      if(wmItems.length) reprocessAll();
+      showToast("✅ Logo chargé");
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+// Auto-load logo-mh.png
+(function(){
+  const img = new Image();
+  img.onload = () => {
+    logoImg = img;
+    const c = document.createElement("canvas");
+    c.width=img.width;c.height=img.height;
+    c.getContext("2d").drawImage(img,0,0);
+    document.getElementById("logoBoxContent").innerHTML = `<img src="${c.toDataURL()}" class="logo-box-preview" alt="logo">`;
+  };
+  img.src = "logo-mh.png";
+})();
+
+function updateSliders(){
+  document.getElementById("opacityVal").textContent = document.getElementById("opacitySlider").value + "%";
+  document.getElementById("sizeVal").textContent = document.getElementById("sizeSlider").value + "%";
+}
+
+function handlePhotos(files){
+  if(!files.length) return;
+  document.getElementById("resultsSection").style.display="block";
+  document.getElementById("wmEmpty").style.display="none";
+  const newItems = Array.from(files).map(f=>({file:f,src:null,canvas:null}));
+  wmItems = [...wmItems,...newItems];
+  let loaded = 0;
+  newItems.forEach(item=>{
+    const reader = new FileReader();
+    reader.onload = e=>{
+      item.src = e.target.result;
+      loaded++;
+      if(loaded===newItems.length) renderWatermarks();
+    };
+    reader.readAsDataURL(item.file);
+  });
+}
+
+function renderWatermarks(){
+  const grid = document.getElementById("photosGrid");
+  grid.innerHTML="";
+  wmItems.forEach((item,idx)=>{
+    const div = document.createElement("div");
+    div.className="photo-item";
+    const canvas = document.createElement("canvas");
+    item.canvas = canvas;
+    const footer = document.createElement("div");
+    footer.className="photo-footer";
+    footer.innerHTML=`
+      <span class="photo-name" title="${item.file.name}">${item.file.name}</span>
+      <button class="btn-dl" onclick="downloadOne(${idx})">⬇</button>
+      <button class="btn-rm" onclick="removeWm(${idx})">✕</button>
+    `;
+    div.appendChild(canvas);
+    div.appendChild(footer);
+    grid.appendChild(div);
+    applyWatermark(item);
+  });
+  updateWmStats();
+}
+
+function applyWatermark(item, cb){
+  const img = new Image();
+  img.onload = ()=>{
+    const c = item.canvas;
+    c.width=img.width;c.height=img.height;
+    const ctx = c.getContext("2d");
+    ctx.drawImage(img,0,0);
+    if(logoImg){
+      const opacity = parseInt(document.getElementById("opacitySlider").value)/100;
+      const sizeRatio = parseInt(document.getElementById("sizeSlider").value)/100;
+      const pos = document.getElementById("posSelect").value;
+      const lw = img.width*sizeRatio;
+      const lh = (logoImg.height/logoImg.width)*lw;
+      const pad = Math.max(img.width*0.03,16);
+      let lx,ly;
+      if(pos==="center"){lx=(img.width-lw)/2;ly=(img.height-lh)/2;}
+      else if(pos==="br"){lx=img.width-lw-pad;ly=img.height-lh-pad;}
+      else if(pos==="bl"){lx=pad;ly=img.height-lh-pad;}
+      else if(pos==="tr"){lx=img.width-lw-pad;ly=pad;}
+      else{lx=pad;ly=pad;}
+      ctx.globalAlpha=opacity;
+      ctx.drawImage(logoImg,lx,ly,lw,lh);
+      ctx.globalAlpha=1;
+    }
+    if(cb) cb();
+  };
+  img.src=item.src;
+}
+
+function reprocessAll(){
+  wmItems.forEach(item=>{ if(item.canvas&&item.src) applyWatermark(item); });
+}
+
+function downloadOne(idx){
+  const item = wmItems[idx];
+  if(!item?.canvas) return;
+  const a = document.createElement("a");
+  a.download = item.file.name.replace(/\.[^.]+$/,"")+"_mh.jpg";
+  a.href = item.canvas.toDataURL("image/jpeg",0.92);
+  a.click();
+  showToast("⬇ Téléchargé");
+}
+
+async function downloadAll(){
+  for(let i=0;i<wmItems.length;i++){
+    await new Promise(r=>setTimeout(r,120));
+    downloadOne(i);
+  }
+  showToast(`⬇ ${wmItems.length} photos téléchargées`);
+}
+
+function removeWm(idx){
+  wmItems.splice(idx,1);
+  if(!wmItems.length){
+    document.getElementById("resultsSection").style.display="none";
+    document.getElementById("wmEmpty").style.display="block";
+  } else {
+    renderWatermarks();
+  }
+  updateWmStats();
+}
+
+function clearAll(){
+  wmItems=[];
+  document.getElementById("resultsSection").style.display="none";
+  document.getElementById("wmEmpty").style.display="block";
+  updateWmStats();
+}
+
+function updateWmStats(){
+  const n=wmItems.length;
+  document.getElementById("wmStats").textContent = n ? `${n} photo${n>1?"s":""} chargée${n>1?"s":""}` : "Aucune photo chargée";
+  document.getElementById("dlAllBtn").disabled = n===0;
+}
+
+// Drag & drop
+const dz=document.getElementById("dropZone");
+dz.addEventListener("dragover",e=>{e.preventDefault();dz.classList.add("drag")});
+dz.addEventListener("dragleave",()=>dz.classList.remove("drag"));
+dz.addEventListener("drop",e=>{e.preventDefault();dz.classList.remove("drag");handlePhotos(e.dataTransfer.files)});
+
+// ════════════════════════════════
+// NAVIGATION TABS
+// ════════════════════════════════
+function switchTab(tab){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.getElementById("page-"+tab).classList.add("active");
+  event.target.classList.add("active");
+}
+
+// ── TOAST ──
+let toastTimer;
+function showToast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove("show"),2400);
+}
+
+// ════════════════════════════════
+// NETLIFY BLOBS — LOAD & SAVE
+// ════════════════════════════════
+let saveTimeout = null;
+
+async function loadCarsFromServer() {
+  try {
+    const res = await fetch("/.netlify/functions/get-cars");
+    if (!res.ok) throw new Error("Erreur serveur");
+    const data = await res.json();
+    if (Array.isArray(data)) {
+      CARS = data;
+    } else if (Array.isArray(data.cars)) {
+      CARS = data.cars;
+    }
+    renderCars(CARS);
+    showToast("✅ Véhicules chargés");
+  } catch (err) {
+    console.warn("Fallback données locales :", err);
+    renderCars(CARS);
+  }
+}
+
+async function saveCarsToServer() {
+  try {
+    const res = await fetch("/.netlify/functions/save-cars", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(CARS)
+    });
+    if (!res.ok) throw new Error("Erreur sauvegarde");
+    showToast("💾 Sauvegardé sur le serveur");
+  } catch (err) {
+    console.error("Erreur save:", err);
+    showToast("❌ Erreur sauvegarde — réessayez");
+  }
+}
+
+// Auto-save après chaque modification
+function autoSave() {
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => saveCarsToServer(), 800);
+}
+
+// ── INIT ──
+loadCarsFromServer();
+updateSliders();
+</script>
+</body>
+</html>
