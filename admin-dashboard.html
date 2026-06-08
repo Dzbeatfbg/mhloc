@@ -144,9 +144,14 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'D
 
 <!-- HEADER -->
 <div id="authGate" style="display:flex;position:fixed;inset:0;z-index:9999;background:#030405;align-items:center;justify-content:center;flex-direction:column;gap:16px">
-<div style="font-family:Syne,sans-serif;font-size:18px;font-weight:800;color:#c9a84c">MH LOCATION — ADMIN</div>
-<div style="font-size:13px;color:rgba(240,240,242,.5)" id="authMsg">Chargement...</div>
-<button id="loginBtn" style="display:none;margin-top:8px;padding:10px 24px;background:#c9a84c;border:none;border-radius:10px;color:#000;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer">Se connecter</button>
+  <div style="font-family:Syne,sans-serif;font-size:20px;font-weight:800;color:#c9a84c;margin-bottom:4px">MH LOCATION — ADMIN</div>
+  <div style="font-size:13px;color:rgba(240,240,242,.5);margin-bottom:12px" id="authMsg">Entrez le mot de passe admin.</div>
+  <div id="pwdForm" style="display:flex;flex-direction:column;align-items:center;gap:10px;width:280px">
+    <input id="pwdInput" type="password" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')submitPassword()"
+      style="width:100%;padding:11px 14px;background:#0f1016;border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#f0f0f2;font-size:14px;font-family:inherit;outline:none;text-align:center;letter-spacing:.1em">
+    <button onclick="submitPassword()" style="width:100%;padding:11px;background:#c9a84c;border:none;border-radius:10px;color:#000;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer">Accéder au dashboard</button>
+    <div id="pwdError" style="font-size:12px;color:#e87070;min-height:16px"></div>
+  </div>
 </div>
 <div id="appContent" style="display:none">
 <div class="header">
@@ -159,7 +164,7 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'D
     <div class="header-right">
       <div class="status-dot"></div>
       <span class="status-label">En ligne</span>
-      <button onclick="window.netlifyIdentity.logout()" style="padding:6px 14px;background:transparent;border:1px solid rgba(255,255,255,.12);color:rgba(240,240,242,.5);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:.2s" onmouseover="this.style.borderColor='rgba(232,112,112,.4)';this.style.color='#e87070'" onmouseout="this.style.borderColor='rgba(255,255,255,.12)';this.style.color='rgba(240,240,242,.5)'">Déconnexion</button>
+      <button onclick="adminLogout()" style="padding:6px 14px;background:transparent;border:1px solid rgba(255,255,255,.12);color:rgba(240,240,242,.5);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:.2s" onmouseover="this.style.borderColor='rgba(232,112,112,.4)';this.style.color='#e87070'" onmouseout="this.style.borderColor='rgba(255,255,255,.12)';this.style.color='rgba(240,240,242,.5)'">Déconnexion</button>
     </div>
   </div>
 </div>
@@ -699,44 +704,50 @@ updateSliders();
 
 <script>
 // Netlify Identity — vérification au chargement
-// Netlify Identity — auth
+// Auth — mot de passe simple stocké en dur
 (function(){
-  function showLogin(){
-    document.getElementById("authMsg").textContent = "Connectez-vous pour accéder au dashboard.";
-    var btn = document.getElementById("loginBtn");
-    btn.style.display = "block";
-    btn.onclick = function(){
-      if(window.netlifyIdentity) window.netlifyIdentity.open("login");
-    };
-  }
+  var PASSWORD = "mhloc2026";
+  var SESSION_KEY = "mh_admin_auth";
+
   function showDashboard(){
     document.getElementById("authGate").style.display = "none";
     document.getElementById("appContent").style.display = "block";
   }
 
-  if(window.netlifyIdentity){
-    window.netlifyIdentity.on("init", function(user){
-      if(user){ showDashboard(); } else { showLogin(); }
-    });
-    window.netlifyIdentity.on("login", function(){
-      window.netlifyIdentity.close();
-      showDashboard();
-    });
-    window.netlifyIdentity.on("logout", function(){
-      document.getElementById("authGate").style.display = "flex";
-      document.getElementById("appContent").style.display = "none";
-      showLogin();
-    });
-  } else {
-    // Widget pas chargé — réessaie après 2s
-    setTimeout(function(){
-      if(window.netlifyIdentity){
-        window.netlifyIdentity.open("login");
-      } else {
-        showLogin();
-      }
-    }, 2000);
+  function showLogin(msg){
+    document.getElementById("authMsg").textContent = msg || "Entrez le mot de passe admin.";
+    document.getElementById("loginBtn").style.display = "none";
+    document.getElementById("pwdForm").style.display = "flex";
   }
+
+  function checkAuth(){
+    if(sessionStorage.getItem(SESSION_KEY) === "ok"){
+      showDashboard();
+    } else {
+      showLogin();
+    }
+  }
+
+  window.submitPassword = function(){
+    var val = document.getElementById("pwdInput").value;
+    if(val === PASSWORD){
+      sessionStorage.setItem(SESSION_KEY, "ok");
+      showDashboard();
+    } else {
+      document.getElementById("pwdError").textContent = "Mot de passe incorrect.";
+      document.getElementById("pwdInput").value = "";
+      document.getElementById("pwdInput").focus();
+    }
+  };
+
+  window.adminLogout = function(){
+    sessionStorage.removeItem(SESSION_KEY);
+    document.getElementById("authGate").style.display = "flex";
+    document.getElementById("appContent").style.display = "none";
+    showLogin();
+  };
+
+  document.addEventListener("DOMContentLoaded", checkAuth);
 })();
 </script>
 </body>
