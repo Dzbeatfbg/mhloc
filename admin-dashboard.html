@@ -333,12 +333,38 @@ async function initApp(){
   updateSliders();
 }
 
+var GH_REPO = "Dzbeatfbg/mhloc";
+var GH_BRANCH = "main";
+var GH_FILE = "data/cars.json";
+var GH_TOKEN = null;
+
+async function getGHToken(){
+  if(GH_TOKEN) return GH_TOKEN;
+  // Récupère le token depuis la fonction auth
+  try {
+    var res = await fetch("/.netlify/functions/admin-auth", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({getToken: true, password: sessionStorage.getItem("mh_admin_v1")})
+    });
+    var d = await res.json();
+    if(d.ghToken) { GH_TOKEN = d.ghToken; return GH_TOKEN; }
+  } catch(e){}
+  return null;
+}
+
 async function loadCarsFromServer(){
   try {
-    var res = await fetch("/.netlify/functions/get-cars");
+    var token = await getGHToken();
+    if(!token) throw new Error("no token");
+    var res = await fetch("https://api.github.com/repos/"+GH_REPO+"/contents/"+GH_FILE+"?ref="+GH_BRANCH, {
+      headers: {"Authorization":"Bearer "+token, "Accept":"application/vnd.github.v3+json"}
+    });
     if(!res.ok) throw new Error();
     var data = await res.json();
-    CARS = Array.isArray(data) ? data : (Array.isArray(data.cars) ? data.cars : getFallback());
+    var decoded = JSON.parse(atob(data.content.replace(/
+/g,"")));
+    CARS = Array.isArray(decoded) ? decoded : getFallback();
   } catch(e) {
     CARS = getFallback();
   }
@@ -346,14 +372,28 @@ async function loadCarsFromServer(){
 
 async function saveCarsToServer(){
   try {
-    await fetch("/.netlify/functions/save-cars",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(CARS)
+    var token = await getGHToken();
+    if(!token) throw new Error("no token");
+    
+    // Récupère le SHA actuel
+    var getRes = await fetch("https://api.github.com/repos/"+GH_REPO+"/contents/"+GH_FILE+"?ref="+GH_BRANCH, {
+      headers: {"Authorization":"Bearer "+token, "Accept":"application/vnd.github.v3+json"}
     });
-    showToast("💾 Sauvegardé");
+    var getData = await getRes.json();
+    var sha = getData.sha;
+
+    // Encode et sauvegarde
+    var encoded = btoa(unescape(encodeURIComponent(JSON.stringify(CARS, null, 2))));
+    var putRes = await fetch("https://api.github.com/repos/"+GH_REPO+"/contents/"+GH_FILE, {
+      method:"PUT",
+      headers:{"Authorization":"Bearer "+token,"Accept":"application/vnd.github.v3+json","Content-Type":"application/json"},
+      body:JSON.stringify({message:"MAJ véhicules via admin", content:encoded, sha:sha, branch:GH_BRANCH})
+    });
+    if(!putRes.ok) throw new Error();
+    showToast("💾 Sauvegardé sur le site !");
   } catch(e){
     showToast("❌ Erreur sauvegarde");
+    console.error(e);
   }
 }
 
