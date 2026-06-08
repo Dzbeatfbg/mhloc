@@ -1,14 +1,11 @@
-const { getStore } = require("@netlify/blobs");
-
 exports.handler = async function(event, context) {
   const headers = {
     "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Content-Type": "application/json"
   };
 
-  // Preflight CORS
   if (event.httpMethod === "OPTIONS") {
     return { statusCode: 204, headers, body: "" };
   }
@@ -18,35 +15,35 @@ exports.handler = async function(event, context) {
   }
 
   try {
-    // Vérifie que le body est du JSON valide
+    // Parse le body
     let cars;
     try {
       cars = JSON.parse(event.body);
-    } catch {
+    } catch(e) {
       return { statusCode: 400, headers, body: JSON.stringify({ error: "JSON invalide" }) };
     }
 
-    // Vérifie que c'est bien un tableau
     if (!Array.isArray(cars)) {
-      return { statusCode: 400, headers, body: JSON.stringify({ error: "Format invalide — tableau attendu" }) };
+      return { statusCode: 400, headers, body: JSON.stringify({ error: "Format invalide" }) };
     }
 
-    // Sauvegarde dans Netlify Blobs
+    // Import dynamique pour éviter les erreurs de chargement
+    const { getStore } = require("@netlify/blobs");
     const store = getStore({ name: "mh-location", consistency: "strong" });
     await store.set("cars", JSON.stringify(cars));
 
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ success: true, count: cars.length, saved_at: new Date().toISOString() })
+      body: JSON.stringify({ success: true, count: cars.length })
     };
 
   } catch (err) {
-    console.error("save-cars error:", err);
+    console.error("save-cars error:", err.message, err.stack);
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: "Impossible de sauvegarder", detail: err.message })
+      body: JSON.stringify({ error: err.message })
     };
   }
 };
