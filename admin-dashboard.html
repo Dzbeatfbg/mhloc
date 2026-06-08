@@ -143,7 +143,11 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'D
 <body>
 
 <!-- HEADER -->
-<div id="authGate" style="display:flex;position:fixed;inset:0;z-index:9999;background:#030405;align-items:center;justify-content:center;flex-direction:column;gap:16px"><div style="font-family:Syne,sans-serif;font-size:18px;font-weight:800;color:#c9a84c">MH LOCATION — ADMIN</div><div style="font-size:13px;color:rgba(240,240,242,.5)">Vérification de votre identité…</div><button onclick="window.netlifyIdentity.open()" style="margin-top:8px;padding:10px 24px;background:#c9a84c;border:none;border-radius:10px;color:#000;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer">Se connecter</button></div>
+<div id="authGate" style="display:flex;position:fixed;inset:0;z-index:9999;background:#030405;align-items:center;justify-content:center;flex-direction:column;gap:16px">
+<div style="font-family:Syne,sans-serif;font-size:18px;font-weight:800;color:#c9a84c">MH LOCATION — ADMIN</div>
+<div style="font-size:13px;color:rgba(240,240,242,.5)" id="authMsg">Chargement...</div>
+<button id="loginBtn" style="display:none;margin-top:8px;padding:10px 24px;background:#c9a84c;border:none;border-radius:10px;color:#000;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer">Se connecter</button>
+</div>
 <div id="appContent" style="display:none">
 <div class="header">
   <div class="header-inner">
@@ -695,26 +699,45 @@ updateSliders();
 
 <script>
 // Netlify Identity — vérification au chargement
-if(window.netlifyIdentity){
-  window.netlifyIdentity.on("init", function(user){
-    if(user){
-      document.getElementById("authGate").style.display="none";
-      document.getElementById("appContent").style.display="block";
-    } else {
-      window.netlifyIdentity.open();
-    }
-  });
-  window.netlifyIdentity.on("login", function(){
-    document.getElementById("authGate").style.display="none";
-    document.getElementById("appContent").style.display="block";
-    window.netlifyIdentity.close();
-  });
-  window.netlifyIdentity.on("logout", function(){
-    document.getElementById("authGate").style.display="flex";
-    document.getElementById("appContent").style.display="none";
-    window.netlifyIdentity.open();
-  });
-}
+// Netlify Identity — auth
+(function(){
+  function showLogin(){
+    document.getElementById("authMsg").textContent = "Connectez-vous pour accéder au dashboard.";
+    var btn = document.getElementById("loginBtn");
+    btn.style.display = "block";
+    btn.onclick = function(){
+      if(window.netlifyIdentity) window.netlifyIdentity.open("login");
+    };
+  }
+  function showDashboard(){
+    document.getElementById("authGate").style.display = "none";
+    document.getElementById("appContent").style.display = "block";
+  }
+
+  if(window.netlifyIdentity){
+    window.netlifyIdentity.on("init", function(user){
+      if(user){ showDashboard(); } else { showLogin(); }
+    });
+    window.netlifyIdentity.on("login", function(){
+      window.netlifyIdentity.close();
+      showDashboard();
+    });
+    window.netlifyIdentity.on("logout", function(){
+      document.getElementById("authGate").style.display = "flex";
+      document.getElementById("appContent").style.display = "none";
+      showLogin();
+    });
+  } else {
+    // Widget pas chargé — réessaie après 2s
+    setTimeout(function(){
+      if(window.netlifyIdentity){
+        window.netlifyIdentity.open("login");
+      } else {
+        showLogin();
+      }
+    }, 2000);
+  }
+})();
 </script>
 </body>
 </html>
